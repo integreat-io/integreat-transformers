@@ -28,6 +28,12 @@ not. Non-numbers are treated like the following:
 - `null` and `undefined` are untouched
 - All other types will return `undefined`
 
+To round numbers, set the `precision` operand to the number of decimals to round
+to. When `precision` is not set, the number will not be rounded.
+
+Note that JavaScript rounds towards +∞ for negative numbers where the decimal 5
+is rounded away. Other systems may round away from 0 in such cases.
+
 ### `boolean`
 
 Transforms values to boolean by JavaScript rules, except the string `'false'`,

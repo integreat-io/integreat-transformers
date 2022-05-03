@@ -22,6 +22,28 @@ test('should transform values to number', (t) => {
   t.is(number(operands, options)(false, context), 0)
 })
 
+test('should round number to given precision', (t) => {
+  const operands = { precision: 2 }
+  t.is(number(operands, options)(12345, context), 12345)
+  t.is(number(operands, options)(12.345, context), 12.35)
+  t.is(number(operands, options)(12.899, context), 12.9)
+  t.is(number(operands, options)('12345', context), 12345)
+  t.is(number(operands, options)('12345.345', context), 12345.35)
+  t.is(number(operands, options)('12345.30NUM', context), 12345.3)
+  t.is(number(operands, options)('-35.875', context), -35.87) // JS rounds 5 towards +∞
+})
+
+test('should round to integer', (t) => {
+  const operands = { precision: 0 }
+  t.is(number(operands, options)(12345, context), 12345)
+  t.is(number(operands, options)(12.345, context), 12)
+  t.is(number(operands, options)(12.899, context), 13)
+  t.is(number(operands, options)('12345', context), 12345)
+  t.is(number(operands, options)('12345.345', context), 12345)
+  t.is(number(operands, options)('12345.30NUM', context), 12345)
+  t.is(number(operands, options)('-35.875', context), -36)
+})
+
 test('should transform illegal values to undefined', (t) => {
   t.is(number(operands, options)('Not a number', context), undefined)
   t.is(number(operands, options)('NUM12345.30', context), undefined)
