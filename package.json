@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/integreat-io/integreat-transformers#readme",
   "dependencies": {
+    "luxon": "^2.3.2",
     "map-any": "^0.2.1"
   },
   "devDependencies": {

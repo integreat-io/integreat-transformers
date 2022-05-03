@@ -1,8 +1,11 @@
 # Integreat transformers
 
-Core transformers for Integreat.
+Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
+[MapTransform](https://github.com/integreat-io/map-transform).
 
 ## Transformers
+
+The package consists of an object with all transformers set as properties.
 
 ### `string`
 
@@ -23,3 +26,26 @@ not. Non-numbers are treated like the following:
 - Dates are transformed to milliseconds since epoc (midnight 1970-01-01)
 - `null` and `undefined` are untouched
 - All other types will return `undefined`
+
+### `date`
+
+Tries its best at transforming the given value to a date, or returns
+`undefined`.
+
+- Dates are untouched, unless its an invalid date, which will return `undefined`
+- Numbers are treated as milliseconds since epoc (midnight 1970-01-01), unless
+  `isSeconds` is `true` (see below)
+- Strings are parsed with [Luxon](https://moment.github.io/luxon) if a `format`
+  or a `tz` (timezone) are specified (see below). If not, the string is handed
+  to JavaScript's `new Date()`, which will try its best
+- All other types returns `undefined
+
+Date also have a few options (operands):
+
+- `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
+  to use for parsing
+- `tz`: A timezone to use when the given date is not specified with timezone.
+  Supports the same timezones as Luxon, like IANA (`America/New_York`), fixed
+  offset (`UTC+7`) and some others (like `system`).
+- `isSeconds`: When `true`, a number will be treated as seconds since epoc,
+  instead of milliseconds. Default is `false`
