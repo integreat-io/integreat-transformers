@@ -5,7 +5,8 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 
 ## Transformers
 
-The package consists of an object with all transformers set as properties.
+The package consists of several transformers that are exported as an object with
+the transformers set as properties.
 
 ### `string`
 
@@ -49,3 +50,9 @@ Date also have a few options (operands):
   offset (`UTC+7`) and some others (like `system`).
 - `isSeconds`: When `true`, a number will be treated as seconds since epoc,
   instead of milliseconds. Default is `false`
+
+### 'truncate'
+
+When a `length` operand is set, a given string that is longer than this length
+is shortened. If a `postfix` is given, it is appended to the end and the total
+length of the shortened text will still be no longer than `length`.
