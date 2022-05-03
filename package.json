@@ -24,6 +24,9 @@
     "url": "https://github.com/integreat-io/integreat-transformers/issues"
   },
   "homepage": "https://github.com/integreat-io/integreat-transformers#readme",
+  "dependencies": {
+    "map-any": "^0.2.1"
+  },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^2.2.0",
     "integreat": "0.8.0-alpha.81"
