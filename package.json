@@ -1,0 +1,31 @@
+{
+  "name": "integreat-transformers",
+  "version": "0.1.0",
+  "description": "Core transformers for integreat",
+  "author": "Kjell-Morten Bratsberg Thorsen <kjellmorten@integreat.io>",
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "npm run lint && npm run build && nyc --reporter=text-summary ava --config ./ava-dist.config.js",
+    "test:inspect": "node --inspect node_modules/ava/profile.js",
+    "test:watch": "npm run dev",
+    "dev": "ava --watch",
+    "build": "tsc",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "nyc:report": "nyc report --reporter=text --reporter=html",
+    "lint": "eslint --ext .ts src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/integreat-io/integreat-transformers.git"
+  },
+  "bugs": {
+    "url": "https://github.com/integreat-io/integreat-transformers/issues"
+  },
+  "homepage": "https://github.com/integreat-io/integreat-transformers#readme",
+  "devDependencies": {
+    "@integreat/ts-dev-setup": "^2.2.0",
+    "integreat": "0.8.0-alpha.81"
+  }
+}
