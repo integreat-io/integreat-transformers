@@ -1,5 +1,5 @@
 {
-  "name": "integreat-transformers",
+  "name": "@integreat-io/integreat-transformers",
   "version": "0.1.0",
   "description": "Core transformers for integreat",
   "author": "Kjell-Morten Bratsberg Thorsen <kjellmorten@integreat.io>",
@@ -24,6 +24,9 @@
     "url": "https://github.com/integreat-io/integreat-transformers/issues"
   },
   "homepage": "https://github.com/integreat-io/integreat-transformers#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "dependencies": {
     "luxon": "^2.3.2",
     "map-any": "^0.2.1"
