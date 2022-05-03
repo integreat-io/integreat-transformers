@@ -13,7 +13,7 @@ the transformers set as properties.
 Transforms any given value to a string, according to normal JavaScript behavior,
 except:
 
-- Dates are transformed to an ISO string like `2019-05-22T13:43:11.345Z`
+- Dates are transformed to an ISO string like `'2019-05-22T13:43:11.345Z'`
 - Objects are transformed to `undefined`
 - `null` and `undefined` are untouched
 
@@ -27,6 +27,11 @@ not. Non-numbers are treated like the following:
 - Dates are transformed to milliseconds since epoc (midnight 1970-01-01)
 - `null` and `undefined` are untouched
 - All other types will return `undefined`
+
+### `boolean`
+
+Transforms values to boolean by JavaScript rules, except the string `'false'`,
+which is transformed to `false`. `null` and `undefined` are not touched.
 
 ### `date`
 
@@ -46,8 +51,8 @@ Date also have a few options (operands):
 - `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
   to use for parsing
 - `tz`: A timezone to use when the given date is not specified with timezone.
-  Supports the same timezones as Luxon, like IANA (`America/New_York`), fixed
-  offset (`UTC+7`) and some others (like `system`).
+  Supports the same timezones as Luxon, like IANA (`'America/New_York'`), fixed
+  offset (`'UTC+7'`) and some others (like `system`).
 - `isSeconds`: When `true`, a number will be treated as seconds since epoc,
   instead of milliseconds. Default is `false`
 
