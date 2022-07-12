@@ -7,10 +7,11 @@ import date from './date'
 const operands = {}
 const options = {}
 const context = { rev: false, onlyMappedValues: false }
+const contextRev = { rev: true, onlyMappedValues: false }
 
 const theDate = new Date('2019-05-22T13:43:11.345Z')
 
-// Tests
+// Tests -- forward
 
 test('should transform values to date', (t) => {
   t.deepEqual(
@@ -36,7 +37,7 @@ test('should set local dates according to the given time zone', (t) => {
 
 test('should parse date from a given format', (t) => {
   const value = '22.05.2019 kl 18:11'
-  const format = "dd.MM.yyyy' kl 'hh:mm"
+  const format = "dd.MM.yyyy' kl 'HH:mm"
   const tz = 'Europe/Oslo'
   const expected = new Date('2019-05-22T16:11:00Z')
 
@@ -106,6 +107,66 @@ test('should iterate arrays', (t) => {
   ]
 
   const ret = date(operands, options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
+// Tests -- reverse
+
+test('should transform date to ISO string', (t) => {
+  const value = new Date('2019-05-22T13:43:11.345Z')
+  const expected = '2019-05-22T15:43:11.345+02:00'
+
+  const ret = date(operands, options)(value, contextRev)
+
+  t.is(ret, expected)
+})
+
+test('should transform date to ISO string with time zone', (t) => {
+  const value = new Date('2019-05-22T13:43:11.345Z')
+  const tz = 'America/New_York'
+  const expected = '2019-05-22T09:43:11.345-04:00'
+
+  const ret = date({ tz }, options)(value, contextRev)
+
+  t.is(ret, expected)
+})
+
+test('should format date to a given format', (t) => {
+  const value = new Date('2019-05-22T16:11:00Z')
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'Europe/Oslo'
+  const expected = '22.05.2019 kl 18:11'
+
+  const ret = date({ format, tz }, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should return number in seconds when isSeconds is true', (t) => {
+  const isSeconds = true
+  const value = new Date('2019-05-22T13:43:11Z')
+  const expected = 1558532591
+
+  const ret = date({ isSeconds }, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should return undefined when not a date', (t) => {
+  const value = null
+  const expected = undefined
+
+  const ret = date(operands, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should return undefined when invalid date', (t) => {
+  const value = new Date('Not a date')
+  const expected = undefined
+
+  const ret = date(operands, options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })

@@ -11,22 +11,23 @@ export interface Operands extends Record<string, unknown> {
   isSeconds?: boolean
 }
 
-const castDate = function (operands: Operands) {
-  const luxonOptions = operands.tz ? { zone: operands.tz } : undefined
-  const format = operands.format
-  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
+export interface Context {
+  rev: boolean
+  onlyMappedValues: boolean
+}
 
-  return function castDate(value: unknown) {
+const castDate = (format?: string, zone?: string, isSeconds = false) =>
+  function castDate(value: unknown) {
     if (value === null || value === undefined) {
       return value
     } else if (isDate(value)) {
       return isNaN(value.getTime()) ? undefined : value
     } else if (typeof value === 'string') {
-      if (format || luxonOptions) {
+      if (format || zone) {
         // Use Luxon when a format or timezone is given ...
         const date = format
-          ? DateTime.fromFormat(value, format, luxonOptions)
-          : DateTime.fromISO(value, luxonOptions)
+          ? DateTime.fromFormat(value, format, { zone })
+          : DateTime.fromISO(value, { zone })
 
         return date.isValid ? date.toJSDate() : undefined
       } else {
@@ -43,9 +44,35 @@ const castDate = function (operands: Operands) {
       return undefined
     }
   }
-}
 
-const transformer: Transformer = (operands: Operands) =>
-  mapAny(castDate(operands))
+const formatDate = (format?: string, zone?: string, isSeconds = false) =>
+  function formatDate(value: unknown) {
+    if (!isDate(value) || Number.isNaN(value.getTime())) {
+      return undefined
+    }
+
+    let date = DateTime.fromJSDate(value)
+    if (zone) {
+      date = date.setZone(zone)
+    }
+
+    if (!format) {
+      return isSeconds ? date.toSeconds() : date.toISO()
+    } else {
+      return date.toFormat(format)
+    }
+  }
+
+const transformer: Transformer = function transformDate(operands: Operands) {
+  const zone = operands.tz
+  const format = operands.format
+  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
+
+  const formatFn = mapAny(formatDate(format, zone, isSeconds))
+  const castFn = mapAny(castDate(format, zone, isSeconds))
+
+  return (data: unknown, context: Context) =>
+    context.rev ? formatFn(data) : castFn(data)
+}
 
 export default transformer
