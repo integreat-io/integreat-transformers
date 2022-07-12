@@ -62,7 +62,31 @@ Date also have a few options (operands):
 - `isSeconds`: When `true`, a number will be treated as seconds since epoc,
   instead of milliseconds. Default is `false`
 
-### 'truncate'
+### `math`
+
+Provides the math operations `add`, `subtract`, `multiply` and `divide`.
+
+All operations accept a `value`, which will be used in the operation, e.g.:
+
+- `{ operator: 'add', value: 1 }` will add 1 to the value from the pipeline
+- `{ operator: 'subtract', value: 15 }` will subtract 15 from the pipeline value
+
+For the operations where the pipeline value and the operator value is not
+exchangable, like subtraction, where `10 - 15` is not the same as `15 - 10`, the
+pipeline value will always be the first in the expression. Set the operand
+`flip` to `true` to reverse this.
+
+- The operations works in reverse as well, with `add` subtracting, `multiply`
+  dividing, and the other way around
+- Set the `rev` operand to `true` to "reverse the reversing", i.e. to apply the
+  defined operation in reverse, and the oposite operation going forward
+- If the pipeline value is a string, an attempt will be made to parse a number
+  (float) from it
+- If the pipeline number is not a number (or parsed to a number), it will result
+  in `undefined`
+- If the operand value is not a number, the pipeline value will be untouched
+
+### `truncate`
 
 When a `length` operand is set, a given string that is longer than this length
 is shortened. If a `postfix` is given, it is appended to the end and the total
