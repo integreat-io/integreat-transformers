@@ -86,6 +86,20 @@ pipeline value will always be the first in the expression. Set the operand
   in `undefined`
 - If the operand value is not a number, the pipeline value will be untouched
 
+### `round`
+
+Will round the pipeline value to the given `precision`. Default precision is
+`0`, i.e. rounding to integer. `precision` may also be set to `floor` or `ceil`,
+in order to always round up or down to the next integer.
+
+- Strings are parsed to a float if possible
+- Rounding is always done away from zero by default, i.e. -3.5 will be rounded
+  to -4, and not -3. This may be change to rounding towards +∞ by setting
+  the `roundTowardsInfinity` operand to `true`
+- `floor` and `ceil` is not affected by the `roundTowardsInfinity` operand, and
+  `floor` will always be away from +∞ and `ceil` towards +∞. This might change
+  in the future
+
 ### `truncate`
 
 When a `length` operand is set, a given string that is longer than this length
