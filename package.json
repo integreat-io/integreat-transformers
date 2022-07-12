@@ -28,11 +28,11 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "luxon": "^2.3.2",
+    "luxon": "^3.0.1",
     "map-any": "^0.2.1"
   },
   "devDependencies": {
-    "@integreat/ts-dev-setup": "^2.2.0",
-    "integreat": "0.8.0-alpha.81"
+    "@integreat/ts-dev-setup": "^2.3.0",
+    "integreat": "0.8.0-alpha.89"
   }
 }

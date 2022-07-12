@@ -6,7 +6,13 @@ import number from './number'
 
 const operands = {}
 const options = {}
-const context = { rev: false, onlyMappedValues: false }
+const context = {
+  rev: false,
+  onlyMappedValues: false,
+  root: {},
+  context: {},
+  value: {},
+}
 
 // Tests
 

@@ -6,8 +6,20 @@ import date from './date'
 
 const operands = {}
 const options = {}
-const context = { rev: false, onlyMappedValues: false }
-const contextRev = { rev: true, onlyMappedValues: false }
+const context = {
+  rev: false,
+  onlyMappedValues: false,
+  root: {},
+  context: {},
+  value: {},
+}
+const contextRev = {
+  rev: true,
+  onlyMappedValues: false,
+  root: {},
+  context: {},
+  value: {},
+}
 
 const theDate = new Date('2019-05-22T13:43:11.345Z')
 

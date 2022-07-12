@@ -11,9 +11,8 @@ export interface Operands extends Record<string, unknown> {
   isSeconds?: boolean
 }
 
-export interface Context {
-  rev: boolean
-  onlyMappedValues: boolean
+export interface State {
+  rev?: boolean
 }
 
 const castDate = (format?: string, zone?: string, isSeconds = false) =>
@@ -71,8 +70,8 @@ const transformer: Transformer = function transformDate(operands: Operands) {
   const formatFn = mapAny(formatDate(format, zone, isSeconds))
   const castFn = mapAny(castDate(format, zone, isSeconds))
 
-  return (data: unknown, context: Context) =>
-    context.rev ? formatFn(data) : castFn(data)
+  return (data: unknown, state: State) =>
+    state.rev ? formatFn(data) : castFn(data)
 }
 
 export default transformer

@@ -6,7 +6,13 @@ import truncate from './truncate'
 
 const operands = {}
 const options = {}
-const context = { rev: false, onlyMappedValues: false }
+const context = {
+  rev: false,
+  onlyMappedValues: false,
+  root: {},
+  context: {},
+  value: {},
+}
 const text =
   "JavaScript (/ˈdʒɑːvəskrɪpt/),[10] often abbreviated JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS.[11] Over 97% of websites use JavaScript on the client side for web page behavior,[12] often incorporating third-party libraries.[13] All major web browsers have a dedicated JavaScript engine to execute the code on users' devices."
 
