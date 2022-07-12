@@ -86,6 +86,13 @@ pipeline value will always be the first in the expression. Set the operand
   in `undefined`
 - If the operand value is not a number, the pipeline value will be untouched
 
+### `now`
+
+Returns the current date, regardless of the pipeline value.
+
+- The date is returned as a JS date, and may for example be transformed with the
+  `date` transformer when needed
+
 ### `round`
 
 Will round the pipeline value to the given `precision`. Default precision is
