@@ -76,6 +76,10 @@ exchangable, like subtraction, where `10 - 15` is not the same as `15 - 10`, the
 pipeline value will always be the first in the expression. Set the operand
 `flip` to `true` to reverse this.
 
+By default the transformer will use the value from pipeline, but you may specify
+a `path` to get data from an object. Also, as an alternative to specifying the
+`value`, you may set a `valuePath`.
+
 - The operations works in reverse as well, with `add` subtracting, `multiply`
   dividing, and the other way around
 - Set the `rev` operand to `true` to "reverse the reversing", i.e. to apply the
