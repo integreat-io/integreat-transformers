@@ -82,6 +82,30 @@ test('should divide 100 by the pipeline value', (t) => {
   t.is(ret, expected)
 })
 
+test('should use path to get pipeline value', (t) => {
+  const operands = { operator: 'add', path: 'meta.index', value: 1 }
+  const value = { meta: { index: 5 } }
+  const expected = 6
+
+  const ret = math(operands, options)(value, context)
+
+  t.is(ret, expected)
+})
+
+test('should use path to get value', (t) => {
+  const operands = {
+    operator: 'multiply',
+    path: 'price',
+    valuePath: 'discount',
+  }
+  const value = { price: 200, discount: 0.25 }
+  const expected = 50
+
+  const ret = math(operands, options)(value, context)
+
+  t.is(ret, expected)
+})
+
 test('should apply the oposite operator going forward', (t) => {
   const operands = { operator: 'add', value: 1, rev: true }
   const value = 5
@@ -106,6 +130,20 @@ test('should do nothing when operand value is not a number', (t) => {
   const operands = { operator: 'subtract', value: undefined }
   const value = 5
   const expected = 5
+
+  const ret = math(operands, options)(value, context)
+
+  t.is(ret, expected)
+})
+
+test('should return undefined when operand value gotten from path is not a number', (t) => {
+  const operands = {
+    operator: 'multiply',
+    path: 'price',
+    valuePath: 'discount',
+  }
+  const value = { price: 200 }
+  const expected = undefined
 
   const ret = math(operands, options)(value, context)
 

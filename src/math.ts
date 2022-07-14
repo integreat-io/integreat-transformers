@@ -1,9 +1,12 @@
 import mapAny = require('map-any')
 import { Transformer } from 'integreat'
+import { pathGetter } from 'map-transform'
 
 export interface Operands extends Record<string, unknown> {
   operator?: string
+  path?: string
   value?: unknown
+  valuePath?: string
   rev?: boolean
   flip?: boolean
 }
@@ -12,6 +15,9 @@ type MathOp = (a: number, b: number, flip?: boolean) => number
 
 const isFwd = (rev: boolean, flipRev: boolean) => (flipRev ? rev : !rev)
 
+const parseNum = (value: unknown) =>
+  typeof value === 'string' ? Number.parseFloat(value) : value
+
 const add: MathOp = (a, b) => a + b
 const subtract: MathOp = (a, b, flip) => (flip ? b - a : a - b)
 const multiply: MathOp = (a, b) => a * b
@@ -19,20 +25,32 @@ const divide: MathOp = (a, b, flip) => (flip ? b / a : a / b)
 
 function prepareMath({
   operator,
+  path = '.',
   value: opValue,
+  valuePath: opPath,
   rev: flipRev = false,
   flip = false,
 }: Operands) {
-  if (typeof opValue !== 'number') {
+  if (typeof opValue !== 'number' && typeof opPath !== 'string') {
     return () => (value: unknown) =>
       typeof value === 'number' ? value : undefined
   }
 
+  const valueGetter = pathGetter(path)
+  const opValueGetter =
+    typeof opPath === 'string' ? pathGetter(opPath) : () => opValue
+
   return (rev: boolean) =>
-    function doTheMath(rawValue: unknown) {
-      const value =
-        typeof rawValue === 'string' ? Number.parseFloat(rawValue) : rawValue
-      if (typeof value !== 'number' || Number.isNaN(value)) {
+    function doTheMath(data: unknown) {
+      const value = parseNum(valueGetter(data))
+      const opValue = parseNum(opValueGetter(data))
+
+      if (
+        typeof value !== 'number' ||
+        Number.isNaN(value) ||
+        typeof opValue !== 'number' ||
+        Number.isNaN(opValue)
+      ) {
         return undefined
       }
 
