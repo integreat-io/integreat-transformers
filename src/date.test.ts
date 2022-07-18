@@ -165,6 +165,26 @@ test('should return number in seconds when isSeconds is true', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should cast incoming value to Date', (t) => {
+  const value = '2019-05-22T13:43:11.345Z'
+  const expected = '2019-05-22T15:43:11.345+02:00'
+
+  const ret = date(operands, options)(value, contextRev)
+
+  t.is(ret, expected)
+})
+
+test('should cast from within Integreat without using format and tz', (t) => {
+  const value = '2019-05-22T16:11:00Z'
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'Europe/Oslo'
+  const expected = '22.05.2019 kl 18:11'
+
+  const ret = date({ format, tz }, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
 test('should return undefined when not a date', (t) => {
   const value = null
   const expected = undefined

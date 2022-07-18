@@ -70,8 +70,12 @@ const transformer: Transformer = function transformDate(operands: Operands) {
   const formatFn = mapAny(formatDate(format, zone, isSeconds))
   const castFn = mapAny(castDate(format, zone, isSeconds))
 
+  // Cast from service and format to service
+  // Note: We're casting value from Integreat too, in case it arrives as an ISO
+  // string. This should probably not be necessary, but it happens, so we need
+  // to account for it.
   return (data: unknown, state: State) =>
-    state.rev ? formatFn(data) : castFn(data)
+    state.rev ? formatFn(castDate()(data)) : castFn(data)
 }
 
 export default transformer
