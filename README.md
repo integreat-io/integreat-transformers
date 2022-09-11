@@ -62,6 +62,19 @@ Date also have a few options (operands):
 - `isSeconds`: When `true`, a number will be treated as seconds since epoc,
   instead of milliseconds. Default is `false`
 
+### `base64`
+
+Will decode any base64 string coming _from_ a service, or encode a value with
+base64 going _to_ a service.
+
+A non-string value will be treated differenlty depending on the direction:
+
+- When coming _from_ a service, the result will be `undefined` (or `null` if
+  `null`)
+- When going _to_ a service, the value will be forced to a string if possible,
+  in the same way as the `string` transformer. `null` and `undefined` will not
+  be touched.
+
 ### `math`
 
 Provides the math operations `add`, `subtract`, `multiply` and `divide`.
