@@ -129,3 +129,8 @@ in order to always round up or down to the next integer.
 When a `length` operand is set, a given string that is longer than this length
 is shortened. If a `postfix` is given, it is appended to the end and the total
 length of the shortened text will still be no longer than `length`.
+
+### `replace`
+
+Will replace the `from` operand with the `to` operand in the given string value.
+If the value is not a string, it will be passed on untouched.
