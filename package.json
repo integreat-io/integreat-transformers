@@ -30,7 +30,7 @@
   "dependencies": {
     "luxon": "^3.0.1",
     "map-any": "^0.2.1",
-    "map-transform": "^0.4.0-alpha.20"
+    "map-transform": "^0.4.0-alpha.31"
   },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^2.3.0",

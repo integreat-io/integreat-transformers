@@ -8,15 +8,13 @@ const options = {}
 const context = {
   rev: false,
   onlyMappedValues: false,
-  context: {},
-  root: {},
+  context: [],
   value: {},
 }
 const contextRev = {
   rev: true,
   onlyMappedValues: false,
-  context: {},
-  root: {},
+  context: [],
   value: {},
 }
 

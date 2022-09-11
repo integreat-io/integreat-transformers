@@ -9,8 +9,7 @@ const options = {}
 const context = {
   rev: false,
   onlyMappedValues: false,
-  root: {},
-  context: {},
+  context: [],
   value: {},
 }
 const text =
