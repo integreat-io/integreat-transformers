@@ -15,7 +15,7 @@ type MathOp = (a: number, b: number, flip?: boolean) => number
 
 const isFwd = (rev: boolean, flipRev: boolean) => (flipRev ? rev : !rev)
 
-const parseNum = (value: unknown) =>
+export const parseNum = (value: unknown) =>
   typeof value === 'string' ? Number.parseFloat(value) : value
 
 const add: MathOp = (a, b) => a + b

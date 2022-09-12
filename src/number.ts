@@ -13,7 +13,7 @@ const round = (value?: number, precisionProduct?: number) =>
     ? Math.round(value * precisionProduct) / precisionProduct
     : value
 
-const castNumber = (precision?: number) => {
+export const castNumber = (precision?: number) => {
   const precisionProduct =
     typeof precision === 'number' ? Math.pow(10, precision) : undefined
 

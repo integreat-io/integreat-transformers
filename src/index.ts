@@ -7,6 +7,7 @@ import number from './number'
 import replace from './replace'
 import round from './round'
 import stringFn from './string'
+import sum from './sum'
 import truncate from './truncate'
 
 export default {
@@ -19,5 +20,6 @@ export default {
   replace,
   round,
   string: stringFn,
+  sum,
   truncate,
 }

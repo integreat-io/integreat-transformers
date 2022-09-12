@@ -124,6 +124,13 @@ in order to always round up or down to the next integer.
   `floor` will always be away from +∞ and `ceil` towards +∞. This might change
   in the future
 
+### `sum`
+
+Adds an array of numbers. Will parse numbers from strings, but skip all other
+values. If not an array, it will be treated as an array of one element. Note
+that this transformer always returns a number, even `null` and `undefined` will
+yield `0`.
+
 ### `truncate`
 
 When a `length` operand is set, a given string that is longer than this length
