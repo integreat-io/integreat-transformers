@@ -1,6 +1,6 @@
 {
   "name": "integreat-transformers",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Core transformers for integreat",
   "author": "Kjell-Morten Bratsberg Thorsen <kjellmorten@integreat.io>",
   "license": "UNLICENSED",
@@ -12,6 +12,7 @@
     "test:watch": "npm run dev",
     "dev": "ava --watch",
     "build": "tsc",
+    "prepublish": "npm run build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "nyc:report": "nyc report --reporter=text --reporter=html",
     "lint": "eslint --ext .ts src"
