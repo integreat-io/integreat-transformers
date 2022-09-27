@@ -26,12 +26,18 @@
   },
   "homepage": "https://github.com/integreat-io/integreat-transformers#readme",
   "dependencies": {
-    "luxon": "^3.0.3",
+    "@types/sax": "^1.2.4",
+    "@types/uuid": "^8.3.4",
+    "html-entities": "^2.3.3",
+    "luxon": "^3.0.4",
     "map-any": "^0.2.1",
-    "map-transform": "^0.4.0-alpha.31"
+    "map-transform": "^0.4.0-alpha.33",
+    "nanoid": "^3.3.4",
+    "sax": "^1.2.4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^2.3.1",
-    "integreat": "0.8.0-alpha.99"
+    "integreat": "0.8.0-beta.0"
   }
 }

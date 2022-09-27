@@ -15,7 +15,7 @@ export interface State {
   rev?: boolean
 }
 
-const castDate = (format?: string, zone?: string, isSeconds = false) =>
+export const castDate = (format?: string, zone?: string, isSeconds = false) =>
   function castDate(value: unknown) {
     if (value === null || value === undefined) {
       return value
