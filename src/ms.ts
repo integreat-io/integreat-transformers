@@ -1,4 +1,5 @@
 import { castDate } from './date'
+import { isDate } from './utils/is'
 
 export interface Operands extends Record<string, unknown> {
   always?: boolean
@@ -12,7 +13,7 @@ export default ({ always = false }: Operands) =>
     const date = castDate()(value)
 
     if (rev || always) {
-      return date instanceof Date ? date?.getTime() : undefined
+      return isDate(date) ? date?.getTime() : undefined
     }
 
     return date || undefined
