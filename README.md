@@ -117,6 +117,8 @@ if possible. All other values will yield `undefined`.
 epoc (1970-01-01). Strings and numbers will be casted to Date if possible. All
 other values will yield `undefined`.
 
+- Set `always: true` to return milliseconds both ways.
+
 ### `now`
 
 Returns the current date, regardless of the pipeline value.
