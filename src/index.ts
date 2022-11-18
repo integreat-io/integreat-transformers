@@ -9,6 +9,7 @@ import now from './now'
 import number from './number'
 import replace from './replace'
 import round from './round'
+import splitRange from './splitRange'
 import stringFn from './string'
 import sum from './sum'
 import truncate from './truncate'
@@ -29,6 +30,7 @@ export default {
   number,
   replace,
   round,
+  splitRange,
   string: stringFn,
   sum,
   truncate,
