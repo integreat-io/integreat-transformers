@@ -128,14 +128,9 @@ a `path` to get data from an object. Also, as an alternative to specifying the
 
 ### `ms`
 
-**Forward (coming from a service):** Strings and numbers will be casted to Date
-if possible. All other values will yield `undefined`.
-
-**Reverse (going to a service):** Will return the milleseconds of a Date since
-epoc (1970-01-01). Strings and numbers will be casted to Date if possible. All
-other values will yield `undefined`.
-
-- Set `always: true` to return milliseconds both ways.
+Will return the milliseconds of a Date since epoc (1970-01-01). Strings and
+numbers will first be casted to Date if possible. All other values will yield
+`undefined`.
 
 ### `now`
 
