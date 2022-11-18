@@ -1,6 +1,6 @@
 import mapAny = require('map-any')
 import { Transformer } from 'integreat'
-import { pathGetter } from 'map-transform'
+import { mapTransform } from 'map-transform'
 
 export interface Operands extends Record<string, unknown> {
   operator?: string
@@ -36,9 +36,9 @@ function prepareMath({
       typeof value === 'number' ? value : undefined
   }
 
-  const valueGetter = pathGetter(path)
+  const valueGetter = mapTransform(path)
   const opValueGetter =
-    typeof opPath === 'string' ? pathGetter(opPath) : () => opValue
+    typeof opPath === 'string' ? mapTransform(opPath) : () => opValue
 
   return (rev: boolean) =>
     function doTheMath(data: unknown) {
