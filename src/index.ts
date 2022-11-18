@@ -1,5 +1,6 @@
 import base64 from './base64'
 import boolean from './boolean'
+import count from './count'
 import date from './date'
 import hash from './hash'
 import lowercase from './lowercase'
@@ -21,6 +22,7 @@ import xml from './xml'
 export default {
   base64,
   boolean,
+  count,
   date,
   hash,
   lowercase,

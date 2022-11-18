@@ -10,6 +10,7 @@ the transformers set as properties:
 
 - [`base64`](#base64)
 - [`boolean`](#boolean)
+- [`count`](#count)
 - [`date`](#date)
 - [`hash`](#hash)
 - [`lowercase`](#lowercase)
@@ -45,6 +46,22 @@ A non-string value will be treated differenlty depending on the direction:
 
 Transforms values to boolean by JavaScript rules, except the string `'false'`,
 which is transformed to `false`. `null` and `undefined` are not touched.
+
+### `count`
+
+It does what you thing: It counts the values you provide it. An array of eight
+items returns `8`, one item (non-array) returns `1`.
+
+By default it will not count `null` or `undefined`, either in an array or as a
+non-array item. By providing an array of values to skip in the `skip` operand,
+you may choose what values to not count.
+
+When you provide your own list, you need to provide `null` and `undefined` in
+the list too, for them to be skipped. So to count every value, including `null`
+and `undefined`, set `skip: []`.
+
+When defining this as JSON, you may use `**undefined**` in the `skip` list
+instead of `undefined`. (`undefined` does not have a literal in JSON.)
 
 ### `date`
 
