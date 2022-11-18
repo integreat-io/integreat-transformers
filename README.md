@@ -76,15 +76,24 @@ Tries its best at transforming the given value to a date, or returns
   to JavaScript's `new Date()`, which will try its best
 - All other types returns `undefined
 
-Date also have a few options (operands):
+Date also have a few options (operands) for formatting a date (when going to
+a service), or parsing a date (when coming from a service):
 
 - `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
-  to use for parsing
+  to use for parsing (from service) and formatting (to service)
 - `tz`: A timezone to use when the given date is not specified with timezone.
   Supports the same timezones as Luxon, like IANA (`'America/New_York'`), fixed
   offset (`'UTC+7'`) and some others (like `system`).
 - `isSeconds`: When `true`, a number will be treated as seconds since epoc,
   instead of milliseconds. Default is `false`
+
+### `formatDate`
+
+Formats a date the same way as `date` does, but does it regardless of direction,
+i.e. both from and to a service. (`date` parses from a service and formats to
+a service.)
+
+See [`date`](#date) for available operands/options.
 
 ### `hash`
 

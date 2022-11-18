@@ -1,7 +1,7 @@
 import base64 from './base64'
 import boolean from './boolean'
 import count from './count'
-import date from './date'
+import date, { formatDate } from './date'
 import hash from './hash'
 import lowercase from './lowercase'
 import math from './math'
@@ -24,6 +24,7 @@ export default {
   boolean,
   count,
   date,
+  formatDate,
   hash,
   lowercase,
   math,

@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import date from './date'
+import date, { formatDate } from './date'
 
 // Setup
 
@@ -200,3 +200,27 @@ test('should return undefined when invalid date', (t) => {
 
   t.deepEqual(ret, expected)
 })
+
+// Tests -- formatDate
+
+test('should format date as ISO string', (t) => {
+  const value = new Date('2019-05-22T13:43:11.345Z')
+  const expected = '2019-05-22T15:43:11.345+02:00'
+
+  const ret = formatDate(operands, options)(value, context)
+
+  t.is(ret, expected)
+})
+
+test('should format date to a given format in the given timezone', (t) => {
+  const value = new Date('2019-05-22T16:11:00Z')
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'Europe/Oslo'
+  const expected = '22.05.2019 kl 18:11'
+
+  const ret = formatDate({ format, tz }, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
+// All other tests should be covered by the rev version of `date`

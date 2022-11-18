@@ -44,7 +44,7 @@ export const castDate = (format?: string, zone?: string, isSeconds = false) =>
     }
   }
 
-const formatDate = (format?: string, zone?: string, isSeconds = false) =>
+const doFormatDate = (format?: string, zone?: string, isSeconds = false) =>
   function formatDate(value: unknown) {
     if (!isDate(value) || Number.isNaN(value.getTime())) {
       return undefined
@@ -62,12 +62,25 @@ const formatDate = (format?: string, zone?: string, isSeconds = false) =>
     }
   }
 
+export const formatDate: Transformer = function transformDate(
+  operands: Operands
+) {
+  const zone = operands.tz
+  const format = operands.format
+  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
+
+  const formatFn = mapAny(doFormatDate(format, zone, isSeconds))
+
+  // Format regardless of direction
+  return (data: unknown, _state: State) => formatFn(castDate()(data))
+}
+
 const transformer: Transformer = function transformDate(operands: Operands) {
   const zone = operands.tz
   const format = operands.format
   const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
 
-  const formatFn = mapAny(formatDate(format, zone, isSeconds))
+  const formatFn = mapAny(doFormatDate(format, zone, isSeconds))
   const castFn = mapAny(castDate(format, zone, isSeconds))
 
   // Cast from service and format to service
