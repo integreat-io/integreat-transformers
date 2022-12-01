@@ -77,7 +77,8 @@ Tries its best at transforming the given value to a date, or returns
 - All other types returns `undefined
 
 Date also have a few options (operands) for formatting a date (when going to
-a service), or parsing a date (when coming from a service):
+a service), or parsing a date (when coming from a service), and to modify the
+date itself (before formatting or after parsing):
 
 - `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
   to use for parsing (from service) and formatting (to service)
@@ -85,7 +86,30 @@ a service), or parsing a date (when coming from a service):
   Supports the same timezones as Luxon, like IANA (`'America/New_York'`), fixed
   offset (`'UTC+7'`) and some others (like `system`).
 - `isSeconds`: When `true`, a number will be treated as seconds since epoc,
-  instead of milliseconds. Default is `false`
+  instead of milliseconds. Default is `false`.
+- `add`: Adds the number of time intervals given by a period object (see below)
+  from a service, and subtracts when going to a service.
+- `subtract`: Subtracts the number of time intervals given by a period object
+  (see below) from a service, and adds when going to a service.
+- `set`: Sets a part of the date/time to the value given by an object in the
+  same format as a period object (see below). E.g. `{ type: 'day', value: 1 }`
+  will return the first in the month from the given date.
+
+A period object consists of a `type` and a `value`, alternatively a `valuePath`
+to get a value from the data. For example:
+
+```javascript
+{ type: 'month', value: 6 }
+```
+
+... or ...
+
+```javascript
+{ type: 'month', valuePath: '^.numberOfMonths' }
+```
+
+The available keywords for `type` are: `year`, `quarter`, `month`, `week`,
+`day`, `hour`, `minute`, `second`, and `millisecond`.
 
 ### `formatDate`
 

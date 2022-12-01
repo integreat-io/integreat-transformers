@@ -5,90 +5,159 @@ import { isDate } from './utils/is'
 
 const { DateTime } = Luxon
 
+const LEGAL_PERIOD_TYPES = [
+  'year',
+  'quarter',
+  'month',
+  'week',
+  'day',
+  'hour',
+  'minute',
+  'second',
+  'millisecond',
+]
+
+export type PeriodType =
+  | 'year'
+  | 'quarter'
+  | 'month'
+  | 'week'
+  | 'day'
+  | 'hour'
+  | 'minute'
+  | 'second'
+  | 'millisecond'
+
+export interface PeriodObject {
+  type: PeriodType
+  value?: number
+  valuePath?: string
+}
+
 export interface Operands extends Record<string, unknown> {
   format?: string
   tz?: string
   isSeconds?: boolean
+  add?: PeriodObject
+  subtract?: PeriodObject
+  set?: PeriodObject
 }
 
 export interface State {
   rev?: boolean
 }
 
-export const castDate = (format?: string, zone?: string, isSeconds = false) =>
-  function castDate(value: unknown) {
-    if (value === null || value === undefined) {
-      return value
+const periodStringFromType = (type: PeriodType) =>
+  LEGAL_PERIOD_TYPES.includes(type) ? `${type}s` : undefined
+
+function periodFromObject(obj: PeriodObject) {
+  const key = periodStringFromType(obj.type)
+  return key ? { [key]: obj.value } : {}
+}
+
+function modifyDate(
+  date: Luxon.DateTime,
+  add?: PeriodObject,
+  subtract?: PeriodObject,
+  set?: PeriodObject
+) {
+  if (add) {
+    date = date.plus(periodFromObject(add))
+  }
+  if (subtract) {
+    date = date.minus(periodFromObject(subtract))
+  }
+  if (set) {
+    date = date.set(periodFromObject(set))
+  }
+  return date
+}
+
+export function castDate(operands: Operands = {}) {
+  const { tz: zone, format, add, subtract, set } = operands
+  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
+
+  return function doCastDate(value: unknown) {
+    let date = undefined
+
+    if (value === null) {
+      return null
     } else if (isDate(value)) {
-      return isNaN(value.getTime()) ? undefined : value
+      if (!Number.isNaN(value.getTime())) {
+        date = DateTime.fromJSDate(value)
+      }
     } else if (typeof value === 'string') {
       if (format || zone) {
         // Use Luxon when a format or timezone is given ...
-        const date = format
+        date = format
           ? DateTime.fromFormat(value, format, { zone })
           : DateTime.fromISO(value, { zone })
-
-        return date.isValid ? date.toJSDate() : undefined
       } else {
         // ... otherwise use normal JS parsing to do the best we can
-        const date = new Date(value)
-        return !date || isNaN(date.getTime()) ? undefined : date
+        date = DateTime.fromJSDate(new Date(value))
       }
     } else if (typeof value === 'number') {
-      const date = isSeconds
+      date = isSeconds
         ? DateTime.fromSeconds(value)
         : DateTime.fromMillis(value)
-      return date.isValid ? date.toJSDate() : undefined
-    } else {
+    }
+
+    if (!date || !date.isValid) {
       return undefined
     }
+
+    return date ? modifyDate(date, add, subtract, set).toJSDate() : date
   }
+}
 
-const doFormatDate = (format?: string, zone?: string, isSeconds = false) =>
-  function formatDate(value: unknown) {
-    if (!isDate(value) || Number.isNaN(value.getTime())) {
+function format(operands: Operands) {
+  const { tz: zone, format, ...modifiers } = operands
+  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
+
+  return function doFormatDate(value: unknown) {
+    const date = castDate(modifiers)(value)
+    if (!isDate(date) || Number.isNaN(date.getTime())) {
       return undefined
     }
 
-    let date = DateTime.fromJSDate(value)
+    let dateTime = DateTime.fromJSDate(date)
     if (zone) {
-      date = date.setZone(zone)
+      dateTime = dateTime.setZone(zone)
     }
 
     if (!format) {
-      return isSeconds ? date.toSeconds() : date.toISO()
+      return isSeconds ? dateTime.toSeconds() : dateTime.toISO()
     } else {
-      return date.toFormat(format)
+      return dateTime.toFormat(format)
     }
   }
+}
+
+const revOperands = ({ add, subtract, ...operands }: Operands) => ({
+  ...operands,
+  add: subtract,
+  subtract: add,
+})
 
 export const formatDate: Transformer = function transformDate(
   operands: Operands
 ) {
-  const zone = operands.tz
-  const format = operands.format
-  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
-
-  const formatFn = mapAny(doFormatDate(format, zone, isSeconds))
+  const formatFn = mapAny(format(operands))
 
   // Format regardless of direction
   return (data: unknown, _state: State) => formatFn(castDate()(data))
 }
 
 const transformer: Transformer = function transformDate(operands: Operands) {
-  const zone = operands.tz
-  const format = operands.format
-  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
-
-  const formatFn = mapAny(doFormatDate(format, zone, isSeconds))
-  const castFn = mapAny(castDate(format, zone, isSeconds))
+  const formatFn = mapAny(format(revOperands(operands)))
+  const castFn = mapAny(castDate(operands))
 
   // Cast from service and format to service
   // Note: We're casting value from Integreat too, in case it arrives as an ISO
   // string. This should probably not be necessary, but it happens, so we need
   // to account for it.
   return (data: unknown, state: State) =>
-    state.rev ? formatFn(castDate()(data)) : castFn(data)
+    state.rev ? formatFn(data) : castFn(data)
 }
 
 export default transformer

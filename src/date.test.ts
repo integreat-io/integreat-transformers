@@ -121,6 +121,39 @@ test('should iterate arrays', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should add a time period', (t) => {
+  const value = '2022-11-05T13:43:11'
+  const period = { type: 'day', value: 1 }
+  const tz = 'America/Nassau'
+  const expected = new Date('2022-11-06T18:43:11Z')
+
+  const ret = date({ tz, add: period }, options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should subtract a time period', (t) => {
+  const value = '2022-11-07T14:43:11'
+  const period = { type: 'week', value: 2 }
+  const tz = 'America/Nassau'
+  const expected = new Date('2022-10-24T18:43:11Z')
+
+  const ret = date({ tz, subtract: period }, options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should set a part of the date/time', (t) => {
+  const value = '2022-12-07T14:43:11'
+  const period = { type: 'day', value: 1 }
+  const tz = 'Europe/Oslo'
+  const expected = new Date('2022-12-01T14:43:11+01:00')
+
+  const ret = date({ tz, set: period }, options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
 // Tests -- reverse
 
 test('should transform date to ISO string', (t) => {
@@ -201,6 +234,39 @@ test('should return undefined when invalid date', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should subtract a time period for add in reverse', (t) => {
+  const value = new Date('2022-11-07T14:43:11-05:00')
+  const period = { type: 'week', value: 2 }
+  const tz = 'America/Nassau'
+  const expected = '2022-10-24T14:43:11.000-04:00'
+
+  const ret = date({ tz, add: period }, options)(value, contextRev)
+
+  t.is(ret, expected)
+})
+
+test('should add a time period for subtract in reverse', (t) => {
+  const value = new Date('2022-11-05T13:43:11-06:00')
+  const period = { type: 'day', value: 1 }
+  const tz = 'America/Nassau'
+  const expected = '2022-11-06T14:43:11.000-05:00'
+
+  const ret = date({ tz, subtract: period }, options)(value, contextRev)
+
+  t.is(ret, expected)
+})
+
+test('should set a part of the date/time in reverse', (t) => {
+  const value = new Date('2022-12-07T14:43:11+01:00')
+  const period = { type: 'day', value: 1 }
+  const tz = 'Europe/Oslo'
+  const expected = '2022-12-01T14:43:11.000+01:00'
+
+  const ret = date({ tz, set: period }, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
 // Tests -- formatDate
 
 test('should format date as ISO string', (t) => {
@@ -219,6 +285,70 @@ test('should format date to a given format in the given timezone', (t) => {
   const expected = '22.05.2019 kl 18:11'
 
   const ret = formatDate({ format, tz }, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should format milliseconds as day of the week', (t) => {
+  const value = 1666569600000
+  const format = 'E'
+  const expected = '1'
+
+  const ret = formatDate({ format }, options)(value, context)
+
+  t.is(ret, expected)
+})
+
+test('should add a time period when formatting date', (t) => {
+  const value = new Date('2022-11-05T13:43:11-06:00')
+  const period = { type: 'day', value: 1 }
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'America/Nassau'
+  const expected = '06.11.2022 kl 14:43'
+
+  const ret = formatDate({ tz, add: period, format }, options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should subtract a time period when formatting date', (t) => {
+  const value = new Date('2022-11-07T14:43:11-05:00')
+  const period = { type: 'week', value: 2 }
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'America/Nassau'
+  const expected = '24.10.2022 kl 14:43'
+
+  const ret = formatDate({ tz, subtract: period, format }, options)(
+    value,
+    context
+  )
+
+  t.deepEqual(ret, expected)
+})
+
+test('should subtract a time period when formatting date in reverse', (t) => {
+  const value = new Date('2022-11-07T14:43:11-05:00')
+  const period = { type: 'week', value: 2 }
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'America/Nassau'
+  const expected = '24.10.2022 kl 14:43'
+
+  const ret = formatDate({ tz, subtract: period, format }, options)(
+    value,
+    contextRev
+  )
+
+  t.deepEqual(ret, expected)
+})
+
+test('should set a part of the date/time when formatting date', (t) => {
+  const value = new Date('2022-12-07T14:43:11+01:00')
+  const period = { type: 'day', value: 1 }
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'Europe/Oslo'
+  const expected = '01.12.2022 kl 14:43'
+
+  const ret = formatDate({ tz, set: period, format }, options)(value, context)
 
   t.deepEqual(ret, expected)
 })
