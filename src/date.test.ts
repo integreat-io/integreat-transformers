@@ -123,9 +123,9 @@ test('should iterate arrays', (t) => {
 
 test('should add a time period', (t) => {
   const value = '2022-11-05T13:43:11'
-  const period = { type: 'day', value: 1 }
+  const period = { day: 1, minute: 3, second: 5 }
   const tz = 'America/Nassau'
-  const expected = new Date('2022-11-06T18:43:11Z')
+  const expected = new Date('2022-11-06T18:46:16Z')
 
   const ret = date({ tz, add: period }, options)(value, context)
 
@@ -134,7 +134,7 @@ test('should add a time period', (t) => {
 
 test('should subtract a time period', (t) => {
   const value = '2022-11-07T14:43:11'
-  const period = { type: 'week', value: 2 }
+  const period = { week: 2 }
   const tz = 'America/Nassau'
   const expected = new Date('2022-10-24T18:43:11Z')
 
@@ -144,10 +144,10 @@ test('should subtract a time period', (t) => {
 })
 
 test('should set a part of the date/time', (t) => {
-  const value = '2022-12-07T14:43:11'
-  const period = { type: 'day', value: 1 }
+  const value = '2022-12-07T14:43:11.153'
+  const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
   const tz = 'Europe/Oslo'
-  const expected = new Date('2022-12-01T14:43:11+01:00')
+  const expected = new Date('2022-12-01T00:00:00.000+01:00')
 
   const ret = date({ tz, set: period }, options)(value, context)
 
@@ -236,7 +236,7 @@ test('should return undefined when invalid date', (t) => {
 
 test('should subtract a time period for add in reverse', (t) => {
   const value = new Date('2022-11-07T14:43:11-05:00')
-  const period = { type: 'week', value: 2 }
+  const period = { week: 2 }
   const tz = 'America/Nassau'
   const expected = '2022-10-24T14:43:11.000-04:00'
 
@@ -247,7 +247,7 @@ test('should subtract a time period for add in reverse', (t) => {
 
 test('should add a time period for subtract in reverse', (t) => {
   const value = new Date('2022-11-05T13:43:11-06:00')
-  const period = { type: 'day', value: 1 }
+  const period = { day: 1 }
   const tz = 'America/Nassau'
   const expected = '2022-11-06T14:43:11.000-05:00'
 
@@ -258,7 +258,7 @@ test('should add a time period for subtract in reverse', (t) => {
 
 test('should set a part of the date/time in reverse', (t) => {
   const value = new Date('2022-12-07T14:43:11+01:00')
-  const period = { type: 'day', value: 1 }
+  const period = { day: 1 }
   const tz = 'Europe/Oslo'
   const expected = '2022-12-01T14:43:11.000+01:00'
 
@@ -301,7 +301,7 @@ test('should format milliseconds as day of the week', (t) => {
 
 test('should add a time period when formatting date', (t) => {
   const value = new Date('2022-11-05T13:43:11-06:00')
-  const period = { type: 'day', value: 1 }
+  const period = { day: 1 }
   const format = "dd.MM.yyyy' kl 'HH:mm"
   const tz = 'America/Nassau'
   const expected = '06.11.2022 kl 14:43'
@@ -313,7 +313,7 @@ test('should add a time period when formatting date', (t) => {
 
 test('should subtract a time period when formatting date', (t) => {
   const value = new Date('2022-11-07T14:43:11-05:00')
-  const period = { type: 'week', value: 2 }
+  const period = { week: 2 }
   const format = "dd.MM.yyyy' kl 'HH:mm"
   const tz = 'America/Nassau'
   const expected = '24.10.2022 kl 14:43'
@@ -328,7 +328,7 @@ test('should subtract a time period when formatting date', (t) => {
 
 test('should subtract a time period when formatting date in reverse', (t) => {
   const value = new Date('2022-11-07T14:43:11-05:00')
-  const period = { type: 'week', value: 2 }
+  const period = { week: 2 }
   const format = "dd.MM.yyyy' kl 'HH:mm"
   const tz = 'America/Nassau'
   const expected = '24.10.2022 kl 14:43'
@@ -343,7 +343,7 @@ test('should subtract a time period when formatting date in reverse', (t) => {
 
 test('should set a part of the date/time when formatting date', (t) => {
   const value = new Date('2022-12-07T14:43:11+01:00')
-  const period = { type: 'day', value: 1 }
+  const period = { day: 1 }
   const format = "dd.MM.yyyy' kl 'HH:mm"
   const tz = 'Europe/Oslo'
   const expected = '01.12.2022 kl 14:43'

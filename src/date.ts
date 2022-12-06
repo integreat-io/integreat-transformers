@@ -28,11 +28,7 @@ export type PeriodType =
   | 'second'
   | 'millisecond'
 
-export interface PeriodObject {
-  type: PeriodType
-  value?: number
-  valuePath?: string
-}
+export type PeriodObject = Record<PeriodType, number | string>
 
 export interface Operands extends Record<string, unknown> {
   format?: string
@@ -47,13 +43,15 @@ export interface State {
   rev?: boolean
 }
 
-const periodStringFromType = (type: PeriodType) =>
+const periodStringFromType = (type: string) =>
   LEGAL_PERIOD_TYPES.includes(type) ? `${type}s` : undefined
 
-function periodFromObject(obj: PeriodObject) {
-  const key = periodStringFromType(obj.type)
-  return key ? { [key]: obj.value } : {}
-}
+const periodFromObject = (obj: PeriodObject) =>
+  Object.fromEntries(
+    Object.entries(obj)
+      .map(([key, value]) => [periodStringFromType(key), value])
+      .filter(([key]) => !!key)
+  )
 
 function modifyDate(
   date: Luxon.DateTime,

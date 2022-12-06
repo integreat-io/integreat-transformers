@@ -95,21 +95,25 @@ date itself (before formatting or after parsing):
   same format as a period object (see below). E.g. `{ type: 'day', value: 1 }`
   will return the first in the month from the given date.
 
-A period object consists of a `type` and a `value`, alternatively a `valuePath`
-to get a value from the data. For example:
+A period object has one or more keys refering to a time interval (see valid
+keywords below), with the value specifying the number of time intervals (for
+`add` and `subtract`) or an absolut value (for `set`). The value may either be
+a static number or a path to where in the data the number can be found.
+
+For example:
 
 ```javascript
-{ type: 'month', value: 6 }
+{ month: 6, day: 1 }
 ```
 
 ... or ...
 
 ```javascript
-{ type: 'month', valuePath: '^.numberOfMonths' }
+{ month: '^.numberOfMonths', day: 10 }
 ```
 
-The available keywords for `type` are: `year`, `quarter`, `month`, `week`,
-`day`, `hour`, `minute`, `second`, and `millisecond`.
+The available keywords for the keys of a period object are: `year`, `quarter`,
+`month`, `week`, `day`, `hour`, `minute`, `second`, and `millisecond`.
 
 ### `formatDate`
 
