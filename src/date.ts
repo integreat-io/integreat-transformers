@@ -1,4 +1,5 @@
 import Luxon = require('luxon')
+import { mapTransform } from 'map-transform'
 import mapAny = require('map-any')
 import { Transformer } from 'integreat'
 import { isDate } from './utils/is'
@@ -37,6 +38,7 @@ export interface Operands extends Record<string, unknown> {
   add?: PeriodObject
   subtract?: PeriodObject
   set?: PeriodObject
+  path?: string
 }
 
 export interface State {
@@ -46,10 +48,24 @@ export interface State {
 const periodStringFromType = (type: string) =>
   LEGAL_PERIOD_TYPES.includes(type) ? `${type}s` : undefined
 
-const periodFromObject = (obj: PeriodObject) =>
+function extractPeriodValue(value: number | string, data?: unknown) {
+  if (typeof value === 'string') {
+    // When `value` is a string, we treat it as a path into the data originally
+    // passed to the transformer and retrieve that data as the value for this
+    // period
+    value = mapTransform(value)(data)
+  }
+
+  return typeof value === 'number' ? value : undefined
+}
+
+const periodFromObject = (obj: PeriodObject, data?: unknown) =>
   Object.fromEntries(
     Object.entries(obj)
-      .map(([key, value]) => [periodStringFromType(key), value])
+      .map(([key, value]) => [
+        periodStringFromType(key),
+        extractPeriodValue(value, data),
+      ])
       .filter(([key]) => !!key)
   )
 
@@ -57,25 +73,29 @@ function modifyDate(
   date: Luxon.DateTime,
   add?: PeriodObject,
   subtract?: PeriodObject,
-  set?: PeriodObject
+  set?: PeriodObject,
+  data?: unknown
 ) {
   if (add) {
-    date = date.plus(periodFromObject(add))
+    date = date.plus(periodFromObject(add, data))
   }
   if (subtract) {
-    date = date.minus(periodFromObject(subtract))
+    date = date.minus(periodFromObject(subtract, data))
   }
   if (set) {
-    date = date.set(periodFromObject(set))
+    date = date.set(periodFromObject(set, data))
   }
   return date
 }
 
 export function castDate(operands: Operands = {}) {
-  const { tz: zone, format, add, subtract, set } = operands
+  const { tz: zone, format, add, subtract, set, path } = operands
   const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
+  const getFromPath =
+    typeof path === 'string' ? mapTransform(path) : (value: unknown) => value
 
-  return function doCastDate(value: unknown) {
+  return function doCastDate(data: unknown) {
+    const value = getFromPath(data)
     let date = undefined
 
     if (value === null) {
@@ -104,13 +124,17 @@ export function castDate(operands: Operands = {}) {
       return undefined
     }
 
-    return date ? modifyDate(date, add, subtract, set).toJSDate() : date
+    return date ? modifyDate(date, add, subtract, set, data).toJSDate() : date
   }
 }
 
 function format(operands: Operands) {
-  const { tz: zone, format, ...modifiers } = operands
+  const { tz: zone, format, path, ...modifiers } = operands
   const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
+  const setToPath =
+    typeof path === 'string'
+      ? mapTransform(`>${path}`)
+      : (value: unknown) => value
 
   return function doFormatDate(value: unknown) {
     const date = castDate(modifiers)(value)
@@ -124,9 +148,9 @@ function format(operands: Operands) {
     }
 
     if (!format) {
-      return isSeconds ? dateTime.toSeconds() : dateTime.toISO()
+      return setToPath(isSeconds ? dateTime.toSeconds() : dateTime.toISO())
     } else {
-      return dateTime.toFormat(format)
+      return setToPath(dateTime.toFormat(format))
     }
   }
 }

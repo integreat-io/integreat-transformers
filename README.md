@@ -109,7 +109,7 @@ For example:
 ... or ...
 
 ```javascript
-{ month: '^.numberOfMonths', day: 10 }
+{ month: 'settings.numberOfMonths', day: 10 }
 ```
 
 The available keywords for the keys of a period object are: `year`, `quarter`,

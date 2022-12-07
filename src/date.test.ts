@@ -154,6 +154,30 @@ test('should set a part of the date/time', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should parse date on a path', (t) => {
+  const value = { the_time: '22.05.2019 kl 18:11' }
+  const path = 'the_time'
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'Europe/Oslo'
+  const expected = new Date('2019-05-22T16:11:00Z')
+
+  const ret = date({ path, format, tz }, options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should add a time period from a path to a date from a path', (t) => {
+  const value = { date: '2022-11-05T13:43:11', numberOfDays: 3 }
+  const period = { day: 'numberOfDays', second: 5 }
+  const path = 'date'
+  const tz = 'America/Nassau'
+  const expected = new Date('2022-11-08T18:43:16Z')
+
+  const ret = date({ tz, path, add: period }, options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
 // Tests -- reverse
 
 test('should transform date to ISO string', (t) => {
@@ -263,6 +287,16 @@ test('should set a part of the date/time in reverse', (t) => {
   const expected = '2022-12-01T14:43:11.000+01:00'
 
   const ret = date({ tz, set: period }, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should transform date to ISO string and set on a path', (t) => {
+  const value = new Date('2019-05-22T13:43:11.345Z')
+  const path = 'date'
+  const expected = { date: '2019-05-22T15:43:11.345+02:00' }
+
+  const ret = date({ path }, options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
