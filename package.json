@@ -1,6 +1,6 @@
 {
   "name": "integreat-transformers",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "Core transformers for integreat",
   "author": "Kjell-Morten Bratsberg Thorsen <kjellmorten@integreat.io>",
   "license": "UNLICENSED",
@@ -38,6 +38,6 @@
   },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^2.3.1",
-    "integreat": "0.8.0-beta.15"
+    "integreat": "0.8.0-beta.16"
   }
 }
