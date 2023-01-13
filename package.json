@@ -1,6 +1,6 @@
 {
   "name": "integreat-transformers",
-  "version": "0.2.11",
+  "version": "0.3.0",
   "description": "Core transformers for integreat",
   "author": "Kjell-Morten Bratsberg Thorsen <kjellmorten@integreat.io>",
   "license": "UNLICENSED",
@@ -31,6 +31,9 @@
     "url": "https://github.com/integreat-io/integreat-transformers/issues"
   },
   "homepage": "https://github.com/integreat-io/integreat-transformers#readme",
+  "engines": {
+    "node": ">= 14.19"
+  },
   "dependencies": {
     "@types/sax": "^1.2.4",
     "@types/uuid": "^9.0.0",
