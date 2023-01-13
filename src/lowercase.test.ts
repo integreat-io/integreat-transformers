@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import lowercase from './lowercase'
+import lowercase from './lowercase.js'
 
 // Setup
 

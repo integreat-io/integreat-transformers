@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import replace from './replace'
+import replace from './replace.js'
 
 // Setup
 

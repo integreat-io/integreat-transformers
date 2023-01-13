@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import unique from './unique'
+import unique from './unique.js'
 
 // Setup
 

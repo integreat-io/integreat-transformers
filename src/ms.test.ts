@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import ms from './ms'
+import ms from './ms.js'
 
 // Setup
 

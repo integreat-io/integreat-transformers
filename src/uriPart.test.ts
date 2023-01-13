@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import uriPart from './uriPart'
+import uriPart from './uriPart.js'
 
 // Setup
 

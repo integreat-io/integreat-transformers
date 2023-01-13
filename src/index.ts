@@ -1,25 +1,26 @@
-import base64 from './base64'
-import boolean from './boolean'
-import count from './count'
-import date, { formatDate } from './date'
-import hash from './hash'
-import lowercase from './lowercase'
-import math from './math'
-import ms from './ms'
-import now from './now'
-import number from './number'
-import replace from './replace'
-import round from './round'
-import splitRange from './splitRange'
-import stringFn from './string'
-import sum from './sum'
-import truncate from './truncate'
-import unique from './unique'
-import uppercase from './uppercase'
-import uriPart from './uriPart'
-import xml from './xml'
+import { Transformer } from 'integreat'
+import base64 from './base64.js'
+import boolean from './boolean.js'
+import count from './count.js'
+import date, { formatDate } from './date.js'
+import hash from './hash.js'
+import lowercase from './lowercase.js'
+import math from './math.js'
+import ms from './ms.js'
+import now from './now.js'
+import number from './number.js'
+import replace from './replace.js'
+import round from './round.js'
+import splitRange from './splitRange.js'
+import stringFn from './string.js'
+import sum from './sum.js'
+import truncate from './truncate.js'
+import unique from './unique.js'
+import uppercase from './uppercase.js'
+import uriPart from './uriPart.js'
+import xml from './xml/index.js'
 
-export default {
+const transformers: Record<string, Transformer> = {
   base64,
   boolean,
   count,
@@ -42,3 +43,5 @@ export default {
   uriPart,
   xml,
 }
+
+export default transformers

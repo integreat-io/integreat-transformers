@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import math from './math'
+import math from './math.js'
 
 // Setup
 

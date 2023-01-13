@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import hash from './hash'
+import hash from './hash.js'
 
 // Setup
 

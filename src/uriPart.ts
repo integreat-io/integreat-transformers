@@ -1,6 +1,6 @@
 import mapAny = require('map-any')
 import { CustomFunction } from 'map-transform'
-import { isDate } from './utils/is'
+import { isDate } from './utils/is.js'
 
 const uriPart: CustomFunction = (_operands, _options) => (value, state) =>
   mapAny(function (value) {

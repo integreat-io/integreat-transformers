@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import now from './now'
+import now from './now.js'
 
 // Setup
 

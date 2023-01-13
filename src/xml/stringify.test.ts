@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import stringify from './stringify'
+import stringify from './stringify.js'
 
 // Setup
 

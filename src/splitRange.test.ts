@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import splitRange from './splitRange'
+import splitRange from './splitRange.js'
 
 // Setup
 

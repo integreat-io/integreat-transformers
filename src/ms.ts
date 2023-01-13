@@ -1,6 +1,6 @@
 import { Transformer } from 'integreat'
-import { castDate } from './date'
-import { isDate } from './utils/is'
+import { castDate } from './date.js'
+import { isDate } from './utils/is.js'
 
 const transformer: Transformer = () =>
   function ms(value: unknown): number | Date | null | undefined {

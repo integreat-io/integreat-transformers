@@ -1,7 +1,7 @@
 import test from 'ava'
-import { ObjectElement } from '.'
+import { ObjectElement } from './index.js'
 
-import parse from './parse'
+import parse from './parse.js'
 
 // Setup
 

@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import xml from '.'
+import xml from './index.js'
 
 // Setup
 

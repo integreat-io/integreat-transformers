@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import round from './round'
+import round from './round.js'
 
 // Setup
 

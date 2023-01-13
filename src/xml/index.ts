@@ -1,6 +1,6 @@
 import { CustomFunction } from 'map-transform'
-import parse from './parse'
-import stringify from './stringify'
+import parse from './parse.js'
+import stringify from './stringify.js'
 
 export type Namespaces = Record<string, string>
 

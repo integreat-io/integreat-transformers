@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import setNamespaceAttrs from './setNamespaceAttrs'
+import setNamespaceAttrs from './setNamespaceAttrs.js'
 
 // Tests
 

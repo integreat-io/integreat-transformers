@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import sum from './sum'
+import sum from './sum.js'
 
 // Setup
 

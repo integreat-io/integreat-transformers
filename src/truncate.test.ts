@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import truncate from './truncate'
+import truncate from './truncate.js'
 
 // Setup
 

@@ -1,7 +1,7 @@
 import { encode } from 'html-entities'
-import { ObjectElement, ElementValue, Namespaces } from '.'
-import { isObject, isDate } from '../utils/is'
-import setNamespaceAttrs from './setNamespaceAttrs'
+import { ObjectElement, ElementValue, Namespaces } from './index.js'
+import { isObject, isDate } from '../utils/is.js'
+import setNamespaceAttrs from './setNamespaceAttrs.js'
 
 type KeyElement = [string, ElementValue | string]
 

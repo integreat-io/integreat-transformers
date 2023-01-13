@@ -1,6 +1,6 @@
 import { Transformer } from 'integreat'
 import mapAny = require('map-any')
-import { castString } from './string'
+import { castString } from './string.js'
 
 function base64Encode(data: unknown) {
   const str = castString(data)

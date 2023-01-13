@@ -1,6 +1,6 @@
 import mapAny = require('map-any')
 import { Transformer } from 'integreat'
-import { isDate } from './utils/is'
+import { isDate } from './utils/is.js'
 
 export interface Operands extends Record<string, unknown> {
   precision?: number

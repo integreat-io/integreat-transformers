@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import sax = require('sax')
-import { Namespaces, Element, ObjectElement } from '.'
+import { Namespaces, Element, ObjectElement } from './index.js'
 
 interface SaxAttribute {
   name: string
@@ -50,13 +50,13 @@ const generateKey = (
   uri: string
 ) => [namespaces[uri] ?? prefix, key].filter(Boolean).join(':')
 
-const parseAttribute = (namespaces: Namespaces, elementUri: string) => ([
-  _key,
-  { local, prefix, uri, value },
-]: [string, SaxAttribute]): [string, string] => [
-  `@${generateKey(namespaces, local, prefix, uri || elementUri)}`,
-  value,
-]
+const parseAttribute =
+  (namespaces: Namespaces, elementUri: string) =>
+  ([_key, { local, prefix, uri, value }]: [string, SaxAttribute]): [
+    string,
+    string
+  ] =>
+    [`@${generateKey(namespaces, local, prefix, uri || elementUri)}`, value]
 
 const isNilAttribute = (local: string, uri: string) =>
   local === 'nil' && uri === 'http://www.w3.org/2001/XMLSchema-instance'

@@ -1,5 +1,5 @@
 import { Transformer } from 'integreat'
-import { parseNum } from './math'
+import { parseNum } from './math.js'
 
 function add(sum: number, value: unknown) {
   const num = parseNum(value)

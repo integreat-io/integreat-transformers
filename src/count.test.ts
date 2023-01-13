@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import count from './count'
+import count from './count.js'
 
 // Setup
 

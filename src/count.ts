@@ -1,5 +1,5 @@
 import { Transformer } from 'integreat'
-import { unescapeValue } from './utils/escape'
+import { unescapeValue } from './utils/escape.js'
 
 export interface Operands extends Record<string, unknown> {
   skip?: unknown[]

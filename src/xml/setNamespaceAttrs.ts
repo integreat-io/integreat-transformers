@@ -1,5 +1,5 @@
-import { ObjectElement, ElementValue, Namespaces } from '.'
-import { isObject, isDate } from '../utils/is'
+import { ObjectElement, ElementValue, Namespaces } from './index.js'
+import { isObject, isDate } from '../utils/is.js'
 
 interface PrefixParents {
   [key: string]: ObjectElement
