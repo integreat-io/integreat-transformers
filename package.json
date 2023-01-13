@@ -14,14 +14,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "npm run lint && npm run build && nyc --reporter=text-summary ava --config ./ava-dist.config.js",
+    "test": "npm run lint && npm run build && c8 --reporter=text-summary ava --config ./ava-dist.config.js",
     "test:inspect": "node --inspect node_modules/ava/profile.js",
     "test:watch": "npm run dev",
     "dev": "ava --watch",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "nyc:report": "nyc report --reporter=text --reporter=html",
+    "coverage": "c8 report",
     "lint": "eslint --ext .ts src"
   },
   "repository": {
@@ -44,7 +43,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@integreat/ts-dev-setup": "^2.3.1",
+    "@integreat/ts-dev-setup": "^4.0.0",
     "integreat": "0.8.0-beta.16"
   }
 }
