@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import base64 from './base64.js'
+import base64, { base64Decode, base64Encode } from './base64.js'
 
 // Setup
 
@@ -19,7 +19,7 @@ const contextRev = {
   rev: true,
 }
 
-// Tests
+// Tests -- base64
 
 test('should decode base64 from service', (t) => {
   const data = 'c29tZVRva2Vu'
@@ -76,4 +76,26 @@ test('should force values to string to service', (t) => {
     'MjAyMi0wMS0wM1QxODo0MzoxMS4wMDBa'
   )
   t.is(base64(operands, options)(true, contextRev), 'dHJ1ZQ==')
+})
+
+// Tests -- base64Decode
+
+test('should decode base64 regardless of direction', (t) => {
+  const data = 'c29tZVRva2Vu'
+  const expected = 'someToken'
+
+  const ret = base64Decode(operands, options)(data, contextRev)
+
+  t.is(ret, expected)
+})
+
+// Tests -- base64Encode
+
+test('should encode base64 regardless of direction', (t) => {
+  const data = 'someToken'
+  const expected = 'c29tZVRva2Vu'
+
+  const ret = base64Encode(operands, options)(data, context)
+
+  t.is(ret, expected)
 })

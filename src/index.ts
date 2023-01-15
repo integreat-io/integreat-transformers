@@ -1,5 +1,5 @@
 import { Transformer } from 'integreat'
-import base64 from './base64.js'
+import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'
 import count from './count.js'
 import date, { formatDate } from './date.js'
@@ -22,6 +22,8 @@ import xml from './xml/index.js'
 
 const transformers: Record<string, Transformer> = {
   base64,
+  base64Decode,
+  base64Encode,
   boolean,
   count,
   date,

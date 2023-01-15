@@ -42,6 +42,14 @@ A non-string value will be treated differenlty depending on the direction:
   in the same way as the `string` transformer. `null` and `undefined` will not
   be touched.
 
+### `base64Encode`
+
+Will base64 encode the value regardless of direction.
+
+### `base64Decode`
+
+Will base64 decode the value regardless of direction.
+
 ### `boolean`
 
 Transforms values to boolean by JavaScript rules, except the string `'false'`,
