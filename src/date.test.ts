@@ -180,21 +180,32 @@ test('should add a time period from a path to a date from a path', (t) => {
 
 // Tests -- reverse
 
-test('should transform date to ISO string', (t) => {
+test('should not touch date without format string to rev', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
-  const expected = '2019-05-22T15:43:11.345+02:00'
+  const expected = value
 
   const ret = date(operands, options)(value, contextRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should transform date to ISO string', (t) => {
+  const value = new Date('2019-05-22T13:43:11.345Z')
+  const format = 'iso'
+  const expected = '2019-05-22T15:43:11.345+02:00'
+
+  const ret = date({ format }, options)(value, contextRev)
 
   t.is(ret, expected)
 })
 
 test('should transform date to ISO string with time zone', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
+  const format = 'iso'
   const tz = 'America/New_York'
   const expected = '2019-05-22T09:43:11.345-04:00'
 
-  const ret = date({ tz }, options)(value, contextRev)
+  const ret = date({ format, tz }, options)(value, contextRev)
 
   t.is(ret, expected)
 })
@@ -220,13 +231,13 @@ test('should return number in seconds when isSeconds is true', (t) => {
   t.deepEqual(ret, expected)
 })
 
-test('should cast incoming value to Date', (t) => {
+test('should cast date string to Date in reverse', (t) => {
   const value = '2019-05-22T13:43:11.345Z'
-  const expected = '2019-05-22T15:43:11.345+02:00'
+  const expected = new Date('2019-05-22T15:43:11.345+02:00')
 
   const ret = date(operands, options)(value, contextRev)
 
-  t.is(ret, expected)
+  t.deepEqual(ret, expected)
 })
 
 test('should cast from within Integreat without using format and tz', (t) => {
@@ -261,10 +272,11 @@ test('should return undefined when invalid date', (t) => {
 test('should subtract a time period for add in reverse', (t) => {
   const value = new Date('2022-11-07T14:43:11-05:00')
   const period = { week: 2 }
+  const format = 'iso'
   const tz = 'America/Nassau'
   const expected = '2022-10-24T14:43:11.000-04:00'
 
-  const ret = date({ tz, add: period }, options)(value, contextRev)
+  const ret = date({ format, tz, add: period }, options)(value, contextRev)
 
   t.is(ret, expected)
 })
@@ -272,10 +284,11 @@ test('should subtract a time period for add in reverse', (t) => {
 test('should add a time period for subtract in reverse', (t) => {
   const value = new Date('2022-11-05T13:43:11-06:00')
   const period = { day: 1 }
+  const format = 'iso'
   const tz = 'America/Nassau'
   const expected = '2022-11-06T14:43:11.000-05:00'
 
-  const ret = date({ tz, subtract: period }, options)(value, contextRev)
+  const ret = date({ format, tz, subtract: period }, options)(value, contextRev)
 
   t.is(ret, expected)
 })
@@ -283,10 +296,11 @@ test('should add a time period for subtract in reverse', (t) => {
 test('should set a part of the date/time in reverse', (t) => {
   const value = new Date('2022-12-07T14:43:11+01:00')
   const period = { day: 1 }
+  const format = 'iso'
   const tz = 'Europe/Oslo'
   const expected = '2022-12-01T14:43:11.000+01:00'
 
-  const ret = date({ tz, set: period }, options)(value, contextRev)
+  const ret = date({ format, tz, set: period }, options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -294,9 +308,10 @@ test('should set a part of the date/time in reverse', (t) => {
 test('should transform date to ISO string and set on a path', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
   const path = 'date'
+  const format = 'iso'
   const expected = { date: '2019-05-22T15:43:11.345+02:00' }
 
-  const ret = date({ path }, options)(value, contextRev)
+  const ret = date({ path, format }, options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })

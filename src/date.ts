@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Luxon = require('luxon')
 import { mapTransform } from 'map-transform'
 import mapAny = require('map-any')
@@ -129,7 +130,7 @@ export function castDate(operands: Operands = {}) {
 }
 
 function format(operands: Operands) {
-  const { tz: zone, format, path, ...modifiers } = operands
+  const { tz: zone, format: formatStr, path, ...modifiers } = operands
   const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
   const setToPath =
     typeof path === 'string'
@@ -142,15 +143,22 @@ function format(operands: Operands) {
       return undefined
     }
 
+    if (!formatStr && !isSeconds) {
+      return setToPath(date)
+    }
+
     let dateTime = DateTime.fromJSDate(date)
     if (zone) {
       dateTime = dateTime.setZone(zone)
     }
 
-    if (!format) {
-      return setToPath(isSeconds ? dateTime.toSeconds() : dateTime.toISO())
+    if (formatStr === 'iso') {
+      return setToPath(dateTime.toISO())
+    } else if (typeof formatStr === 'string') {
+      return setToPath(dateTime.toFormat(formatStr!))
     } else {
-      return setToPath(dateTime.toFormat(format))
+      // isSeconds === true
+      return setToPath(dateTime.toSeconds())
     }
   }
 }
@@ -161,10 +169,11 @@ const revOperands = ({ add, subtract, ...operands }: Operands) => ({
   subtract: add,
 })
 
-export const formatDate: Transformer = function transformDate(
-  operands: Operands
-) {
-  const formatFn = mapAny(format(operands))
+export const formatDate: Transformer = function transformDate({
+  format: formatStr,
+  ...operands
+}: Operands) {
+  const formatFn = mapAny(format({ ...operands, format: formatStr || 'iso' }))
 
   // Format regardless of direction
   return (data: unknown, _state: State) => formatFn(castDate()(data))

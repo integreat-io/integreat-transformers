@@ -89,7 +89,8 @@ a service), or parsing a date (when coming from a service), and to modify the
 date itself (before formatting or after parsing):
 
 - `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
-  to use for parsing (from service) and formatting (to service)
+  to use for parsing (from service) and formatting (to service), or the string
+  `'iso'` as a shortcut to a full ISO8601 date and time format
 - `tz`: A timezone to use when the given date is not specified with timezone.
   Supports the same timezones as Luxon, like IANA (`'America/New_York'`), fixed
   offset (`'UTC+7'`) and some others (like `system`).
