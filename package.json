@@ -40,13 +40,13 @@
     "html-entities": "^2.3.3",
     "luxon": "^3.2.1",
     "map-any": "^0.2.1",
-    "map-transform": "^0.4.0-beta.5",
+    "map-transform": "^0.4.0-beta.7",
     "nanoid": "^4.0.0",
     "sax": "^1.2.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^4.0.0",
-    "integreat": "0.8.0-beta.18"
+    "integreat": "0.8.0-beta.24"
   }
 }
