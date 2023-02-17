@@ -1,4 +1,4 @@
-import { CustomFunction } from 'map-transform'
+import { Transformer } from 'map-transform'
 import parse from './parse.js'
 import stringify from './stringify.js'
 
@@ -20,7 +20,7 @@ export interface Operands {
   namespaces?: Namespaces
 }
 
-const xml: CustomFunction =
+const xml: Transformer =
   ({ namespaces }: Operands, _options) =>
   (data, state) =>
     state.rev ? stringify(data, namespaces) : parse(data, namespaces)

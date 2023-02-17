@@ -1,5 +1,5 @@
 import crypto = require('crypto')
-import { CustomFunction } from 'map-transform'
+import { Transformer } from 'map-transform'
 
 const replaceRegex = /[+/=]/g
 
@@ -18,7 +18,7 @@ const replaceReserved = (hash: string) => {
   })
 }
 
-const hash: CustomFunction = (_operands) =>
+const hash: Transformer = (_operands) =>
   function hash(value, _context) {
     if (value === null || value === undefined || value === '') {
       return value

@@ -1,8 +1,8 @@
 import mapAny = require('map-any')
-import { CustomFunction } from 'map-transform'
+import { Transformer } from 'map-transform'
 import { isDate } from './utils/is.js'
 
-const uriPart: CustomFunction = (_operands, _options) => (value, state) =>
+const uriPart: Transformer = (_operands, _options) => (value, state) =>
   mapAny(function (value) {
     if (value === null || value === undefined) {
       return undefined
