@@ -30,6 +30,12 @@ the transformers set as properties:
 - [`uriPart`](#uriPart)
 - [`xml`](#xml)
 
+_Note:_ Transformers access an object of properties that will change how the
+transformer behaves. When defined as transform objects, any property not
+prefixed with `$` will be handed to the transformer as its properties. This is
+what we refer to in this documentation when we talk about e.g. the `step`
+property. We may also refer to the properties as the transformer's "options".
+
 ### `base64`
 
 Will decode any base64 string coming _from_ a service, or encode a value with
@@ -62,7 +68,7 @@ It does what you thing: It counts the values you provide it. An array of eight
 items returns `8`, one item (non-array) returns `1`.
 
 By default it will not count `null` or `undefined`, either in an array or as a
-non-array item. By providing an array of values to skip in the `skip` operand,
+non-array item. By providing an array of values to skip in the `skip` property,
 you may choose what values to not count.
 
 When you provide your own list, you need to provide `null` and `undefined` in
@@ -124,9 +130,9 @@ Tries its best at transforming the given value to a date, or returns
   to JavaScript's `new Date()`, which will try its best
 - All other types returns `undefined
 
-Date also have a few options (operands) for formatting a date (when going to
-a service), or parsing a date (when coming from a service), and to modify the
-date itself (before formatting or after parsing):
+Date also have a few options for formatting a date (when going to a service), or
+parsing a date (when coming from a service), and to modify the date itself
+(before formatting or after parsing):
 
 - `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
   to use for parsing (from service) and formatting (to service), or the string
@@ -170,7 +176,7 @@ Formats a date the same way as `date` does, but does it regardless of direction,
 i.e. both from and to a service. (`date` parses from a service and formats to
 a service.)
 
-See [`date`](#date) for available operands/options.
+See [`date`](#date) for available options.
 
 ### `hash`
 
@@ -195,7 +201,7 @@ All operations accept a `value`, which will be used in the operation, e.g.:
 
 For the operations where the pipeline value and the operator value is not
 exchangable, like subtraction, where `10 - 15` is not the same as `15 - 10`, the
-pipeline value will always be the first in the expression. Set the operand
+pipeline value will always be the first in the expression. Set the property
 `flip` to `true` to reverse this.
 
 By default the transformer will use the value from pipeline, but you may specify
@@ -204,13 +210,13 @@ a `path` to get data from an object. Also, as an alternative to specifying the
 
 - The operations works in reverse as well, with `add` subtracting, `multiply`
   dividing, and the other way around
-- Set the `rev` operand to `true` to "reverse the reversing", i.e. to apply the
+- Set the `rev` property to `true` to "reverse the reversing", i.e. to apply the
   defined operation in reverse, and the oposite operation going forward
 - If the pipeline value is a string, an attempt will be made to parse a number
   (float) from it
-- If the pipeline number is not a number (or parsed to a number), it will result
+- If the pipeline value is not a number (or parsed to a number), it will result
   in `undefined`
-- If the operand value is not a number, the pipeline value will be untouched
+- If the property `value` is not a number, the pipeline value will be untouched
 
 ### `ms`
 
@@ -236,7 +242,7 @@ not. Non-numbers are treated like the following:
 - `null` and `undefined` are untouched
 - All other types will return `undefined`
 
-To round numbers, set the `precision` operand to the number of decimals to round
+To round numbers, set the `precision` property to the number of decimals to round
 to. When `precision` is not set, the number will not be rounded.
 
 Note that JavaScript rounds towards +∞ for negative numbers where the decimal 5
@@ -244,7 +250,7 @@ is rounded away. Other systems may round away from 0 in such cases.
 
 ### `replace`
 
-Will replace the `from` operand with the `to` operand in the given string value.
+Will replace the `from` property with the `to` property in the given string value.
 If the value is not a string, it will be passed on untouched.
 
 ### `round`
@@ -256,8 +262,8 @@ in order to always round up or down to the next integer.
 - Strings are parsed to a float if possible
 - Rounding is always done away from zero by default, i.e. -3.5 will be rounded
   to -4, and not -3. This may be change to rounding towards +∞ by setting
-  the `roundTowardsInfinity` operand to `true`
-- `floor` and `ceil` is not affected by the `roundTowardsInfinity` operand, and
+  the `roundTowardsInfinity` property to `true`
+- `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
   `floor` will always be away from +∞ and `ceil` towards +∞. This might change
   in the future
 
@@ -265,13 +271,13 @@ in order to always round up or down to the next integer.
 
 Will create an array of numbers from a provided start number to a provided end
 number. The start and end numbers may be provided with the `start` and `end`
-operands to specify the numbers directly, or with `startPath` and `endPath` to
+properties to specify the numbers directly, or with `startPath` and `endPath` to
 retrieve the numbers from the pipeline data.
 
 By default, the numbers will be every integer (given that the start is an
 integer), i.e. a step of `1` between each number. You may specify different
-steps directly with the `step` operand or from the data with the `stepPath`
-operand.
+steps directly with the `step` property or from the data with the `stepPath`
+property.
 
 Finally, you may set `includeEnd` to a boolean value to indicate whether you
 would like the end number to be included in the array if the last step "lands"
@@ -302,7 +308,7 @@ yield `0`.
 
 ### `truncate`
 
-When a `length` operand is set, a given string that is longer than this length
+When a `length` property is set, a given string that is longer than this length
 is shortened. If a `postfix` is given, it is appended to the end and the total
 length of the shortened text will still be no longer than `length`.
 
@@ -310,7 +316,7 @@ length of the shortened text will still be no longer than `length`.
 
 Generates a universally unique id. The incoming value is disregarded.
 
-Set the `type` operand to indicate what type of id you want, or omit it to get
+Set the `type` property to indicate what type of id you want, or omit it to get
 `nanoid`:
 
 - `nanoid` (default): A small (130 bytes) string generated with
@@ -363,12 +369,12 @@ The rules behind parsing (and stringifying) is:
   `$value` prop and a plain value as value nodes.
 - Prefixes are included in the props as if they where part of the element or
   attribute name, but there will be a normalization of prefixes and it's
-  possible to provide a dictionary of prefixes on the `namespaces` operand (see
+  possible to provide a dictionary of prefixes on the `namespaces` property (see
   below).
 - When parsing, encoded chars (e.g. `'&lt;'` or `'&#230;'`) will be decoded
   (e.g. `'<'` or `'æ'`). When stringifying, all UTF-8 chars and reserved XML
   chars (`'<>&'`) will be encoded.
 
-The `namespaces` operand may be an object with uris as keys and prefixes as
+The `namespaces` property may be an object with uris as keys and prefixes as
 values. Any namespace matching an uri will use the given prefix. Use an empty
 string `''` to indicate a default namespace that will not have any prefix.
