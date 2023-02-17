@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/integreat-io/integreat-transformers#readme",
   "engines": {
-    "node": ">= 14.19"
+    "node": ">= 18"
   },
   "dependencies": {
     "@types/sax": "^1.2.4",
