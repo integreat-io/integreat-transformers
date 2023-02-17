@@ -11,6 +11,7 @@ the transformers set as properties:
 - [`base64`](#base64)
 - [`boolean`](#boolean)
 - [`count`](#count)
+- [`csv`](#csv)
 - [`date`](#date)
 - [`hash`](#hash)
 - [`lowercase`](#lowercase)
@@ -70,6 +71,45 @@ and `undefined`, set `skip: []`.
 
 When defining this as JSON, you may use `**undefined**` in the `skip` list
 instead of `undefined`. (`undefined` does not have a literal in JSON.)
+
+### `csv`
+
+This transformer takes a CSV string coming _from_ a service, and returns an
+array of data objects. Going _to_ a service, it does the oposite.
+
+Each line in the CSV is converted to an object. When the `headerRow` prop is
+`true`, the first line will be treated as headers and thus used as keys on the
+object. When there's no header row, keys will be named `'col1'`, `'col2'`, etc.,
+in the order they appear in the file. To have something other than `'col'`, set
+the `columnPrefix` prop the preferred string.
+
+When generating CSV going _to_ the service, the order of the columns will match
+the order of the keys on the object, unless some or all keys match the
+`columnPrefix` or the default `'col'`. In this case, the prefixed keys will
+be sorted in ascending order by their number, before any other keys.
+
+The transformer handles objects with different keys by leaving columns empty
+in the places that other rows has values. The order of the keys will be
+determined with priority to its first occurence, so if a field is missing on the
+first object in the array, it will be placed after the keys from the first row,
+even if it is placed before or in-between them on the object it first appears.
+
+The following options are available:
+
+- `delimiter`: A character to use as delimiter. Default is comma (`,`)
+- `quoted`: Signals if the value in CSV columns should be surrounded by quots
+  (`"`). This only applies when generating a CSV string (_to_ a service), as
+  parsing will handle quots if they appear in the CSV regardless of this option.
+  Default is `true`
+- `headerRow`: If `true`, the first row will be treated as a header row when
+  parsing a CSV _from_ a service, and a header row will be inserted when
+  generating a CSV _to_ a service. In both these examples, header row values
+  will equal object keys. Default is `false`
+- `columnPrefix`: A string to use as the base for creating object keys when we
+  don't have a header row. The `columnPrefix` will be suffixed by an
+  incrementing number based on the order of the keys on the object, like
+  `'col1'`, `'col2'`, etc. When generating CSV, any keys named as this prefix
+  and a number, will be sorted accending after the number. Default is `'col'`
 
 ### `date`
 
