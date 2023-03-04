@@ -11,7 +11,7 @@ import now from './now.js'
 import number from './number.js'
 import replace from './replace.js'
 import round from './round.js'
-import splitRange from './splitRange.js'
+import range from './range.js'
 import stringFn from './string.js'
 import sum from './sum.js'
 import truncate from './truncate.js'
@@ -34,9 +34,10 @@ const transformers: Record<string, Transformer> = {
   ms,
   now,
   number,
+  range,
   replace,
   round,
-  splitRange,
+  splitRange: range, // For compatability (old name)
   string: stringFn,
   sum,
   truncate,

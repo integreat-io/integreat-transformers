@@ -19,9 +19,9 @@ the transformers set as properties:
 - [`ms`](#ms)
 - [`now`](#now)
 - [`number`](#number)
+- [`range`](#range)
 - [`replace`](#replace)
 - [`round`](#round)
-- [`splitRange`](#splitRange)
 - [`string`](#string)
 - [`sum`](#sum)
 - [`truncate`](#truncate)
@@ -248,6 +248,27 @@ to. When `precision` is not set, the number will not be rounded.
 Note that JavaScript rounds towards +∞ for negative numbers where the decimal 5
 is rounded away. Other systems may round away from 0 in such cases.
 
+### `range`
+
+Will create an array of numbers from a provided start number to a provided end
+number. The start and end numbers may be provided with the `start` and `end`
+properties to specify the numbers directly, or with `startPath` and `endPath` to
+retrieve the numbers from the pipeline data.
+
+By default, the numbers will be every integer (given that the start is an
+integer), i.e. a step of `1` between each number. You may specify different
+steps directly with the `step` property or from the data with the `stepPath`
+property.
+
+Finally, you may set `includeEnd` to a boolean value to indicate whether you
+would like the end number to be included in the array if the last step "lands"
+on the end. (In other words, it is included if the difference between start and
+end is an exact product of step.) The default is `false`, i.e. the end will not
+be included.
+
+If start and end is missing or not a number, or if a step is a non-number value,
+the result of `range` will be `undefined`.
+
 ### `replace`
 
 Will replace the `from` property with the `to` property in the given string value.
@@ -266,27 +287,6 @@ in order to always round up or down to the next integer.
 - `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
   `floor` will always be away from +∞ and `ceil` towards +∞. This might change
   in the future
-
-### `splitRange`
-
-Will create an array of numbers from a provided start number to a provided end
-number. The start and end numbers may be provided with the `start` and `end`
-properties to specify the numbers directly, or with `startPath` and `endPath` to
-retrieve the numbers from the pipeline data.
-
-By default, the numbers will be every integer (given that the start is an
-integer), i.e. a step of `1` between each number. You may specify different
-steps directly with the `step` property or from the data with the `stepPath`
-property.
-
-Finally, you may set `includeEnd` to a boolean value to indicate whether you
-would like the end number to be included in the array if the last step "lands"
-on the end, so to speak. (In other words, it is included if the difference
-between start and end is an exact product of step.) The default is `false`, i.e.
-the end will not be included.
-
-If start and end is missing or not a number, or if a step is a non-number value,
-the result of `splitRange` will be `undefined`.
 
 ### `string`
 

@@ -39,7 +39,7 @@ function getFromValueOrPath(data: unknown, path?: string, value?: unknown) {
   return undefined
 }
 const transformer: Transformer = (operands: Operands) =>
-  function splitRange(data: unknown): number[] | undefined {
+  function range(data: unknown): number[] | undefined {
     const start = getFromValueOrPath(data, operands.startPath, operands.start)
     const end = getFromValueOrPath(data, operands.endPath, operands.end)
     const step = getFromValueOrPath(data, operands.stepPath, operands.step) ?? 1

@@ -9,7 +9,7 @@ const isCountable = (skip: unknown[]) => (value: unknown) =>
   !skip.includes(value)
 
 const transformer: Transformer = ({ skip }: Operands) =>
-  function splitRange(data: unknown): number {
+  function count(data: unknown): number {
     const skipValues = Array.isArray(skip)
       ? skip.map(unescapeValue)
       : [null, undefined]
