@@ -22,6 +22,7 @@ the transformers set as properties:
 - [`range`](#range)
 - [`replace`](#replace)
 - [`round`](#round)
+- [`split`](#split)
 - [`string`](#string)
 - [`sum`](#sum)
 - [`truncate`](#truncate)
@@ -287,6 +288,28 @@ in order to always round up or down to the next integer.
 - `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
   `floor` will always be away from +∞ and `ceil` towards +∞. This might change
   in the future
+
+### `split`
+
+**Forward:** Will split the given value when it makes sense to do so:
+
+- A string will be split into an array of segments by the given `size` property
+- A number will be converted to a string, and segmented as a string
+- An array will be split into an array of subarrays by the given `size`
+
+All other types will be left untouched, but we may add new ways to split values
+in the future.
+
+As an alternative to giving a split size in the `size` property, the `sizePath`
+property will get its value from the pipeline. If both `size` and `sizePath` are
+given, `size` will work as a default value when `sizePath` returns no number. If
+none of these are given, `split` will not split.
+
+Provide a `path` property to get a value at a path from the data, instead of
+using the data directly.
+
+**Reverse:** An array will be joined, either by concatinating strings or joining
+arrays. If not an array, the value will be returned untouched.
 
 ### `string`
 
