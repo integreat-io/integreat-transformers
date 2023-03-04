@@ -4,6 +4,7 @@ import boolean from './boolean.js'
 import count from './count.js'
 import date, { formatDate } from './date.js'
 import hash from './hash.js'
+import join from './join.js'
 import lowercase from './lowercase.js'
 import math from './math.js'
 import ms from './ms.js'
@@ -12,6 +13,7 @@ import number from './number.js'
 import replace from './replace.js'
 import round from './round.js'
 import range from './range.js'
+import split from './split.js'
 import stringFn from './string.js'
 import sum from './sum.js'
 import truncate from './truncate.js'
@@ -29,6 +31,7 @@ const transformers: Record<string, Transformer> = {
   date,
   formatDate,
   hash,
+  join,
   lowercase,
   math,
   ms,
@@ -37,6 +40,7 @@ const transformers: Record<string, Transformer> = {
   range,
   replace,
   round,
+  split,
   splitRange: range, // For compatability (old name)
   string: stringFn,
   sum,

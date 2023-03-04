@@ -14,6 +14,7 @@ the transformers set as properties:
 - [`csv`](#csv)
 - [`date`](#date)
 - [`hash`](#hash)
+- [`join`](#join)
 - [`lowercase`](#lowercase)
 - [`math`](#math)
 - [`ms`](#ms)
@@ -188,6 +189,11 @@ be untouched, everything else will be forced to a string before hashing.
 
 In the future, this transform may also create hashes of objects, but for now an
 object will be the hash of `[object Object]`. :(
+
+### `join`
+
+This transformer works exactly as the [`split`](#split) transformer, expect that the direction
+is reversed, so refer to [its documentation](#split) below.
 
 ### `lowercase`
 
