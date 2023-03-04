@@ -179,32 +179,6 @@ test('should use size prop as a fallback value for sizePath', (t) => {
   t.deepEqual(ret, expected)
 })
 
-test('should return value untouched when size is not a number', (t) => {
-  const value = 'A longer string to split up in smaller parts by a given size'
-  const size = 'not a number'
-  const expected = value
-
-  const ret = split({ size }, options)(value, state)
-
-  t.is(ret, expected)
-})
-
-test('should return value from a path untouched when size is not a number', (t) => {
-  const value = {
-    content: {
-      title: 'A longer string to split up in smaller parts by a given size',
-    },
-  }
-  const size = undefined
-  const path = 'content.title'
-  const expected =
-    'A longer string to split up in smaller parts by a given size'
-
-  const ret = split({ path, size }, options)(value, state)
-
-  t.is(ret, expected)
-})
-
 // Tests -- join with size -- reverse
 
 test('should join segmented strings in reverse', (t) => {
@@ -290,4 +264,153 @@ test('should join segmented strings from a path in reverse', (t) => {
   const ret = split({ path, size }, options)(value, stateRev)
 
   t.deepEqual(ret, expected)
+})
+
+// Tests -- split with separator -- forward
+
+test('should split a string by a separator char', (t) => {
+  const value = 'john,liz,benny'
+  const sep = ','
+  const expected = ['john', 'liz', 'benny']
+
+  const ret = split({ sep }, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should split a string by default separator char', (t) => {
+  const value = 'The string to split'
+  const sep = undefined
+  const expected = ['The', 'string', 'to', 'split']
+
+  const ret = split({ sep }, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should split a string by a separator char found at sepPath', (t) => {
+  const value = { users: 'john,liz,benny', separator: ',' }
+  const path = 'users'
+  const sepPath = 'separator'
+  const expected = ['john', 'liz', 'benny']
+
+  const ret = split({ path, sepPath }, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should allow numbers as separator', (t) => {
+  const value = { users: '183100342', separator: 3 }
+  const path = 'users'
+  const sepPath = 'separator'
+  const expected = ['18', '100', '42']
+
+  const ret = split({ path, sepPath }, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should split a string by sep when sepPath does not get a string', (t) => {
+  const value = { users: 'john,liz,benny', separator: true }
+  const path = 'users'
+  const sep = ','
+  const sepPath = 'separator'
+  const expected = ['john', 'liz', 'benny']
+
+  const ret = split({ path, sep, sepPath }, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should return other values untouched when splitting by sep', (t) => {
+  const sep = ' '
+  const date = new Date()
+  const object = {}
+  const arr = ['A', 'split', 'string']
+
+  t.is(split({ sep }, options)(true, state), true)
+  t.is(split({ sep }, options)(arr, state), arr)
+  t.is(split({ sep }, options)(object, state), object)
+  t.is(split({ sep }, options)(date, state), date)
+  t.is(split({ sep }, options)(null, state), null)
+  t.is(split({ sep }, options)(undefined, state), undefined)
+})
+
+// Tests -- join with separator -- reverse
+
+test('should join a string by a separator char in reverse', (t) => {
+  const value = ['john', 'liz', 'benny']
+  const sep = ','
+  const expected = 'john,liz,benny'
+
+  const ret = split({ sep }, options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should join a string by default separator char in reverse', (t) => {
+  const value = ['The', 'string', 'to', 'split']
+  const sep = undefined
+  const expected = 'The string to split'
+
+  const ret = split({ sep }, options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should join a string by a separator char found at sepPath in reverse', (t) => {
+  const value = { users: ['john', 'liz', 'benny'], separator: ',' }
+  const path = 'users'
+  const sepPath = 'separator'
+  const expected = 'john,liz,benny'
+
+  const ret = split({ path, sepPath }, options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should allow numbers as separator in reverse', (t) => {
+  const value = { users: ['18', '100', '42'], separator: 3 }
+  const path = 'users'
+  const sepPath = 'separator'
+  const expected = '183100342'
+
+  const ret = split({ path, sepPath }, options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should join a string by sep when sepPath does not get a string in reverse', (t) => {
+  const value = { users: ['john', 'liz', 'benny'], separator: true }
+  const path = 'users'
+  const sep = ','
+  const sepPath = 'separator'
+  const expected = 'john,liz,benny'
+
+  const ret = split({ path, sep, sepPath }, options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+// TODO: Consider if we should still return a string here
+test('should not touch arrays without strings', (t) => {
+  const value = [true, null, {}]
+  const sep = ','
+  const expected = [true, null, {}]
+
+  const ret = split({ sep }, options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should return other values untouched when joining by sep in reverse', (t) => {
+  const sep = ' '
+  const date = new Date()
+  const object = {}
+
+  t.is(split({ sep }, options)(true, stateRev), true)
+  t.is(split({ sep }, options)(object, stateRev), object)
+  t.is(split({ sep }, options)(date, stateRev), date)
+  t.is(split({ sep }, options)(null, stateRev), null)
+  t.is(split({ sep }, options)(undefined, stateRev), undefined)
 })

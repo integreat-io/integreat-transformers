@@ -6,5 +6,8 @@ export const isDate = (value: unknown): value is Date =>
 
 export const isNotEmpty = <T>(value: T): value is NonNullable<T> => !!value
 
+export const isString = (value: unknown): value is string =>
+  typeof value === 'string'
+
 export const isNumber = (value: unknown): value is number =>
   typeof value === 'number'

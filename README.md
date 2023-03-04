@@ -295,9 +295,11 @@ in order to always round up or down to the next integer.
 
 ### `split`
 
-**Forward:** Will split the given value when it makes sense to do so:
+**Forward:** Will split the given value if it can be split:
 
 - A string will be split into an array of segments by the given `size` property
+  or by the character given by `sep`. When no `size` og `sep` is given, the
+  string will be split at each space (`' '`)
 - A number will be converted to a string, and segmented as a string
 - An array will be split into an array of subarrays by the given `size`
 
@@ -306,14 +308,16 @@ in the future.
 
 As an alternative to giving a split size in the `size` property, the `sizePath`
 property will get its value from the pipeline. If both `size` and `sizePath` are
-given, `size` will work as a default value when `sizePath` returns no number. If
-none of these are given, `split` will not split.
+given, `size` will work as a default value when `sizePath` returns no number. In
+the same way, `sepPath` will get the separator char from the data at the given
+path, with `sep` as a default value.
 
 Provide a `path` property to get a value at a path from the data, instead of
 using the data directly.
 
 **Reverse:** An array will be joined, either by concatinating strings or joining
-arrays. If not an array, the value will be returned untouched.
+arrays. When concatinating string, the `sep` or `sepPath` character will be
+used as a separator. If not an array, the value will be returned untouched.
 
 ### `string`
 

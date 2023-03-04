@@ -1,11 +1,13 @@
 import { Transformer } from 'integreat'
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
-import { isNumber } from './utils/is.js'
+import { isString, isNumber } from './utils/is.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string
   size?: number
   sizePath?: string
+  sep?: string
+  sepPath?: string
 }
 
 const splitString = (value: string, size: number) =>
@@ -25,7 +27,10 @@ function splitArray(value: unknown[], size: number) {
 const hasSubArrays = (arr: unknown[]): arr is unknown[][] =>
   arr.some((value) => Array.isArray(value))
 
-function fwd(value: unknown, size: number) {
+const isArrayWithStrings = (arr: unknown[]): arr is unknown[] =>
+  arr.some((value) => typeof value === 'string')
+
+function bySizeFwd(value: unknown, size: number) {
   if (typeof value === 'string') {
     return splitString(value, size)
   } else if (Array.isArray(value)) {
@@ -35,7 +40,7 @@ function fwd(value: unknown, size: number) {
   }
 }
 
-function rev(value: unknown, _size: number) {
+function bySizeRev(value: unknown, _size: number) {
   if (Array.isArray(value)) {
     if (value.length === 0) {
       return []
@@ -49,16 +54,41 @@ function rev(value: unknown, _size: number) {
   return value
 }
 
+function bySepFwd(value: unknown, sep: string) {
+  if (typeof value === 'string') {
+    return value.split(sep)
+  } else {
+    return value
+  }
+}
+
+function bySepRev(value: unknown, sep: string) {
+  if (Array.isArray(value)) {
+    if (isArrayWithStrings(value)) {
+      return value.join(sep)
+    }
+  }
+  return value
+}
+
 const transformer: Transformer = function prepareSplit(props: Props) {
   const valueGetter = getPathOrData(props.path)
   const sizeGetter = getPathOrDefault(props.sizePath, props.size, isNumber)
+  const sepGetter = getPathOrDefault(
+    props.sepPath,
+    props.sep || ' ',
+    (value) => isString(value) || isNumber(value)
+  )
 
   return function split(data: unknown, { rev: isRev = false }): unknown {
     const size = sizeGetter(data)
+    const sep = numberToString(sepGetter(data))
     const value = numberToString(valueGetter(data))
 
     if (typeof size === 'number') {
-      return isRev ? rev(value, size) : fwd(value, size)
+      return isRev ? bySizeRev(value, size) : bySizeFwd(value, size)
+    } else if (typeof sep === 'string') {
+      return isRev ? bySepRev(value, sep) : bySepFwd(value, sep)
     } else {
       return value
     }
