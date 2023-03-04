@@ -1,4 +1,5 @@
 import { Transformer } from 'integreat'
+import arrToObject from './arrToObject.js'
 import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'
 import count from './count.js'
@@ -10,6 +11,7 @@ import math from './math.js'
 import ms from './ms.js'
 import now from './now.js'
 import number from './number.js'
+import objectToArr from './objectToArr.js'
 import replace from './replace.js'
 import round from './round.js'
 import range from './range.js'
@@ -23,6 +25,7 @@ import uriPart from './uriPart.js'
 import xml from './xml/index.js'
 
 const transformers: Record<string, Transformer> = {
+  arrToObject,
   base64,
   base64Decode,
   base64Encode,
@@ -37,6 +40,7 @@ const transformers: Record<string, Transformer> = {
   ms,
   now,
   number,
+  objectToArr,
   range,
   replace,
   round,

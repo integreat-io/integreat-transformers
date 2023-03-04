@@ -8,6 +8,7 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 The package consists of several transformers that are exported as an object with
 the transformers set as properties:
 
+- [`arrToObject](#arrToObject)
 - [`base64`](#base64)
 - [`boolean`](#boolean)
 - [`count`](#count)
@@ -20,6 +21,7 @@ the transformers set as properties:
 - [`ms`](#ms)
 - [`now`](#now)
 - [`number`](#number)
+- [`objectToArr`](#objectToArr)
 - [`range`](#range)
 - [`replace`](#replace)
 - [`round`](#round)
@@ -37,6 +39,17 @@ transformer behaves. When defined as transform objects, any property not
 prefixed with `$` will be handed to the transformer as its properties. This is
 what we refer to in this documentation when we talk about e.g. the `step`
 property. We may also refer to the properties as the transformer's "options".
+
+### `arrToObject`
+
+**Forward:** Sets the values from an array as props on an object. The prop names
+are given as an array in the `keys` property, and are matched in the same order
+as the values in the pipeline value. Values in the array without corresponding
+`keys` will be skipped.
+
+**Reverse:** Explodes the props of an object to an array of its values, in the
+order of the keys given in an array of keys on the `keys` property. Keys on the
+object not included in `keys` will be skipped.
 
 ### `base64`
 
@@ -257,6 +270,17 @@ to. When `precision` is not set, the number will not be rounded.
 
 Note that JavaScript rounds towards +∞ for negative numbers where the decimal 5
 is rounded away. Other systems may round away from 0 in such cases.
+
+### `objectToArr`
+
+**Forward:** Explodes the props of an object to an array of its values, in the
+order of the keys given in an array of keys on the `keys` property. Keys on the
+object not included in `keys` will be skipped.
+
+**Reverse:** Sets the values from an array as props on an object. The prop names
+are given as an array in the `keys` property, and are matched in the same order
+as the values in the pipeline value. Values in the array without corresponding
+`keys` will be skipped.
 
 ### `range`
 
