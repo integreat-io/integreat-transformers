@@ -135,6 +135,8 @@ Date also have a few options for formatting a date (when going to a service), or
 parsing a date (when coming from a service), and to modify the date itself
 (before formatting or after parsing):
 
+- `path`: A path to a point in the data from where to pick the date value. When
+  no path is given, the data in the pipeline is used as is. Default is no path
 - `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
   to use for parsing (from service) and formatting (to service), or the string
   `'iso'` as a shortcut to a full ISO8601 date and time format
@@ -207,7 +209,8 @@ pipeline value will always be the first in the expression. Set the property
 
 By default the transformer will use the value from pipeline, but you may specify
 a `path` to get data from an object. Also, as an alternative to specifying the
-`value`, you may set a `valuePath`.
+`value`, you may set a `valuePath`. If both `value` and `valuePath` are set,
+`value` will be used as a default value if `valuePath` yields no number.
 
 - The operations works in reverse as well, with `add` subtracting, `multiply`
   dividing, and the other way around
@@ -254,7 +257,8 @@ is rounded away. Other systems may round away from 0 in such cases.
 Will create an array of numbers from a provided start number to a provided end
 number. The start and end numbers may be provided with the `start` and `end`
 properties to specify the numbers directly, or with `startPath` and `endPath` to
-retrieve the numbers from the pipeline data.
+retrieve the numbers from the pipeline data. If paths yield no number, the
+non-path prop will be used as a default.
 
 By default, the numbers will be every integer (given that the start is an
 integer), i.e. a step of `1` between each number. You may specify different

@@ -75,6 +75,25 @@ test('should split number range from paths', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should use values as default when paths yields no number', (t) => {
+  const value = { first: 'Begin here', last: 'Done', width: 'Sooo wide' }
+  const start = 5
+  const startPath = 'first'
+  const end = 13
+  const endPath = 'last'
+  const step = 4
+  const stepPath = 'width'
+  const includeEnd = true
+  const expected = [5, 9, 13]
+
+  const ret = range(
+    { start, startPath, end, endPath, step, stepPath, includeEnd },
+    options
+  )(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
 test('should return undefined when no start or end', (t) => {
   const start = undefined
   const end = undefined

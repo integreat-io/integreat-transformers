@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Luxon = require('luxon')
-import { mapTransform } from 'map-transform'
 import mapAny = require('map-any')
 import { Transformer } from 'integreat'
-import { isDate } from './utils/is.js'
+import { getPathOrData } from './utils/getters.js'
+import { isDate, isNumber } from './utils/is.js'
 
 const { DateTime } = Luxon
 
@@ -32,7 +32,7 @@ export type PeriodType =
 
 export type PeriodObject = Record<PeriodType, number | string>
 
-export interface Operands extends Record<string, unknown> {
+export interface Props extends Record<string, unknown> {
   format?: string
   tz?: string
   isSeconds?: boolean
@@ -49,15 +49,15 @@ export interface State {
 const periodStringFromType = (type: string) =>
   LEGAL_PERIOD_TYPES.includes(type) ? `${type}s` : undefined
 
-function extractPeriodValue(value: number | string, data?: unknown) {
+function extractPeriodValue(value: unknown, data?: unknown) {
   if (typeof value === 'string') {
     // When `value` is a string, we treat it as a path into the data originally
     // passed to the transformer and retrieve that data as the value for this
     // period
-    value = mapTransform(value)(data)
+    value = getPathOrData(value)(data)
   }
 
-  return typeof value === 'number' ? value : undefined
+  return isNumber(value) ? value : undefined
 }
 
 const periodFromObject = (obj: PeriodObject, data?: unknown) =>
@@ -89,14 +89,13 @@ function modifyDate(
   return date
 }
 
-export function castDate(operands: Operands = {}) {
-  const { tz: zone, format, add, subtract, set, path } = operands
-  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
-  const getFromPath =
-    typeof path === 'string' ? mapTransform(path) : (value: unknown) => value
+export function castDate(props: Props = {}) {
+  const { tz: zone, format, add, subtract, set, path } = props
+  const isSeconds = props.isSeconds === true // Make sure this is true and not just truthy
+  const pathGetter = getPathOrData(path)
 
   return function doCastDate(data: unknown) {
-    const value = getFromPath(data)
+    const value = pathGetter(data)
     let date = undefined
 
     if (value === null) {
@@ -129,13 +128,11 @@ export function castDate(operands: Operands = {}) {
   }
 }
 
-function format(operands: Operands) {
-  const { tz: zone, format: formatStr, path, ...modifiers } = operands
-  const isSeconds = operands.isSeconds === true // Make sure this is true and not just truthy
-  const setToPath =
-    typeof path === 'string'
-      ? mapTransform(`>${path}`)
-      : (value: unknown) => value
+function format(props: Props) {
+  const { tz: zone, format: formatStr, path, ...modifiers } = props
+  const isSeconds = props.isSeconds === true // Make sure this is true and not just truthy
+  const setPath = typeof path === 'string' ? `>${path}` : undefined
+  const pathSetter = getPathOrData(setPath) // Works as a setter due to the `>`
 
   return function doFormatDate(value: unknown) {
     const date = castDate(modifiers)(value)
@@ -144,7 +141,7 @@ function format(operands: Operands) {
     }
 
     if (!formatStr && !isSeconds) {
-      return setToPath(date)
+      return pathSetter(date)
     }
 
     let dateTime = DateTime.fromJSDate(date)
@@ -153,35 +150,35 @@ function format(operands: Operands) {
     }
 
     if (formatStr === 'iso') {
-      return setToPath(dateTime.toISO())
+      return pathSetter(dateTime.toISO())
     } else if (typeof formatStr === 'string') {
-      return setToPath(dateTime.toFormat(formatStr!))
+      return pathSetter(dateTime.toFormat(formatStr!))
     } else {
       // isSeconds === true
-      return setToPath(dateTime.toSeconds())
+      return pathSetter(dateTime.toSeconds())
     }
   }
 }
 
-const revOperands = ({ add, subtract, ...operands }: Operands) => ({
-  ...operands,
+const revProps = ({ add, subtract, ...props }: Props) => ({
+  ...props,
   add: subtract,
   subtract: add,
 })
 
 export const formatDate: Transformer = function transformDate({
   format: formatStr,
-  ...operands
-}: Operands) {
-  const formatFn = mapAny(format({ ...operands, format: formatStr || 'iso' }))
+  ...props
+}: Props) {
+  const formatFn = mapAny(format({ ...props, format: formatStr || 'iso' }))
 
   // Format regardless of direction
   return (data: unknown, _state: State) => formatFn(castDate()(data))
 }
 
-const transformer: Transformer = function transformDate(operands: Operands) {
-  const formatFn = mapAny(format(revOperands(operands)))
-  const castFn = mapAny(castDate(operands))
+const transformer: Transformer = function transformDate(props: Props) {
+  const formatFn = mapAny(format(revProps(props)))
+  const castFn = mapAny(castDate(props))
 
   // Cast from service and format to service
   // Note: We're casting value from Integreat too, in case it arrives as an ISO

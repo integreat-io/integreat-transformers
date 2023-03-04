@@ -104,6 +104,21 @@ test('should use path to get value', (t) => {
   t.is(ret, expected)
 })
 
+test('should use value prop if path yields no number', (t) => {
+  const operands = {
+    operator: 'multiply',
+    path: 'price',
+    value: 0.25,
+    valuePath: 'discount',
+  }
+  const value = { price: 200, discount: 'This is no discount!' }
+  const expected = 50
+
+  const ret = math(operands, options)(value, context)
+
+  t.is(ret, expected)
+})
+
 test('should apply the oposite operator going forward', (t) => {
   const operands = { operator: 'add', value: 1, rev: true }
   const value = 5

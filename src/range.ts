@@ -1,7 +1,8 @@
-import { mapTransform } from 'map-transform'
 import { Transformer } from 'integreat'
+import { getPathOrDefault } from './utils/getters.js'
+import { isNumber } from './utils/is.js'
 
-export interface Operands extends Record<string, unknown> {
+export interface Props extends Record<string, unknown> {
   start?: unknown
   end?: unknown
   step?: unknown
@@ -24,35 +25,21 @@ const generateStep = function* (
   }
 }
 
-function getFromValueOrPath(data: unknown, path?: string, value?: unknown) {
-  if (typeof path === 'string') {
-    const valueFromData = mapTransform(path)(data)
-    if (typeof valueFromData === 'number') {
-      return valueFromData
-    }
-  }
+const transformer: Transformer = function prepareRange(props: Props) {
+  const startGetter = getPathOrDefault(props.startPath, props.start, isNumber)
+  const endGetter = getPathOrDefault(props.endPath, props.end, isNumber)
+  const stepGetter = getPathOrDefault(props.stepPath, props.step, isNumber)
 
-  if (typeof value === 'number') {
-    return value
-  }
+  return function range(data: unknown): number[] | undefined {
+    const start = startGetter(data)
+    const end = endGetter(data)
+    const step = stepGetter(data) || 1
 
-  return undefined
-}
-const transformer: Transformer = (operands: Operands) =>
-  function range(data: unknown): number[] | undefined {
-    const start = getFromValueOrPath(data, operands.startPath, operands.start)
-    const end = getFromValueOrPath(data, operands.endPath, operands.end)
-    const step = getFromValueOrPath(data, operands.stepPath, operands.step) ?? 1
-
-    if (
-      typeof start !== 'number' ||
-      typeof end !== 'number' ||
-      typeof step !== 'number'
-    ) {
+    if (!isNumber(start) || !isNumber(end) || !isNumber(step)) {
       return undefined
     }
 
-    return [...generateStep(start, end, step, operands.includeEnd)]
+    return [...generateStep(start, end, step, props.includeEnd)]
   }
-
+}
 export default transformer

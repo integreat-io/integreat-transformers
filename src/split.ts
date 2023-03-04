@@ -1,5 +1,6 @@
-import { mapTransform } from 'map-transform'
 import { Transformer } from 'integreat'
+import { getPathOrData, getPathOrDefault } from './utils/getters.js'
+import { isNumber } from './utils/is.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string
@@ -12,9 +13,6 @@ const splitString = (value: string, size: number) =>
 
 const numberToString = (value: unknown) =>
   typeof value === 'number' ? String(value) : value
-
-const numberOrDefault = (value: unknown, def: unknown) =>
-  typeof value === 'number' ? value : def
 
 function splitArray(value: unknown[], size: number) {
   const ret = []
@@ -52,17 +50,11 @@ function rev(value: unknown, _size: number) {
 }
 
 const transformer: Transformer = function prepareSplit(props: Props) {
-  const valueGetter =
-    typeof props.path === 'string'
-      ? mapTransform(props.path)
-      : (value: unknown) => value
-  const sizeGetter =
-    typeof props.sizePath === 'string'
-      ? mapTransform(props.sizePath)
-      : () => undefined
+  const valueGetter = getPathOrData(props.path)
+  const sizeGetter = getPathOrDefault(props.sizePath, props.size, isNumber)
 
   return function split(data: unknown, { rev: isRev = false }): unknown {
-    const size = numberOrDefault(sizeGetter(data), props.size)
+    const size = sizeGetter(data)
     const value = numberToString(valueGetter(data))
 
     if (typeof size === 'number') {
