@@ -37,6 +37,16 @@ test('should skip values not included in keys', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should return undefined for unknown keys', (t) => {
+  const data = { firstname: 'John', middlename: 'B.', lastname: 'Fjon' }
+  const keys = ['firstname', 'unknown', 'lastname']
+  const expected = ['John', undefined, 'Fjon']
+
+  const ret = objectToArr({ keys }, options)(data, state)
+
+  t.deepEqual(ret, expected)
+})
+
 test('should return empty array when not an object', (t) => {
   const keys = ['firstname', 'middlename', 'lastname']
 
@@ -63,6 +73,16 @@ test('should skip values not included in keys in reverse', (t) => {
   const data = ['John', 'B.', 'Fjon']
   const keys = ['firstname', 'lastname']
   const expected = { firstname: 'John', lastname: 'B.' }
+
+  const ret = objectToArr({ keys }, options)(data, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should set undefined for missing values in reverse', (t) => {
+  const data = ['John', 'B.']
+  const keys = ['firstname', 'middlename', 'lastname']
+  const expected = { firstname: 'John', middlename: 'B.', lastname: undefined }
 
   const ret = objectToArr({ keys }, options)(data, stateRev)
 
