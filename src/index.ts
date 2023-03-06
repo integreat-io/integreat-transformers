@@ -18,6 +18,7 @@ import range from './range.js'
 import split from './split.js'
 import stringFn from './string.js'
 import sum from './sum.js'
+import template from './template.js'
 import truncate from './truncate.js'
 import unique from './unique.js'
 import uppercase from './uppercase.js'
@@ -48,6 +49,7 @@ const transformers: Record<string, Transformer> = {
   splitRange: range, // For compatability (old name)
   string: stringFn,
   sum,
+  template,
   truncate,
   unique,
   uppercase,

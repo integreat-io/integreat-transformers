@@ -28,6 +28,7 @@ the transformers set as properties:
 - [`split`](#split)
 - [`string`](#string)
 - [`sum`](#sum)
+- [`template`](#template)
 - [`truncate`](#truncate)
 - [`unique`](#unique)
 - [`uppercase`](#uppercase)
@@ -366,6 +367,10 @@ Adds an array of numbers. Will parse numbers from strings, but skip all other
 values. If not an array, it will be treated as an array of one element. Note
 that this transformer always returns a number, even `null` and `undefined` will
 yield `0`.
+
+### `template`
+
+Documentation coming ... :S
 
 ### `truncate`
 
