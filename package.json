@@ -42,7 +42,7 @@
     "html-entities": "^2.3.3",
     "luxon": "^3.3.0",
     "map-any": "^0.2.1",
-    "map-transform": "^0.4.0-beta.7",
+    "map-transform": "^0.4.0-beta.14",
     "nanoid": "^4.0.1",
     "sax": "^1.2.4",
     "uuid": "^9.0.0"

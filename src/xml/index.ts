@@ -1,4 +1,4 @@
-import { Transformer } from 'map-transform'
+import type { Transformer } from 'integreat'
 import parse from './parse.js'
 import stringify from './stringify.js'
 
