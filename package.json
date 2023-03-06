@@ -1,6 +1,6 @@
 {
   "name": "integreat-transformers",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Core transformers for integreat",
   "author": "Kjell-Morten Bratsberg Thorsen <kjellmorten@integreat.io>",
   "license": "UNLICENSED",
@@ -11,8 +11,6 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "test": "npm run lint && npm run build && c8 --reporter=text-summary ava --config ./ava-dist.config.cjs",
     "test:inspect": "node --inspect node_modules/ava/profile.js",
