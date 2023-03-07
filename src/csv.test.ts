@@ -141,7 +141,7 @@ test('should serialize array of data', (t) => {
   t.is(ret, expectedData)
 })
 
-test('should serialize with semicolons and no quot', (t) => {
+test('should serialize with semicolons and no quotation marks', (t) => {
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
     { value: 2, text: 'And more here', age: 45 },
