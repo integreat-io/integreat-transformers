@@ -1,6 +1,7 @@
 import { Transformer } from 'integreat'
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
-import { isString, isNumber } from './utils/is.js'
+import { parseNum } from './utils/cast.js'
+import { isString, isNumber, isNumeric } from './utils/is.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string
@@ -14,7 +15,7 @@ const splitString = (value: string, size: number) =>
   value.match(new RegExp(`.{1,${size}}`, 'g')) || [] // eslint-disable-line security/detect-non-literal-regexp
 
 const numberToString = (value: unknown) =>
-  typeof value === 'number' ? String(value) : value
+  isNumber(value) ? String(value) : value
 
 function splitArray(value: unknown[], size: number) {
   const ret = []
@@ -28,10 +29,10 @@ const hasSubArrays = (arr: unknown[]): arr is unknown[][] =>
   arr.some((value) => Array.isArray(value))
 
 const isArrayWithStrings = (arr: unknown[]): arr is unknown[] =>
-  arr.some((value) => typeof value === 'string')
+  arr.some((value) => isString(value))
 
 function bySizeFwd(value: unknown, size: number) {
-  if (typeof value === 'string') {
+  if (isString(value)) {
     return splitString(value, size)
   } else if (Array.isArray(value)) {
     return splitArray(value, size)
@@ -55,7 +56,7 @@ function bySizeRev(value: unknown, _size: number) {
 }
 
 function bySepFwd(value: unknown, sep: string) {
-  if (typeof value === 'string') {
+  if (isString(value)) {
     return value.split(sep)
   } else {
     return value
@@ -73,7 +74,7 @@ function bySepRev(value: unknown, sep: string) {
 
 const transformer: Transformer = function prepareSplit(props: Props) {
   const valueGetter = getPathOrData(props.path)
-  const sizeGetter = getPathOrDefault(props.sizePath, props.size, isNumber)
+  const sizeGetter = getPathOrDefault(props.sizePath, props.size, isNumeric)
   const sepGetter = getPathOrDefault(
     props.sepPath,
     props.sep || ' ',
@@ -81,13 +82,13 @@ const transformer: Transformer = function prepareSplit(props: Props) {
   )
 
   return function split(data: unknown, { rev: isRev = false }): unknown {
-    const size = sizeGetter(data)
+    const size = parseNum(sizeGetter(data))
     const sep = numberToString(sepGetter(data))
     const value = numberToString(valueGetter(data))
 
-    if (typeof size === 'number') {
+    if (isNumber(size)) {
       return isRev ? bySizeRev(value, size) : bySizeFwd(value, size)
-    } else if (typeof sep === 'string') {
+    } else if (isString(sep)) {
       return isRev ? bySepRev(value, sep) : bySepFwd(value, sep)
     } else {
       return value

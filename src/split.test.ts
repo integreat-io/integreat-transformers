@@ -155,6 +155,29 @@ test('should split with size from a path', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should split with size from a path given as a string', (t) => {
+  const value = {
+    content: {
+      title: 'A longer string to split up in smaller parts by a given size',
+    },
+    size: '10',
+  }
+  const sizePath = 'size'
+  const path = 'content.title'
+  const expected = [
+    'A longer s',
+    'tring to s',
+    'plit up in',
+    ' smaller p',
+    'arts by a ',
+    'given size',
+  ]
+
+  const ret = split({ path, sizePath }, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
 test('should use size prop as a fallback value for sizePath', (t) => {
   const value = {
     content: {

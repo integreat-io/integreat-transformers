@@ -1,7 +1,8 @@
 import mapAny = require('map-any')
 import { Transformer } from 'integreat'
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
-import { isNumber } from './utils/is.js'
+import { parseNum } from './utils/cast.js'
+import { isNumeric } from './utils/is.js'
 
 export interface Props extends Record<string, unknown> {
   operator?: string
@@ -15,9 +16,6 @@ export interface Props extends Record<string, unknown> {
 type MathOp = (a: number, b: number, flip?: boolean) => number
 
 const isFwd = (rev: boolean, flipRev: boolean) => (flipRev ? rev : !rev)
-
-export const parseNum = (value: unknown) =>
-  typeof value === 'string' ? Number.parseFloat(value) : value
 
 const add: MathOp = (a, b) => a + b
 const subtract: MathOp = (a, b, flip) => (flip ? b - a : a - b)
@@ -38,7 +36,7 @@ function prepareMath({
   }
 
   const valueGetter = getPathOrData(path)
-  const opValueGetter = getPathOrDefault(opPath, opValue, isNumber)
+  const opValueGetter = getPathOrDefault(opPath, opValue, isNumeric)
 
   return (rev: boolean) =>
     function doTheMath(data: unknown) {

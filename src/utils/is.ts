@@ -1,3 +1,5 @@
+import { parseNum } from './cast.js'
+
 export const isObject = (value: unknown): value is Record<string, unknown> =>
   Object.prototype.toString.call(value) === '[object Object]'
 
@@ -11,3 +13,5 @@ export const isString = (value: unknown): value is string =>
 
 export const isNumber = (value: unknown): value is number =>
   typeof value === 'number'
+
+export const isNumeric = (value: unknown) => !Number.isNaN(parseNum(value))

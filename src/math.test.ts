@@ -104,6 +104,20 @@ test('should use path to get value', (t) => {
   t.is(ret, expected)
 })
 
+test('should convert value from path to float', (t) => {
+  const operands = {
+    operator: 'multiply',
+    path: 'price',
+    valuePath: 'discount',
+  }
+  const value = { price: 200, discount: '0.25' }
+  const expected = 50
+
+  const ret = math(operands, options)(value, context)
+
+  t.is(ret, expected)
+})
+
 test('should use value prop if path yields no number', (t) => {
   const operands = {
     operator: 'multiply',
