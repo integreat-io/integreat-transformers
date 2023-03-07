@@ -3,6 +3,7 @@ import arrToObject from './arrToObject.js'
 import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'
 import count from './count.js'
+import csv from './csv.js'
 import date, { formatDate } from './date.js'
 import hash from './hash.js'
 import join from './join.js'
@@ -31,6 +32,7 @@ const transformers: Record<string, Transformer> = {
   base64Decode,
   base64Encode,
   boolean,
+  csv,
   count,
   date,
   formatDate,
