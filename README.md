@@ -329,7 +329,7 @@ in order to always round up or down to the next integer.
 **Forward:** Will split the given value if it can be split:
 
 - A string will be split into an array of segments by the given `size` property
-  or by the character given by `sep`. When no `size` og `sep` is given, the
+  or by the character given by `sep`. When no `size` and `sep` is given, the
   string will be split at each space (`' '`)
 - A number will be converted to a string, and segmented as a string
 - An array will be split into an array of subarrays by the given `size`
