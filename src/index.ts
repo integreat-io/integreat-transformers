@@ -16,6 +16,7 @@ import objectToArr from './objectToArr.js'
 import replace from './replace.js'
 import round from './round.js'
 import range from './range.js'
+import size from './size.js'
 import split from './split.js'
 import stringFn from './string.js'
 import sum from './sum.js'
@@ -47,6 +48,7 @@ const transformers: Record<string, Transformer> = {
   range,
   replace,
   round,
+  size,
   split,
   splitRange: range, // For compatability (old name)
   string: stringFn,

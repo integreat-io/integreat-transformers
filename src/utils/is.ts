@@ -15,3 +15,6 @@ export const isNumber = (value: unknown): value is number =>
   typeof value === 'number'
 
 export const isNumeric = (value: unknown) => !Number.isNaN(parseNum(value))
+
+export const isArray = (value: unknown): value is unknown[] =>
+  Array.isArray(value)

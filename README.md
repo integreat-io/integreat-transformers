@@ -25,6 +25,7 @@ the transformers set as properties:
 - [`range`](#range)
 - [`replace`](#replace)
 - [`round`](#round)
+- [`size`](#size)
 - [`split`](#split)
 - [`string`](#string)
 - [`sum`](#sum)
@@ -323,6 +324,17 @@ in order to always round up or down to the next integer.
 - `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
   `floor` will always be away from +∞ and `ceil` towards +∞. This might change
   in the future
+
+### `size`
+
+The `size` transformer returns the length of the value in the pipeline,
+regardless of direction, in the following ways:
+
+- String: Number of characters
+- Number: Number of characters after converting the number to a string
+- Array: Number of items (including items that are undefined)
+- Null and undefined: 0
+- Everything else: 1
 
 ### `split`
 
