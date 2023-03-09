@@ -371,10 +371,20 @@ test('should join a string by a separator char in reverse', (t) => {
   t.deepEqual(ret, expected)
 })
 
-test('should join a string by default separator char in reverse', (t) => {
+test('should join a string with space as default separator char in reverse', (t) => {
   const value = ['The', 'string', 'to', 'split']
   const sep = undefined
   const expected = 'The string to split'
+
+  const ret = split({ sep }, options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should join a string by an empty separator char in reverse', (t) => {
+  const value = ['john', 'liz', 'benny']
+  const sep = ''
+  const expected = 'johnlizbenny'
 
   const ret = split({ sep }, options)(value, stateRev)
 

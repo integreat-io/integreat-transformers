@@ -77,7 +77,7 @@ const transformer: Transformer = function prepareSplit(props: Props) {
   const sizeGetter = getPathOrDefault(props.sizePath, props.size, isNumeric)
   const sepGetter = getPathOrDefault(
     props.sepPath,
-    props.sep || ' ',
+    props.sep ?? ' ',
     (value) => isString(value) || isNumber(value)
   )
 
