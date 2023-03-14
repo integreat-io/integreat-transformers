@@ -25,6 +25,7 @@ import truncate from './truncate.js'
 import unique from './unique.js'
 import uppercase from './uppercase.js'
 import uriPart from './uriPart.js'
+import validate from './validate.js'
 import xml from './xml/index.js'
 
 const transformers: Record<string, Transformer> = {
@@ -58,6 +59,7 @@ const transformers: Record<string, Transformer> = {
   unique,
   uppercase,
   uriPart,
+  validate,
   xml,
 }
 
