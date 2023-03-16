@@ -1,5 +1,5 @@
 import { Transformer } from 'integreat'
-import { mapTransform } from 'map-transform'
+import mapTransform from 'map-transform'
 import { ensureArray } from './utils/array.js'
 import { isObject } from './utils/is.js'
 
@@ -15,7 +15,7 @@ const transformer: Transformer = function prepareObjectToArr(props: Props) {
 
   return function objectToArr(data, { rev: isRev }) {
     if (isRev) {
-      return Array.isArray(data) ? keyGetters.rev(data) : null
+      return Array.isArray(data) ? keyGetters(data, { rev: true }) : null
     } else {
       return isObject(data) ? keyGetters(data) : []
     }

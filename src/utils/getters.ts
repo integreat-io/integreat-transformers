@@ -1,4 +1,4 @@
-import { mapTransform } from 'map-transform'
+import mapTransform from 'map-transform'
 
 export function getPathOrData(path?: string) {
   return typeof path === 'string' ? mapTransform(path) : (data: unknown) => data

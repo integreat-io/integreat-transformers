@@ -1,7 +1,7 @@
 import { Transformer } from 'integreat'
 import Mustache = require('mustache')
 import mapAny = require('map-any')
-import { defsToDataMapper } from 'map-transform/definitionHelpers.js'
+import { defToDataMapper } from 'map-transform/definitionHelpers.js'
 // import { Path, DataMapper, Options, TransformerProps } from '../types.js'
 
 interface Props extends Record<string, unknown> {
@@ -25,7 +25,7 @@ const transformer: Transformer = function template({
   } else if (typeof templatePath === 'string') {
     // The template will be provided in the data -- return a function that will
     // both create the generator and run it
-    const getFn = defsToDataMapper(templatePath)
+    const getFn = defToDataMapper(templatePath)
 
     return (data, state) => {
       const templateStr = getFn(data, { ...state, rev: false, flip: false })
