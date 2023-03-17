@@ -23,22 +23,22 @@ const contextRev = {
 
 test('should return the current date', (t) => {
   const before = Date.now()
-  const ret = now(operands, options)(undefined, context)
+  const ret = now(operands)(options)(undefined, context)
   const after = Date.now()
 
   t.true(ret instanceof Date)
-  t.true(ret.getTime() >= before)
-  t.true(ret.getTime() <= after)
+  t.true((ret as Date).getTime() >= before)
+  t.true((ret as Date).getTime() <= after)
 })
 
 test('should override any value from the pipeline', (t) => {
-  const ret = now(operands, options)({ text: 'Lot of stuff' }, context)
+  const ret = now(operands)(options)({ text: 'Lot of stuff' }, context)
 
   t.true(ret instanceof Date)
 })
 
 test('should return the current date in reverse', (t) => {
-  const ret = now(operands, options)(undefined, contextRev)
+  const ret = now(operands)(options)(undefined, contextRev)
 
   t.true(ret instanceof Date)
 })

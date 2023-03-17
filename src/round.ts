@@ -1,4 +1,6 @@
-export interface Operands {
+import type { Transformer } from 'integreat'
+
+export interface Props {
   precision?: number | 'floor' | 'ceil'
   roundTowardsInfinity?: boolean
 }
@@ -29,10 +31,10 @@ const getNumber = (value: unknown): number | undefined =>
     ? Number.parseFloat(value)
     : undefined
 
-export default function round({
+const transformer: Transformer = function round({
   precision,
   roundTowardsInfinity = false,
-}: Operands): (value: unknown, state: unknown) => number | undefined {
+}: Props) {
   const roundFn =
     precision === 'floor'
       ? roundByFloor
@@ -43,10 +45,13 @@ export default function round({
       : roundByFactorTowardsZero
   const factor = typeof precision === 'number' ? 10 ** precision : 1
 
-  return function round(value) {
-    const number = getNumber(value)
-    return typeof number === 'number' && !Number.isNaN(number)
-      ? roundFn(number, factor)
-      : undefined
-  }
+  return () =>
+    function round(value) {
+      const number = getNumber(value)
+      return typeof number === 'number' && !Number.isNaN(number)
+        ? roundFn(number, factor)
+        : undefined
+    }
 }
+
+export default transformer

@@ -22,7 +22,7 @@ test('should truncate a long string', (t) => {
   const value = text
   const expected = 'JavaScript (/ˈdʒɑːvəskrɪpt/),[10] often abbreviate'
 
-  const ret = truncate({ length }, options)(value, context)
+  const ret = truncate({ length })(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -33,7 +33,7 @@ test('should truncate a long string and append postfix', (t) => {
   const value = text
   const expected = 'JavaScript (/ˈdʒɑːvəskrɪpt/),[10] often abbrevi...'
 
-  const ret = truncate({ length, postfix }, options)(value, context)
+  const ret = truncate({ length, postfix })(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -44,7 +44,7 @@ test('should not truncate a text that is only too long with postfix', (t) => {
   const value = 'JavaScript'
   const expected = 'JavaScript'
 
-  const ret = truncate({ length, postfix }, options)(value, context)
+  const ret = truncate({ length, postfix })(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -55,7 +55,7 @@ test('should skip postfix when shortened text would only include postfix', (t) =
   const value = 'JavaScript'
   const expected = 'Jav'
 
-  const ret = truncate({ length, postfix }, options)(value, context)
+  const ret = truncate({ length, postfix })(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -66,7 +66,7 @@ test('should truncate to empty string', (t) => {
   const value = text
   const expected = ''
 
-  const ret = truncate({ length, postfix }, options)(value, context)
+  const ret = truncate({ length, postfix })(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -75,17 +75,17 @@ test('should not touch string when no length is set', (t) => {
   const value = text
   const expected = text
 
-  const ret = truncate(operands, options)(value, context)
+  const ret = truncate(operands)(options)(value, context)
 
   t.is(ret, expected)
 })
 
 test('should return undefined when not a string', (t) => {
-  t.is(truncate(operands, options)(14, context), undefined)
-  t.is(truncate(operands, options)(true, context), undefined)
-  t.is(truncate(operands, options)(new Date(), context), undefined)
-  t.is(truncate(operands, options)(null, context), undefined)
-  t.is(truncate(operands, options)(undefined, context), undefined)
+  t.is(truncate(operands)(options)(14, context), undefined)
+  t.is(truncate(operands)(options)(true, context), undefined)
+  t.is(truncate(operands)(options)(new Date(), context), undefined)
+  t.is(truncate(operands)(options)(null, context), undefined)
+  t.is(truncate(operands)(options)(undefined, context), undefined)
 })
 
 test('should truncate an array of strings', (t) => {
@@ -96,7 +96,7 @@ test('should truncate an array of strings', (t) => {
     'Shorty',
   ]
 
-  const ret = truncate({ length }, options)(value, context)
+  const ret = truncate({ length })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })

@@ -37,7 +37,7 @@ test('should normalize basic csv data', (t) => {
     { col1: '3', col2: 'Even more', col3: '81' },
   ]
 
-  const ret = csv({}, options)(data, state)
+  const ret = csv({})(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -50,7 +50,7 @@ test('should normalize with semicolon', (t) => {
     { col1: '3', col2: 'Even more', col3: '81' },
   ]
 
-  const ret = csv({ delimiter: ';' }, options)(data, state)
+  const ret = csv({ delimiter: ';' })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -63,7 +63,7 @@ test('should normalize with customized column prefix', (t) => {
     { field_1: '3', field_2: 'Even more', field_3: '81' },
   ]
 
-  const ret = csv({ columnPrefix: 'field_' }, options)(data, state)
+  const ret = csv({ columnPrefix: 'field_' })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -76,7 +76,7 @@ test('should normalize with header row', (t) => {
     { Id: '3', Text: 'Even more', Age: '81' },
   ]
 
-  const ret = csv({ headerRow: true }, options)(data, state)
+  const ret = csv({ headerRow: true })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -103,7 +103,7 @@ test('should normalize with rows of different number of columns', (t) => {
     },
   ]
 
-  const ret = csv({}, options)(data, state)
+  const ret = csv({})(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -112,18 +112,18 @@ test('should normalize with rows of different number of columns', (t) => {
 test('should return undefined when csv string is invalid', (t) => {
   const data = '"invalid","csv"\n"file","'
 
-  const ret = csv({}, options)(data, state)
+  const ret = csv({})(options)(data, state)
 
   t.is(ret, undefined)
 })
 
 test('return undefined when data is not a string', async (t) => {
-  t.is(csv({}, options)({}, state), undefined)
-  t.is(csv({}, options)(3, state), undefined)
-  t.is(csv({}, options)(true, state), undefined)
-  t.is(csv({}, options)(new Date(), state), undefined)
-  t.is(csv({}, options)(null, state), undefined)
-  t.is(csv({}, options)(undefined, state), undefined)
+  t.is(csv({})(options)({}, state), undefined)
+  t.is(csv({})(options)(3, state), undefined)
+  t.is(csv({})(options)(true, state), undefined)
+  t.is(csv({})(options)(new Date(), state), undefined)
+  t.is(csv({})(options)(null, state), undefined)
+  t.is(csv({})(options)(undefined, state), undefined)
 })
 
 // Tests -- to service
@@ -136,7 +136,7 @@ test('should serialize array of data', (t) => {
   ]
   const expectedData = commaString
 
-  const ret = csv({}, options)(data, stateRev)
+  const ret = csv({})(options)(data, stateRev)
 
   t.is(ret, expectedData)
 })
@@ -149,7 +149,7 @@ test('should serialize with semicolons and no quotation marks', (t) => {
   ]
   const expectedData = semicolonString
 
-  const ret = csv({ quoted: false, delimiter: ';' }, options)(data, stateRev)
+  const ret = csv({ quoted: false, delimiter: ';' })(options)(data, stateRev)
 
   t.is(ret, expectedData)
 })
@@ -162,7 +162,7 @@ test('should include header row', async (t) => {
   ]
   const expectedData = '"value","text","age"\n' + commaString
 
-  const ret = csv({ headerRow: true }, options)(data, stateRev)
+  const ret = csv({ headerRow: true })(options)(data, stateRev)
 
   t.is(ret, expectedData)
 })
@@ -184,7 +184,7 @@ test('should serialize data objects with different number of keys', async (t) =>
 "3","Even more","81","904 13 411",
 `
 
-  const ret = csv({}, options)(data, stateRev)
+  const ret = csv({})(options)(data, stateRev)
 
   t.is(ret, expectedData)
 })
@@ -200,7 +200,7 @@ test('should order col-keys and put them before other keys', (t) => {
 "3","Even more","true","81"
 `
 
-  const ret = csv({}, options)(data, stateRev)
+  const ret = csv({})(options)(data, stateRev)
 
   t.is(ret, expectedData)
 })
@@ -213,7 +213,7 @@ test('should expand arrays in place', async (t) => {
   ]
   const expectedData = commaString
 
-  const ret = csv({}, options)(data, stateRev)
+  const ret = csv({})(options)(data, stateRev)
 
   t.is(ret, expectedData)
 })
@@ -228,16 +228,16 @@ test('should skip non-objects', async (t) => {
   ]
   const expectedData = commaString
 
-  const ret = csv({}, options)(data, stateRev)
+  const ret = csv({})(options)(data, stateRev)
 
   t.is(ret, expectedData)
 })
 
 test('return undefined when data is not an array', async (t) => {
-  t.is(csv({}, options)('No data', stateRev), undefined)
-  t.is(csv({}, options)(3, stateRev), undefined)
-  t.is(csv({}, options)(true, stateRev), undefined)
-  t.is(csv({}, options)(new Date(), stateRev), undefined)
-  t.is(csv({}, options)(null, stateRev), undefined)
-  t.is(csv({}, options)(undefined, stateRev), undefined)
+  t.is(csv({})(options)('No data', stateRev), undefined)
+  t.is(csv({})(options)(3, stateRev), undefined)
+  t.is(csv({})(options)(true, stateRev), undefined)
+  t.is(csv({})(options)(new Date(), stateRev), undefined)
+  t.is(csv({})(options)(null, stateRev), undefined)
+  t.is(csv({})(options)(undefined, stateRev), undefined)
 })

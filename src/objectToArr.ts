@@ -13,13 +13,14 @@ const transformer: Transformer = function prepareObjectToArr(props: Props) {
   )
   const keyGetters = mapTransform(transformObject)
 
-  return function objectToArr(data, { rev: isRev }) {
-    if (isRev) {
-      return Array.isArray(data) ? keyGetters(data, { rev: true }) : null
-    } else {
-      return isObject(data) ? keyGetters(data) : []
+  return () =>
+    function objectToArr(data, { rev: isRev }) {
+      if (isRev) {
+        return Array.isArray(data) ? keyGetters(data, { rev: true }) : null
+      } else {
+        return isObject(data) ? keyGetters(data) : []
+      }
     }
-  }
 }
 
 export default transformer

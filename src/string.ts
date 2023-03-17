@@ -14,6 +14,6 @@ export function castString(value: unknown) {
   }
 }
 
-const transformer: Transformer = () => mapAny(castString)
+const transformer: Transformer = () => () => mapAny(castString)
 
 export default transformer

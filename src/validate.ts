@@ -14,12 +14,12 @@ interface Props extends Record<string, unknown> {
 
 const transformer: Transformer = function validate({ path, schema }: Props) {
   if (schema === true || !isObject(schema)) {
-    return () => true
+    return () => () => true
   }
   const getFn = getPathOrData(path)
   const validate = validator.compile(schema)
 
-  return (data) => validate(getFn(data)) as boolean
+  return () => (data) => validate(getFn(data)) as boolean
 }
 
 export default transformer

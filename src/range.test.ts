@@ -20,7 +20,7 @@ test('should split number range into integers', (t) => {
   const end = 13
   const expected = [5, 6, 7, 8, 9, 10, 11, 12]
 
-  const ret = range({ start, end }, options)(undefined, state)
+  const ret = range({ start, end })(options)(undefined, state)
 
   t.deepEqual(ret, expected)
 })
@@ -31,7 +31,7 @@ test('should split number range into integers including end', (t) => {
   const includeEnd = true
   const expected = [5, 6, 7, 8, 9, 10, 11, 12, 13]
 
-  const ret = range({ start, end, includeEnd }, options)(undefined, state)
+  const ret = range({ start, end, includeEnd })(options)(undefined, state)
 
   t.deepEqual(ret, expected)
 })
@@ -42,7 +42,7 @@ test('should split number range with step', (t) => {
   const step = 2
   const expected = [5, 7, 9, 11]
 
-  const ret = range({ start, end, step }, options)(undefined, state)
+  const ret = range({ start, end, step })(options)(undefined, state)
 
   t.deepEqual(ret, expected)
 })
@@ -54,7 +54,7 @@ test('should split number range with step and including end', (t) => {
   const includeEnd = true
   const expected = [5, 7, 9, 11, 13]
 
-  const ret = range({ start, end, step, includeEnd }, options)(undefined, state)
+  const ret = range({ start, end, step, includeEnd })(options)(undefined, state)
 
   t.deepEqual(ret, expected)
 })
@@ -67,7 +67,7 @@ test('should split number range from paths', (t) => {
   const includeEnd = true
   const expected = [5, 9, 13]
 
-  const ret = range({ startPath, endPath, stepPath, includeEnd }, options)(
+  const ret = range({ startPath, endPath, stepPath, includeEnd })(options)(
     value,
     state
   )
@@ -83,7 +83,7 @@ test('should split number range from paths when given as strings', (t) => {
   const includeEnd = true
   const expected = [5, 9, 13]
 
-  const ret = range({ startPath, endPath, stepPath, includeEnd }, options)(
+  const ret = range({ startPath, endPath, stepPath, includeEnd })(options)(
     value,
     state
   )
@@ -102,10 +102,15 @@ test('should use values as default when paths yields no number', (t) => {
   const includeEnd = true
   const expected = [5, 9, 13]
 
-  const ret = range(
-    { start, startPath, end, endPath, step, stepPath, includeEnd },
-    options
-  )(value, state)
+  const ret = range({
+    start,
+    startPath,
+    end,
+    endPath,
+    step,
+    stepPath,
+    includeEnd,
+  })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -115,7 +120,7 @@ test('should return undefined when no start or end', (t) => {
   const end = undefined
   const expected = undefined
 
-  const ret = range({ start, end }, options)(undefined, state)
+  const ret = range({ start, end })(options)(undefined, state)
 
   t.is(ret, expected)
 })

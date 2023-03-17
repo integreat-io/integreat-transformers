@@ -2,7 +2,7 @@ import mapAny = require('map-any')
 import type { Transformer } from 'integreat'
 import { isDate } from './utils/is.js'
 
-const uriPart: Transformer = (_operands, _options) => (value, state) =>
+const uriPart: Transformer = () => () => (value, state) =>
   mapAny(function (value) {
     if (value === null || value === undefined) {
       return undefined

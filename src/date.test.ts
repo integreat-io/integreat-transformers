@@ -25,14 +25,14 @@ const theDate = new Date('2019-05-22T13:43:11.345Z')
 
 test('should transform values to date', (t) => {
   t.deepEqual(
-    date(operands, options)(new Date('2019-05-22T13:43:11.345Z'), context),
+    date(operands)(options)(new Date('2019-05-22T13:43:11.345Z'), context),
     theDate
   )
   t.deepEqual(
-    date(operands, options)('2019-05-22T15:43:11.345+02:00', context),
+    date(operands)(options)('2019-05-22T15:43:11.345+02:00', context),
     theDate
   )
-  t.deepEqual(date(operands, options)(1558532591345, context), theDate)
+  t.deepEqual(date(operands)(options)(1558532591345, context), theDate)
 })
 
 test('should set local dates according to the given time zone', (t) => {
@@ -40,7 +40,7 @@ test('should set local dates according to the given time zone', (t) => {
   const tz = 'America/Los_Angeles' // Note this test will always succeed on a computer in this timezone
   const expected = new Date('2019-05-22T20:43:11Z')
 
-  const ret = date({ tz }, options)(value, context)
+  const ret = date({ tz })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -51,7 +51,7 @@ test('should parse date from a given format', (t) => {
   const tz = 'Europe/Oslo'
   const expected = new Date('2019-05-22T16:11:00Z')
 
-  const ret = date({ format, tz }, options)(value, context)
+  const ret = date({ format, tz })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -61,7 +61,7 @@ test('should return undefined for invalid format', (t) => {
   const format = 'What is this format?'
   const expected = undefined
 
-  const ret = date({ format }, options)(value, context)
+  const ret = date({ format })(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -71,27 +71,27 @@ test('should treat number as seconds since poc when isSeconds is true', (t) => {
   const value = 1558532591
   const expected = new Date('2019-05-22T13:43:11Z')
 
-  const ret = date({ isSeconds }, options)(value, context)
+  const ret = date({ isSeconds })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
 
 test('should not touch null and undefined', (t) => {
-  t.is(date(operands, options)(null, context), null)
-  t.is(date(operands, options)(undefined, context), undefined)
+  t.is(date(operands)(options)(null, context), null)
+  t.is(date(operands)(options)(undefined, context), undefined)
 })
 
 test('should transform illegal values to undefined', (t) => {
-  t.is(date(operands, options)('Not a date', context), undefined)
-  t.is(date(operands, options)({}, context), undefined)
+  t.is(date(operands)(options)('Not a date', context), undefined)
+  t.is(date(operands)(options)({}, context), undefined)
   t.is(
-    date(operands, options)({ id: '12345', title: 'Wrong' }, context),
+    date(operands)(options)({ id: '12345', title: 'Wrong' }, context),
     undefined
   )
-  t.is(date(operands, options)(new Date('Not a date'), context), undefined)
-  t.is(date(operands, options)(NaN, context), undefined)
-  t.is(date(operands, options)(true, context), undefined)
-  t.is(date(operands, options)(false, context), undefined)
+  t.is(date(operands)(options)(new Date('Not a date'), context), undefined)
+  t.is(date(operands)(options)(NaN, context), undefined)
+  t.is(date(operands)(options)(true, context), undefined)
+  t.is(date(operands)(options)(false, context), undefined)
 })
 
 test('should iterate arrays', (t) => {
@@ -116,7 +116,7 @@ test('should iterate arrays', (t) => {
     undefined,
   ]
 
-  const ret = date(operands, options)(value, context)
+  const ret = date(operands)(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -127,7 +127,7 @@ test('should add a time period', (t) => {
   const tz = 'America/Nassau'
   const expected = new Date('2022-11-06T18:46:16Z')
 
-  const ret = date({ tz, add: period }, options)(value, context)
+  const ret = date({ tz, add: period })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -138,7 +138,7 @@ test('should subtract a time period', (t) => {
   const tz = 'America/Nassau'
   const expected = new Date('2022-10-24T18:43:11Z')
 
-  const ret = date({ tz, subtract: period }, options)(value, context)
+  const ret = date({ tz, subtract: period })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -149,7 +149,7 @@ test('should set a part of the date/time', (t) => {
   const tz = 'Europe/Oslo'
   const expected = new Date('2022-12-01T00:00:00.000+01:00')
 
-  const ret = date({ tz, set: period }, options)(value, context)
+  const ret = date({ tz, set: period })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -161,7 +161,7 @@ test('should parse date on a path', (t) => {
   const tz = 'Europe/Oslo'
   const expected = new Date('2019-05-22T16:11:00Z')
 
-  const ret = date({ path, format, tz }, options)(value, context)
+  const ret = date({ path, format, tz })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -173,7 +173,7 @@ test('should add a time period from a path to a date from a path', (t) => {
   const tz = 'America/Nassau'
   const expected = new Date('2022-11-08T18:43:16Z')
 
-  const ret = date({ tz, path, add: period }, options)(value, context)
+  const ret = date({ tz, path, add: period })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -184,7 +184,7 @@ test('should not touch date without format string to rev', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
   const expected = value
 
-  const ret = date(operands, options)(value, contextRev)
+  const ret = date(operands)(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -194,7 +194,7 @@ test('should transform date to ISO string', (t) => {
   const format = 'iso'
   const expected = '2019-05-22T15:43:11.345+02:00'
 
-  const ret = date({ format }, options)(value, contextRev)
+  const ret = date({ format })(options)(value, contextRev)
 
   t.is(ret, expected)
 })
@@ -205,7 +205,7 @@ test('should transform date to ISO string with time zone', (t) => {
   const tz = 'America/New_York'
   const expected = '2019-05-22T09:43:11.345-04:00'
 
-  const ret = date({ format, tz }, options)(value, contextRev)
+  const ret = date({ format, tz })(options)(value, contextRev)
 
   t.is(ret, expected)
 })
@@ -216,7 +216,7 @@ test('should format date to a given format', (t) => {
   const tz = 'Europe/Oslo'
   const expected = '22.05.2019 kl 18:11'
 
-  const ret = date({ format, tz }, options)(value, contextRev)
+  const ret = date({ format, tz })(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -226,7 +226,7 @@ test('should return number in seconds when isSeconds is true', (t) => {
   const value = new Date('2019-05-22T13:43:11Z')
   const expected = 1558532591
 
-  const ret = date({ isSeconds }, options)(value, contextRev)
+  const ret = date({ isSeconds })(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -235,7 +235,7 @@ test('should cast date string to Date in reverse', (t) => {
   const value = '2019-05-22T13:43:11.345Z'
   const expected = new Date('2019-05-22T15:43:11.345+02:00')
 
-  const ret = date(operands, options)(value, contextRev)
+  const ret = date(operands)(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -246,7 +246,7 @@ test('should cast from within Integreat without using format and tz', (t) => {
   const tz = 'Europe/Oslo'
   const expected = '22.05.2019 kl 18:11'
 
-  const ret = date({ format, tz }, options)(value, contextRev)
+  const ret = date({ format, tz })(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -255,7 +255,7 @@ test('should return undefined when not a date', (t) => {
   const value = null
   const expected = undefined
 
-  const ret = date(operands, options)(value, contextRev)
+  const ret = date(operands)(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -264,7 +264,7 @@ test('should return undefined when invalid date', (t) => {
   const value = new Date('Not a date')
   const expected = undefined
 
-  const ret = date(operands, options)(value, contextRev)
+  const ret = date(operands)(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -276,7 +276,7 @@ test('should subtract a time period for add in reverse', (t) => {
   const tz = 'America/Nassau'
   const expected = '2022-10-24T14:43:11.000-04:00'
 
-  const ret = date({ format, tz, add: period }, options)(value, contextRev)
+  const ret = date({ format, tz, add: period })(options)(value, contextRev)
 
   t.is(ret, expected)
 })
@@ -288,7 +288,7 @@ test('should add a time period for subtract in reverse', (t) => {
   const tz = 'America/Nassau'
   const expected = '2022-11-06T14:43:11.000-05:00'
 
-  const ret = date({ format, tz, subtract: period }, options)(value, contextRev)
+  const ret = date({ format, tz, subtract: period })(options)(value, contextRev)
 
   t.is(ret, expected)
 })
@@ -300,7 +300,7 @@ test('should set a part of the date/time in reverse', (t) => {
   const tz = 'Europe/Oslo'
   const expected = '2022-12-01T14:43:11.000+01:00'
 
-  const ret = date({ format, tz, set: period }, options)(value, contextRev)
+  const ret = date({ format, tz, set: period })(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -311,7 +311,7 @@ test('should transform date to ISO string and set on a path', (t) => {
   const format = 'iso'
   const expected = { date: '2019-05-22T15:43:11.345+02:00' }
 
-  const ret = date({ path, format }, options)(value, contextRev)
+  const ret = date({ path, format })(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -322,7 +322,7 @@ test('should format date as ISO string', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
   const expected = '2019-05-22T15:43:11.345+02:00'
 
-  const ret = formatDate(operands, options)(value, context)
+  const ret = formatDate(operands)(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -333,7 +333,7 @@ test('should format date to a given format in the given timezone', (t) => {
   const tz = 'Europe/Oslo'
   const expected = '22.05.2019 kl 18:11'
 
-  const ret = formatDate({ format, tz }, options)(value, contextRev)
+  const ret = formatDate({ format, tz })(options)(value, contextRev)
 
   t.deepEqual(ret, expected)
 })
@@ -343,7 +343,7 @@ test('should format milliseconds as day of the week', (t) => {
   const format = 'E'
   const expected = '1'
 
-  const ret = formatDate({ format }, options)(value, context)
+  const ret = formatDate({ format })(options)(value, context)
 
   t.is(ret, expected)
 })
@@ -355,7 +355,7 @@ test('should add a time period when formatting date', (t) => {
   const tz = 'America/Nassau'
   const expected = '06.11.2022 kl 14:43'
 
-  const ret = formatDate({ tz, add: period, format }, options)(value, context)
+  const ret = formatDate({ tz, add: period, format })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })
@@ -367,7 +367,7 @@ test('should subtract a time period when formatting date', (t) => {
   const tz = 'America/Nassau'
   const expected = '24.10.2022 kl 14:43'
 
-  const ret = formatDate({ tz, subtract: period, format }, options)(
+  const ret = formatDate({ tz, subtract: period, format })(options)(
     value,
     context
   )
@@ -382,7 +382,7 @@ test('should subtract a time period when formatting date in reverse', (t) => {
   const tz = 'America/Nassau'
   const expected = '24.10.2022 kl 14:43'
 
-  const ret = formatDate({ tz, subtract: period, format }, options)(
+  const ret = formatDate({ tz, subtract: period, format })(options)(
     value,
     contextRev
   )
@@ -397,7 +397,7 @@ test('should set a part of the date/time when formatting date', (t) => {
   const tz = 'Europe/Oslo'
   const expected = '01.12.2022 kl 14:43'
 
-  const ret = formatDate({ tz, set: period, format }, options)(value, context)
+  const ret = formatDate({ tz, set: period, format })(options)(value, context)
 
   t.deepEqual(ret, expected)
 })

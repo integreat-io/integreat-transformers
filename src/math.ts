@@ -71,6 +71,8 @@ function prepareMath({
 
 const transformer: Transformer = function mathTransformer(props: Props) {
   const doTheMath = prepareMath(props)
-  return (value, { rev = false }) => mapAny(doTheMath(rev))(value)
+  return () =>
+    (value, { rev = false }) =>
+      mapAny(doTheMath(rev))(value)
 }
 export default transformer

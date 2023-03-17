@@ -4,7 +4,7 @@ import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
 import { isNotEmpty, isObject } from './utils/is.js'
 
-export interface Operands extends Record<string, unknown> {
+export interface Props extends Record<string, unknown> {
   delimiter?: string
   quoted?: boolean
   headerRow?: boolean
@@ -15,14 +15,14 @@ const createStringifyOptions = ({
   delimiter = ',',
   quoted = true,
   headerRow = false,
-}: Operands) => ({
+}: Props) => ({
   delimiter,
   quoted,
   header: headerRow,
   cast: { boolean: String },
 })
 
-const createParseOptions = ({ delimiter = ',' }: Operands) => ({
+const createParseOptions = ({ delimiter = ',' }: Props) => ({
   delimiter,
   skip_empty_lines: true,
   trim: true,
@@ -108,36 +108,36 @@ const normalizeLine =
 const normalizeColumns = (cols: string[]) =>
   cols.map((col) => col.replace(/[\s\.]+/g, '-'))
 
-function normalize(data: unknown, operands: Operands) {
+function normalize(data: unknown, props: Props) {
   if (typeof data !== 'string') {
     return undefined
   }
   let rows
   try {
-    rows = parse(data, createParseOptions(operands)) as string[][]
+    rows = parse(data, createParseOptions(props)) as string[][]
   } catch (error) {
     return undefined
   }
-  if (operands.headerRow) {
+  if (props.headerRow) {
     const headers = normalizeColumns(rows[0])
-    return rows.slice(1).map(normalizeLine(operands.columnPrefix, headers))
+    return rows.slice(1).map(normalizeLine(props.columnPrefix, headers))
   } else {
-    return rows.map(normalizeLine(operands.columnPrefix))
+    return rows.map(normalizeLine(props.columnPrefix))
   }
 }
 
-function serialize(data: unknown, operands: Operands) {
+function serialize(data: unknown, props: Props) {
   if (!Array.isArray(data)) {
     return undefined
   }
   const rows = data.map(extractFields).filter(isNotEmpty)
   const columns = extractColumns(rows)
-  return stringify(rows, { ...createStringifyOptions(operands), columns })
+  return stringify(rows, { ...createStringifyOptions(props), columns })
 }
 
-const transformer: Transformer = function csv(operands: Operands) {
-  return (data, state) =>
-    state.rev ? serialize(data, operands) : normalize(data, operands)
+const transformer: Transformer = function csv(props: Props) {
+  return () => (data, state) =>
+    state.rev ? serialize(data, props) : normalize(data, props)
 }
 
 export default transformer

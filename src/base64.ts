@@ -17,11 +17,13 @@ function decode(data: unknown) {
   return Buffer.from(data, 'base64').toString()
 }
 
-export const base64Decode: Transformer = () => (data, _state) => decode(data)
+export const base64Decode: Transformer = () => () => (data, _state) =>
+  decode(data)
 
-export const base64Encode: Transformer = () => (data, _state) => encode(data)
+export const base64Encode: Transformer = () => () => (data, _state) =>
+  encode(data)
 
-const transformer: Transformer = () => (data, state) =>
+const transformer: Transformer = () => () => (data, state) =>
   state.rev ? mapAny(encode, data) : mapAny(decode, data)
 
 export default transformer

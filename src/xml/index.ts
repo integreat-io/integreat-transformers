@@ -16,12 +16,13 @@ export interface TextElement extends ObjectElement {
 
 export type Element = ObjectElement | TextElement
 
-export interface Operands {
+export interface Props {
   namespaces?: Namespaces
 }
 
 const xml: Transformer =
-  ({ namespaces }: Operands, _options) =>
+  ({ namespaces }: Props) =>
+  () =>
   (data, state) =>
     state.rev ? stringify(data, namespaces) : parse(data, namespaces)
 

@@ -1,5 +1,5 @@
 import { Transformer } from 'integreat'
 
-const transformer: Transformer = () => () => new Date()
+const transformer: Transformer = () => () => () => new Date()
 
 export default transformer

@@ -11,10 +11,12 @@ const state = {
   value: {},
 }
 
+const options = {}
+
 // Tests
 
 test('should round floats to two decimals', (t) => {
-  const round2 = round({ precision: 2 })
+  const round2 = round({ precision: 2 })(options)
 
   t.is(round2(18.4211, state), 18.42)
   t.is(round2(18.42, state), 18.42)
@@ -25,7 +27,7 @@ test('should round floats to two decimals', (t) => {
 })
 
 test('should round floats to three decimals', (t) => {
-  const round3 = round({ precision: 3 })
+  const round3 = round({ precision: 3 })(options)
 
   t.is(round3(18.4211, state), 18.421)
   t.is(round3(18.42, state), 18.42)
@@ -36,13 +38,17 @@ test('should round floats to three decimals', (t) => {
 })
 
 test('should round to integer as default', (t) => {
-  t.is(round({})(18.4211, state), 18)
-  t.is(round({})(-3.5, state), -4)
+  t.is(round({})(options)(18.4211, state), 18)
+  t.is(round({})(options)(-3.5, state), -4)
 })
 
 test('should round towards positive infinity', (t) => {
-  const roundInfinity2 = round({ roundTowardsInfinity: true, precision: 2 })
-  const roundInfinity0 = round({ roundTowardsInfinity: true, precision: 0 })
+  const roundInfinity2 = round({ roundTowardsInfinity: true, precision: 2 })(
+    options
+  )
+  const roundInfinity0 = round({ roundTowardsInfinity: true, precision: 0 })(
+    options
+  )
 
   t.is(roundInfinity2(-18.425, state), -18.42)
   t.is(roundInfinity2(18.425, state), 18.43)
@@ -50,7 +56,7 @@ test('should round towards positive infinity', (t) => {
 })
 
 test('should always round down', (t) => {
-  const floor = round({ precision: 'floor' })
+  const floor = round({ precision: 'floor' })(options)
 
   t.is(floor(18.844, state), 18)
   t.is(floor(18.4211, state), 18)
@@ -59,7 +65,7 @@ test('should always round down', (t) => {
 })
 
 test('should always round up', (t) => {
-  const floor = round({ precision: 'ceil' })
+  const floor = round({ precision: 'ceil' })(options)
 
   t.is(floor(18.844, state), 19)
   t.is(floor(18.4211, state), 19)
@@ -68,7 +74,7 @@ test('should always round up', (t) => {
 })
 
 test('should parse number from string', (t) => {
-  const round2 = round({ precision: 2 })
+  const round2 = round({ precision: 2 })(options)
 
   t.is(round2('18.4211', state), 18.42)
   t.is(round2('18', state), 18)
@@ -77,7 +83,7 @@ test('should parse number from string', (t) => {
 })
 
 test('should return undefined for other types', (t) => {
-  const round2 = round({ precision: 2 })
+  const round2 = round({ precision: 2 })(options)
 
   t.is(round2('not number', state), undefined)
   t.is(round2(true, state), undefined)

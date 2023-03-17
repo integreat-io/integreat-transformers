@@ -173,7 +173,7 @@ export const formatDate: Transformer = function transformDate({
   const formatFn = mapAny(format({ ...props, format: formatStr || 'iso' }))
 
   // Format regardless of direction
-  return (data: unknown, _state: State) => formatFn(castDate()(data))
+  return () => (data: unknown, _state: State) => formatFn(castDate()(data))
 }
 
 const transformer: Transformer = function transformDate(props: Props) {
@@ -184,7 +184,7 @@ const transformer: Transformer = function transformDate(props: Props) {
   // Note: We're casting value from Integreat too, in case it arrives as an ISO
   // string. This should probably not be necessary, but it happens, so we need
   // to account for it.
-  return (data: unknown, state: State) =>
+  return () => (data: unknown, state: State) =>
     state.rev ? formatFn(data) : castFn(data)
 }
 

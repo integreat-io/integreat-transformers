@@ -27,7 +27,7 @@ test('should set the values of an array as props on an object', (t) => {
   const keys = ['firstname', 'middlename', 'lastname']
   const expected = { firstname: 'John', middlename: 'B.', lastname: 'Fjon' }
 
-  const ret = arrToObject({ keys }, options)(data, state)
+  const ret = arrToObject({ keys })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -39,7 +39,7 @@ test('should extract the values on an object to an array of values in reverse', 
   const keys = ['firstname', 'middlename', 'lastname']
   const expected = ['John', 'B.', 'Fjon']
 
-  const ret = arrToObject({ keys }, options)(data, stateRev)
+  const ret = arrToObject({ keys })(options)(data, stateRev)
 
   t.deepEqual(ret, expected)
 })

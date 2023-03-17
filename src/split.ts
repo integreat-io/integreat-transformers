@@ -81,19 +81,20 @@ const transformer: Transformer = function prepareSplit(props: Props) {
     (value) => isString(value) || isNumber(value)
   )
 
-  return function split(data: unknown, { rev: isRev = false }): unknown {
-    const size = parseNum(sizeGetter(data))
-    const sep = numberToString(sepGetter(data))
-    const value = numberToString(valueGetter(data))
+  return () =>
+    function split(data: unknown, { rev: isRev = false }): unknown {
+      const size = parseNum(sizeGetter(data))
+      const sep = numberToString(sepGetter(data))
+      const value = numberToString(valueGetter(data))
 
-    if (isNumber(size)) {
-      return isRev ? bySizeRev(value, size) : bySizeFwd(value, size)
-    } else if (isString(sep)) {
-      return isRev ? bySepRev(value, sep) : bySepFwd(value, sep)
-    } else {
-      return value
+      if (isNumber(size)) {
+        return isRev ? bySizeRev(value, size) : bySizeFwd(value, size)
+      } else if (isString(sep)) {
+        return isRev ? bySepRev(value, sep) : bySepFwd(value, sep)
+      } else {
+        return value
+      }
     }
-  }
 }
 
 export default transformer

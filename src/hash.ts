@@ -18,8 +18,8 @@ const replaceReserved = (hash: string) => {
   })
 }
 
-const hash: Transformer = (_operands) =>
-  function hash(value, _context) {
+const hash: Transformer = () => () =>
+  function hash(value) {
     if (value === null || value === undefined || value === '') {
       return value
     }

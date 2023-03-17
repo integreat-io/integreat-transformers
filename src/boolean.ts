@@ -9,6 +9,6 @@ const castBoolean = (value: unknown) => {
   }
 }
 
-const transformer: Transformer = () => mapAny(castBoolean)
+const transformer: Transformer = () => () => mapAny(castBoolean)
 
 export default transformer

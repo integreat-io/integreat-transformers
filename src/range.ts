@@ -31,16 +31,17 @@ const transformer: Transformer = function prepareRange(props: Props) {
   const endGetter = getPathOrDefault(props.endPath, props.end, isNumeric)
   const stepGetter = getPathOrDefault(props.stepPath, props.step, isNumeric)
 
-  return function range(data: unknown): number[] | undefined {
-    const start = parseNum(startGetter(data))
-    const end = parseNum(endGetter(data))
-    const step = parseNum(stepGetter(data)) || 1
+  return () =>
+    function range(data: unknown): number[] | undefined {
+      const start = parseNum(startGetter(data))
+      const end = parseNum(endGetter(data))
+      const step = parseNum(stepGetter(data)) || 1
 
-    if (!isNumber(start) || !isNumber(end) || !isNumber(step)) {
-      return undefined
+      if (!isNumber(start) || !isNumber(end) || !isNumber(step)) {
+        return undefined
+      }
+
+      return [...generateStep(start, end, step, props.includeEnd)]
     }
-
-    return [...generateStep(start, end, step, props.includeEnd)]
-  }
 }
 export default transformer

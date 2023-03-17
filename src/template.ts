@@ -21,13 +21,13 @@ const transformer: Transformer = function template({
 }: Props) {
   if (typeof templateStr === 'string') {
     // We already got a template -- preparse it and return a generator
-    return parseAndCreateGenerator(templateStr)
+    return () => parseAndCreateGenerator(templateStr)
   } else if (typeof templatePath === 'string') {
     // The template will be provided in the data -- return a function that will
     // both create the generator and run it
     const getFn = defToDataMapper(templatePath)
 
-    return (data, state) => {
+    return () => (data, state) => {
       const templateStr = getFn(data, { ...state, rev: false, flip: false })
       if (typeof templateStr === 'string') {
         return parseAndCreateGenerator(templateStr)(data)
@@ -36,7 +36,7 @@ const transformer: Transformer = function template({
     }
   }
 
-  return () => undefined
+  return () => () => undefined
 }
 
 export default transformer

@@ -1,7 +1,7 @@
 import mapAny = require('map-any')
 import { Transformer } from 'integreat'
 
-interface Operands extends Record<string, unknown> {
+interface Props extends Record<string, unknown> {
   from?: string
   to?: string
 }
@@ -16,14 +16,16 @@ const replace =
 
       return rev ? data.replaceAll(to, from) : data.replaceAll(from, to)
     }
-const transformer: Transformer = ({ from, to }: Operands) => {
-  if (typeof to !== 'string' || typeof from !== 'string') {
-    return (value) => value
+const transformer: Transformer =
+  ({ from, to }: Props) =>
+  () => {
+    if (typeof to !== 'string' || typeof from !== 'string') {
+      return (value) => value
+    }
+
+    const replaceFn = replace(from, to)
+
+    return (data, state) => mapAny(replaceFn(state.rev), data)
   }
-
-  const replaceFn = replace(from, to)
-
-  return (data, state) => mapAny(replaceFn(state.rev), data)
-}
 
 export default transformer

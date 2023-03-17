@@ -39,7 +39,7 @@ test('should parse xml from service', (t) => {
     },
   }
 
-  const ret = xml({}, options)(data, state)
+  const ret = xml({})(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -65,7 +65,7 @@ test('should use provided namespaces', (t) => {
     },
   }
 
-  const ret = xml({ namespaces }, options)(data, state)
+  const ret = xml({ namespaces })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -94,7 +94,7 @@ test('should stringify xml to service', (t) => {
   }
   const expected = xmlData
 
-  const ret = xml({ namespaces }, options)(data, stateRev)
+  const ret = xml({ namespaces })(options)(data, stateRev)
 
   t.is(ret, expected)
 })

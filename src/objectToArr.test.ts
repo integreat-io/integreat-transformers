@@ -22,7 +22,7 @@ test('should extract the values on an object to an array of values', (t) => {
   const keys = ['firstname', 'middlename', 'lastname']
   const expected = ['John', 'B.', 'Fjon']
 
-  const ret = objectToArr({ keys }, options)(data, state)
+  const ret = objectToArr({ keys })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -32,7 +32,7 @@ test('should skip values not included in keys', (t) => {
   const keys = ['firstname', 'lastname']
   const expected = ['John', 'Fjon']
 
-  const ret = objectToArr({ keys }, options)(data, state)
+  const ret = objectToArr({ keys })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -42,7 +42,7 @@ test('should return undefined for unknown keys', (t) => {
   const keys = ['firstname', 'unknown', 'lastname']
   const expected = ['John', undefined, 'Fjon']
 
-  const ret = objectToArr({ keys }, options)(data, state)
+  const ret = objectToArr({ keys })(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
@@ -50,11 +50,11 @@ test('should return undefined for unknown keys', (t) => {
 test('should return empty array when not an object', (t) => {
   const keys = ['firstname', 'middlename', 'lastname']
 
-  t.deepEqual(objectToArr({ keys }, options)('Hello', state), [])
-  t.deepEqual(objectToArr({ keys }, options)(3, state), [])
-  t.deepEqual(objectToArr({ keys }, options)(new Date(), state), [])
-  t.deepEqual(objectToArr({ keys }, options)(null, state), [])
-  t.deepEqual(objectToArr({ keys }, options)(undefined, state), [])
+  t.deepEqual(objectToArr({ keys })(options)('Hello', state), [])
+  t.deepEqual(objectToArr({ keys })(options)(3, state), [])
+  t.deepEqual(objectToArr({ keys })(options)(new Date(), state), [])
+  t.deepEqual(objectToArr({ keys })(options)(null, state), [])
+  t.deepEqual(objectToArr({ keys })(options)(undefined, state), [])
 })
 
 // Tests -- reverse
@@ -64,7 +64,7 @@ test('should set the values of an array as props on an object in reverse', (t) =
   const keys = ['firstname', 'middlename', 'lastname']
   const expected = { firstname: 'John', middlename: 'B.', lastname: 'Fjon' }
 
-  const ret = objectToArr({ keys }, options)(data, stateRev)
+  const ret = objectToArr({ keys })(options)(data, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -74,7 +74,7 @@ test('should skip values not included in keys in reverse', (t) => {
   const keys = ['firstname', 'lastname']
   const expected = { firstname: 'John', lastname: 'B.' }
 
-  const ret = objectToArr({ keys }, options)(data, stateRev)
+  const ret = objectToArr({ keys })(options)(data, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -84,7 +84,7 @@ test('should set undefined for missing values in reverse', (t) => {
   const keys = ['firstname', 'middlename', 'lastname']
   const expected = { firstname: 'John', middlename: 'B.', lastname: undefined }
 
-  const ret = objectToArr({ keys }, options)(data, stateRev)
+  const ret = objectToArr({ keys })(options)(data, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -92,9 +92,9 @@ test('should set undefined for missing values in reverse', (t) => {
 test('should return null when not an array in reverse', (t) => {
   const keys = ['firstname', 'middlename', 'lastname']
 
-  t.is(objectToArr({ keys }, options)('Hello', stateRev), null)
-  t.is(objectToArr({ keys }, options)(3, stateRev), null)
-  t.is(objectToArr({ keys }, options)(new Date(), stateRev), null)
-  t.is(objectToArr({ keys }, options)(null, stateRev), null)
-  t.is(objectToArr({ keys }, options)(undefined, stateRev), null)
+  t.is(objectToArr({ keys })(options)('Hello', stateRev), null)
+  t.is(objectToArr({ keys })(options)(3, stateRev), null)
+  t.is(objectToArr({ keys })(options)(new Date(), stateRev), null)
+  t.is(objectToArr({ keys })(options)(null, stateRev), null)
+  t.is(objectToArr({ keys })(options)(undefined, stateRev), null)
 })

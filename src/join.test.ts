@@ -27,7 +27,7 @@ test('should join a string by a separator char', (t) => {
   const sep = ','
   const expected = 'john,liz,benny'
 
-  const ret = join({ sep }, options)(value, state)
+  const ret = join({ sep })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -45,7 +45,7 @@ test('should join segmented strings', (t) => {
   const expected =
     'A longer string to split up in smaller parts by a given size'
 
-  const ret = join({ size }, options)(value, state)
+  const ret = join({ size })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -57,7 +57,7 @@ test('should split a string by a separator char in reverse', (t) => {
   const sep = ','
   const expected = ['john', 'liz', 'benny']
 
-  const ret = join({ sep }, options)(value, stateRev)
+  const ret = join({ sep })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -74,7 +74,7 @@ test('should split string into segments in reverse', (t) => {
     'given size',
   ]
 
-  const ret = join({ size }, options)(value, stateRev)
+  const ret = join({ size })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })

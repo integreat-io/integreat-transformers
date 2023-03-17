@@ -17,11 +17,13 @@ const stateRev = {
   value: {},
 }
 
+const options = {}
+
 // Tests
 
 test('should return unique string', (t) => {
-  const ret1 = unique({})(undefined, state)
-  const ret2 = unique({})(undefined, state)
+  const ret1 = unique({})(options)(undefined, state)
+  const ret2 = unique({})(options)(undefined, state)
 
   t.is(typeof ret1, 'string')
   t.is(typeof ret2, 'string')
@@ -29,8 +31,8 @@ test('should return unique string', (t) => {
 })
 
 test('should return uuid in lowercase', (t) => {
-  const ret1 = unique({ type: 'uuid' })(undefined, state)
-  const ret2 = unique({ type: 'uuid' })(undefined, state)
+  const ret1 = unique({ type: 'uuid' })(options)(undefined, state)
+  const ret2 = unique({ type: 'uuid' })(options)(undefined, state)
 
   t.regex(
     ret1 as string,
@@ -44,8 +46,8 @@ test('should return uuid in lowercase', (t) => {
 })
 
 test('should return uuid in lowercase when using alias', (t) => {
-  const ret1 = unique({ type: 'uuidLower' })(undefined, state)
-  const ret2 = unique({ type: 'uuidLower' })(undefined, state)
+  const ret1 = unique({ type: 'uuidLower' })(options)(undefined, state)
+  const ret2 = unique({ type: 'uuidLower' })(options)(undefined, state)
 
   t.regex(
     ret1 as string,
@@ -59,8 +61,8 @@ test('should return uuid in lowercase when using alias', (t) => {
 })
 
 test('should return uuid in uppercase', (t) => {
-  const ret1 = unique({ type: 'uuidUpper' })(undefined, state)
-  const ret2 = unique({ type: 'uuidUpper' })(undefined, state)
+  const ret1 = unique({ type: 'uuidUpper' })(options)(undefined, state)
+  const ret2 = unique({ type: 'uuidUpper' })(options)(undefined, state)
 
   t.regex(
     ret1 as string,
@@ -74,8 +76,8 @@ test('should return uuid in uppercase', (t) => {
 })
 
 test('should return unique string in rev', (t) => {
-  const ret1 = unique({})(undefined, stateRev)
-  const ret2 = unique({})(undefined, stateRev)
+  const ret1 = unique({})(options)(undefined, stateRev)
+  const ret2 = unique({})(options)(undefined, stateRev)
 
   t.is(typeof ret1, 'string')
   t.is(typeof ret2, 'string')
