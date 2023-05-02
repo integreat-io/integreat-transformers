@@ -8,7 +8,7 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 The package consists of several transformers that are exported as an object with
 the transformers set as properties:
 
-- [`arrToObject](#arrToObject)
+- [`arrToObject`](#arrToObject)
 - [`base64`](#base64)
 - [`boolean`](#boolean)
 - [`count`](#count)
@@ -319,8 +319,8 @@ the result of `range` will be `undefined`.
 
 ### `replace`
 
-Will replace the `from` property with the `to` property in the given string value.
-If the value is not a string, it will be passed on untouched.
+Will replace the `from` property with the `to` property in the given string
+value. If the value is not a string, it will be passed on untouched.
 
 ### `round`
 
