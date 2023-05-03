@@ -3,6 +3,9 @@
 Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 [MapTransform](https://github.com/integreat-io/map-transform).
 
+[![npm Version](https://img.shields.io/npm/v/integreat-transformers.svg)](https://www.npmjs.com/package/integreat-transformers)
+[![Maintainability](https://api.codeclimate.com/v1/badges/dfebac9f3541a519ccab/maintainability)](https://codeclimate.com/github/integreat-io/integreat-transformers/maintainability)
+
 ## Transformers
 
 The package consists of several transformers that are exported as an object with
