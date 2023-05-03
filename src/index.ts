@@ -14,6 +14,7 @@ import ms from './ms.js'
 import now from './now.js'
 import number from './number.js'
 import objectToArr from './objectToArr.js'
+import pattern from './pattern.js'
 import replace from './replace.js'
 import round from './round.js'
 import range from './range.js'
@@ -47,6 +48,7 @@ const transformers: Record<string, Transformer> = {
   now,
   number,
   objectToArr,
+  pattern,
   range,
   replace,
   round,

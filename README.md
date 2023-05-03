@@ -26,6 +26,7 @@ the transformers set as properties:
 - [`now`](#now)
 - [`number`](#number)
 - [`objectToArr`](#objectToArr)
+- [`pattern`](#pattern)
 - [`range`](#range)
 - [`replace`](#replace)
 - [`round`](#round)
@@ -298,6 +299,15 @@ object not included in `keys` will be skipped.
 are given as an array in the `keys` property, and are matched in the same order
 as the values in the pipeline value. Values in the array without corresponding
 `keys` will be skipped.
+
+### `pattern`
+
+Will return `true` or `false` depending on whether the provided pattern matches
+the data in the pipeline or at the path `path`. If no pattern is provided, the
+result is always `false`. If the value is not a string, the result is always
+`false`.
+
+This transformer works the same in both directions.
 
 ### `range`
 
