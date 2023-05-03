@@ -1,8 +1,8 @@
-import mapAny = require('map-any')
-import { Transformer } from 'integreat'
+import mapAny from 'map-any'
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isNumeric } from './utils/is.js'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   operator?: string

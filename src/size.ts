@@ -1,5 +1,5 @@
-import { Transformer } from 'integreat'
 import { isString, isArray, isNumber } from './utils/is.js'
+import type { Transformer } from 'integreat'
 
 const transformer: Transformer = function prepareSize() {
   return () =>

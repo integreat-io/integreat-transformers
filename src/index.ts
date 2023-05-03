@@ -1,4 +1,4 @@
-import { Transformer } from 'integreat'
+import type { Transformer } from 'integreat'
 import arrToObject from './arrToObject.js'
 import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'

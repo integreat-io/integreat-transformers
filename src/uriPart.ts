@@ -1,6 +1,6 @@
-import mapAny = require('map-any')
-import type { Transformer } from 'integreat'
+import mapAny from 'map-any'
 import { isDate } from './utils/is.js'
+import type { Transformer } from 'integreat'
 
 const uriPart: Transformer = () => () => (value, state) =>
   mapAny(function (value) {

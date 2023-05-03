@@ -1,6 +1,6 @@
-import mapAny = require('map-any')
-import { Transformer } from 'integreat'
+import mapAny from 'map-any'
 import { isObject, isDate } from './utils/is.js'
+import type { Transformer } from 'integreat'
 
 export function castString(value: unknown) {
   if (value === null || value === undefined) {

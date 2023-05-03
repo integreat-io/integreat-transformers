@@ -1,5 +1,5 @@
-import type { Transformer } from 'integreat'
 import { getPathOrDefault } from './utils/getters.js'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   path?: string

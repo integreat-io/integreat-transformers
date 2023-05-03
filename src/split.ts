@@ -1,7 +1,7 @@
-import { Transformer } from 'integreat'
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isString, isNumber, isNumeric } from './utils/is.js'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   path?: string

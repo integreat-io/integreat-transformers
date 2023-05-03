@@ -1,5 +1,5 @@
-import { Transformer } from 'integreat'
 import objectToArr, { Props } from './objectToArr.js'
+import type { Transformer } from 'integreat'
 
 const transformer: Transformer = function prepareJoin(props: Props) {
   return (options) => {

@@ -1,4 +1,4 @@
-import { Transformer } from 'integreat'
+import type { Transformer } from 'integreat'
 
 const transformer: Transformer = () => () => () => new Date()
 

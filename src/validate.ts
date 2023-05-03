@@ -1,7 +1,7 @@
 import ajv from 'ajv'
-import type { Transformer } from 'integreat'
 import { getPathOrData } from './utils/getters.js'
 import { isObject } from './utils/is.js'
+import type { Transformer } from 'integreat'
 
 const Ajv = ajv.default
 

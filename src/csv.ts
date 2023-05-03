@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import { Transformer } from 'integreat'
 import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
 import { isNotEmpty, isObject } from './utils/is.js'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   delimiter?: string

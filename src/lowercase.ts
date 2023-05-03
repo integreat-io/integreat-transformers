@@ -1,5 +1,5 @@
+import mapAny from 'map-any'
 import type { Transformer } from 'integreat'
-import mapAny = require('map-any')
 
 const lowercase: Transformer = () => () => (value) =>
   mapAny(

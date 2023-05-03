@@ -1,5 +1,5 @@
-import { Transformer } from 'integreat'
-import mapAny = require('map-any')
+import mapAny from 'map-any'
+import type { Transformer } from 'integreat'
 
 const castBoolean = (value: unknown) => {
   if (value === null || value === undefined) {

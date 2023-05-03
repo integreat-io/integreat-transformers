@@ -1,5 +1,5 @@
-import { Transformer } from 'integreat'
 import split, { Props } from './split.js'
+import type { Transformer } from 'integreat'
 
 const transformer: Transformer = function prepareJoin(props: Props) {
   return (options) => {

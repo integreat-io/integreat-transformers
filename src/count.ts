@@ -1,5 +1,5 @@
-import { Transformer } from 'integreat'
 import { unescapeValue } from './utils/escape.js'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   skip?: unknown[]

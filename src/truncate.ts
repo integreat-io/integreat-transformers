@@ -1,5 +1,5 @@
-import mapAny = require('map-any')
-import { Transformer } from 'integreat'
+import mapAny from 'map-any'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   length?: number

@@ -1,6 +1,6 @@
-import { Transformer } from 'integreat'
 import { nanoid } from 'nanoid'
 import { v4 as uuidv4 } from 'uuid'
+import type { Transformer } from 'integreat'
 
 export interface Props {
   type?: string
