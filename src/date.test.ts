@@ -1,4 +1,5 @@
 import test from 'ava'
+import { DateTime } from 'luxon'
 
 import date, { formatDate } from './date.js'
 
@@ -192,7 +193,7 @@ test('should not touch date without format string to rev', (t) => {
 test('should transform date to ISO string', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
   const format = 'iso'
-  const expected = '2019-05-22T15:43:11.345+02:00'
+  const expected = DateTime.fromJSDate(value).toISO() // Use local zone
 
   const ret = date({ format })(options)(value, contextRev)
 
@@ -309,7 +310,7 @@ test('should transform date to ISO string and set on a path', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
   const path = 'date'
   const format = 'iso'
-  const expected = { date: '2019-05-22T15:43:11.345+02:00' }
+  const expected = { date: DateTime.fromJSDate(value).toISO() } // Use local zone
 
   const ret = date({ path, format })(options)(value, contextRev)
 
@@ -320,7 +321,7 @@ test('should transform date to ISO string and set on a path', (t) => {
 
 test('should format date as ISO string', (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
-  const expected = '2019-05-22T15:43:11.345+02:00'
+  const expected = DateTime.fromJSDate(value).toISO() // Use local zone
 
   const ret = formatDate(operands)(options)(value, context)
 
