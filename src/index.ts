@@ -26,7 +26,6 @@ import unique from './unique.js'
 import uppercase from './uppercase.js'
 import uriPart from './uriPart.js'
 import validate from './validate.js'
-import xml from './xml/index.js'
 
 const transformers: Record<string, Transformer> = {
   arrToObject,
@@ -60,7 +59,6 @@ const transformers: Record<string, Transformer> = {
   uppercase,
   uriPart,
   validate,
-  xml,
 }
 
 export default transformers

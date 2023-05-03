@@ -34,18 +34,15 @@
   },
   "dependencies": {
     "@types/mustache": "^4.2.2",
-    "@types/sax": "^1.2.4",
     "@types/uuid": "^9.0.1",
     "ajv": "^8.12.0",
     "csv-parse": "^5.3.6",
     "csv-stringify": "^6.3.0",
-    "html-entities": "^2.3.3",
     "luxon": "^3.3.0",
     "map-any": "^0.2.1",
     "map-transform": "^0.4.0-beta.15",
     "mustache": "^4.2.0",
     "nanoid": "^4.0.1",
-    "sax": "^1.2.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 The package consists of several transformers that are exported as an object with
 the transformers set as properties:
 
-- [`arrToObject](#arrToObject)
+- [`arrToObject`](#arrToObject)
 - [`base64`](#base64)
 - [`boolean`](#boolean)
 - [`count`](#count)
@@ -432,38 +432,3 @@ validates it according to the provided schema.
 
 Note that if you provide a schema that is always valid, it will be valid even
 when the data has no value at the given path.
-
-### `xml`
-
-**Forward (coming from a service):** An XML string will be parsed and returned
-as a JS object structure.
-
-**Reverse (going to a service):** The value will be stringified as an XML string
-using the same rules as when parsing.
-
-The rules behind parsing (and stringifying) is:
-
-- An XML document will be parsed to an object with the name of the root element
-  as a prop. Node/elements are themselves represented by objects.
-- A node/element will be set as a property on the object of its parent node,
-  with its name as key.
-- An attribute will be set as a property on the object of its containg element,
-  with its name prefixed with `'@'` as key.
-- A list of equally named child elements will be set as an array of one object
-  for each element, and this array is set as a property on its parent element
-  in the same way as single child elements.
-- A value node (plain value) is set on the object of its parent element with
-  the key `$value`. This is done this way because elements with a value may
-  still have attributes. When stringifying, we treat both an object with a
-  `$value` prop and a plain value as value nodes.
-- Prefixes are included in the props as if they where part of the element or
-  attribute name, but there will be a normalization of prefixes and it's
-  possible to provide a dictionary of prefixes on the `namespaces` property (see
-  below).
-- When parsing, encoded chars (e.g. `'&lt;'` or `'&#230;'`) will be decoded
-  (e.g. `'<'` or `'æ'`). When stringifying, all UTF-8 chars and reserved XML
-  chars (`'<>&'`) will be encoded.
-
-The `namespaces` property may be an object with uris as keys and prefixes as
-values. Any namespace matching an uri will use the given prefix. Use an empty
-string `''` to indicate a default namespace that will not have any prefix.
