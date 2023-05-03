@@ -5,6 +5,7 @@ import boolean from './boolean.js'
 import count from './count.js'
 import csv from './csv.js'
 import date, { formatDate } from './date.js'
+import exclude from './exclude.js'
 import hash from './hash.js'
 import join from './join.js'
 import lowercase from './lowercase.js'
@@ -36,6 +37,7 @@ const transformers: Record<string, Transformer> = {
   csv,
   count,
   date,
+  exclude,
   formatDate,
   hash,
   join,

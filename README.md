@@ -14,6 +14,7 @@ the transformers set as properties:
 - [`count`](#count)
 - [`csv`](#csv)
 - [`date`](#date)
+- [`exclude`](#exclude)
 - [`hash`](#hash)
 - [`join`](#join)
 - [`lowercase`](#lowercase)
@@ -189,6 +190,16 @@ For example:
 
 The available keywords for the keys of a period object are: `year`, `quarter`,
 `month`, `week`, `day`, `hour`, `minute`, `second`, and `millisecond`.
+
+### `exclude`
+
+Exclude items from an array at `path` when they are also in the array at
+`excludePath`.
+
+If either of the paths points to a value instead of an array, it will first be
+put in an array. E.g. when `path` is a string that is found in the `excludePath`
+array, an empty array will be returned. When there's no data at either of the
+paths, an empty array is used.
 
 ### `formatDate`
 
