@@ -40,13 +40,13 @@
     "csv-stringify": "^6.3.0",
     "luxon": "^3.3.0",
     "map-any": "^0.2.1",
-    "map-transform": "^0.4.0-beta.15",
+    "map-transform": "^0.4.4",
     "mustache": "^4.2.0",
     "nanoid": "^4.0.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@integreat/ts-dev-setup": "^4.0.1",
+    "@integreat/ts-dev-setup": "^4.1.0",
     "integreat": "0.8.0-beta.34"
   }
 }
