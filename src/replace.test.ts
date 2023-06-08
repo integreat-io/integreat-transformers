@@ -70,6 +70,16 @@ test('should do nothing when operands are missing', (t) => {
   t.is(ret, expected)
 })
 
+test('should replace to empty string from service', (t) => {
+  const operands = { from: ' ', to: '' }
+  const value = 'three parts here'
+  const expected = 'threepartshere'
+
+  const ret = replace(operands)(options)(value, context)
+
+  t.is(ret, expected)
+})
+
 test('should not touch no-strings', (t) => {
   const operands = { from: ':', to: '|' }
 
