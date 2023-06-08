@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import sax = require('sax')
+import sax from 'sax'
 import { Namespaces, Element, ObjectElement } from './index.js'
 
 interface SaxAttribute {

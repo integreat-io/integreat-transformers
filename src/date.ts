@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import Luxon = require('luxon')
-import mapAny = require('map-any')
+import { DateTime } from 'luxon'
+import mapAny from 'map-any'
 import { Transformer } from 'integreat'
 import { getPathOrData } from './utils/getters.js'
 import { isDate, isNumber } from './utils/is.js'
-
-const { DateTime } = Luxon
 
 const LEGAL_PERIOD_TYPES = [
   'year',
@@ -71,7 +69,7 @@ const periodFromObject = (obj: PeriodObject, data?: unknown) =>
   )
 
 function modifyDate(
-  date: Luxon.DateTime,
+  date: DateTime,
   add?: PeriodObject,
   subtract?: PeriodObject,
   set?: PeriodObject,

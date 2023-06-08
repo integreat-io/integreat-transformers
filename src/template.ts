@@ -1,6 +1,6 @@
 import { Transformer } from 'integreat'
-import Mustache = require('mustache')
-import mapAny = require('map-any')
+import Mustache from 'mustache'
+import mapAny from 'map-any'
 import { defToDataMapper } from 'map-transform/definitionHelpers.js'
 // import { Path, DataMapper, Options, TransformerProps } from '../types.js'
 
