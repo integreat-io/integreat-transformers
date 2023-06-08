@@ -343,12 +343,12 @@ Will round the pipeline value to the given `precision`. Default precision is
 in order to always round up or down to the next integer.
 
 - Strings are parsed to a float if possible
-- Rounding is always done away from zero by default, i.e. -3.5 will be rounded
-  to -4, and not -3. This may be change to rounding towards +∞ by setting
-  the `roundTowardsInfinity` property to `true`
+- If the value is equally distant from the closest value in both directions, the value furthest 
+  away from zero will be selected by default, e.g. -3.5 will be rounded to -4, and not -3. This 
+  behavior can be changed to rounding towards +∞ by setting the `roundTowardsInfinity` property 
+  to `true`.
 - `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
-  `floor` will always be away from +∞ and `ceil` towards +∞. This might change
-  in the future
+  `floor` will always be away from +∞ and `ceil` towards +∞. 
 
 ### `size`
 
