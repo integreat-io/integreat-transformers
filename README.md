@@ -142,8 +142,9 @@ The following options are available:
 
 ### `date`
 
-Tries its best at transforming the given value to a date, or returns
-`undefined`.
+Going forward – from a service, `date` will try its best at transforming the
+given value to a date, or it returns `undefined`. In reverse – to a service, it
+will format the date according to a given `format`.
 
 - Dates are untouched, unless its an invalid date, which will return `undefined`
 - Numbers are treated as milliseconds since epoc (midnight 1970-01-01), unless
@@ -223,8 +224,8 @@ object will be the hash of `[object Object]`. :(
 
 ### `join`
 
-This transformer works exactly as the [`split`](#split) transformer, expect that the direction
-is reversed, so refer to [its documentation](#split) below.
+This transformer works exactly as the [`split`](#split) transformer, expect that
+the direction is reversed, so refer to [its documentation](#split) below.
 
 ### `lowercase`
 
@@ -302,10 +303,13 @@ as the values in the pipeline value. Values in the array without corresponding
 
 ### `pattern`
 
-Will return `true` or `false` depending on whether the provided pattern matches
-the data in the pipeline or at the path `path`. If no pattern is provided, the
-result is always `false`. If the value is not a string, the result is always
-`false`.
+Will return `true` or `false` depending on whether the provided regex `pattern`
+matches the data in the pipeline or at the path `path`. If no pattern is
+provided, the result is always `false`. If the value is not a string, the result
+is always `false`.
+
+You may set the flag `caseinsensitive` to `true` to have a case insensitive
+match.
 
 This transformer works the same in both directions.
 
