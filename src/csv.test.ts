@@ -126,6 +126,20 @@ test('return undefined when data is not a string', async (t) => {
   t.is(csv({}, options)(undefined, state), undefined)
 })
 
+test('should serialize from service when direction is from', (t) => {
+  const direction = 'from'
+  const data = [
+    { value: 1, text: 'Several words here', age: 39 },
+    { value: 2, text: 'And more here', age: 45 },
+    { value: 3, text: 'Even more', age: 81 },
+  ]
+  const expectedData = commaString
+
+  const ret = csv({ direction }, options)(data, state)
+
+  t.is(ret, expectedData)
+})
+
 // Tests -- to service
 
 test('should serialize array of data', (t) => {
@@ -240,4 +254,18 @@ test('return undefined when data is not an array', async (t) => {
   t.is(csv({}, options)(new Date(), stateRev), undefined)
   t.is(csv({}, options)(null, stateRev), undefined)
   t.is(csv({}, options)(undefined, stateRev), undefined)
+})
+
+test('should normalize to service when direction is from', (t) => {
+  const direction = 'from'
+  const data = commaString
+  const expected = [
+    { col1: '1', col2: 'Several words here', col3: '39' },
+    { col1: '2', col2: 'And more here', col3: '45' },
+    { col1: '3', col2: 'Even more', col3: '81' },
+  ]
+
+  const ret = csv({ direction }, options)(data, stateRev)
+
+  t.deepEqual(ret, expected)
 })

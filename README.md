@@ -134,7 +134,11 @@ The following options are available:
   don't have a header row. The `columnPrefix` will be suffixed by an
   incrementing number based on the order of the keys on the object, like
   `'col1'`, `'col2'`, etc. When generating CSV, any keys named as this prefix
-  and a number, will be sorted accending after the number. Default is `'col'`
+  and a number, will be sorted accending after the number. Default is `'col'
+- `direction`: By default, the `csv` transformer will generate CSV going _to_ a
+  service (and parsing CSV _from_ a service). By setting `direction: 'from'`,
+  this will be reversed, generating a CSV _from_ a service instead. The default
+  is `direction: 'to'`.
 
 ### `date`
 
@@ -209,8 +213,8 @@ object will be the hash of `[object Object]`. :(
 
 ### `join`
 
-This transformer works exactly as the [`split`](#split) transformer, expect that the direction
-is reversed, so refer to [its documentation](#split) below.
+This transformer works exactly as the [`split`](#split) transformer, expect that
+the direction is reversed, so refer to [its documentation](#split) below.
 
 ### `lowercase`
 
