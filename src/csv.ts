@@ -2,6 +2,7 @@
 import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
 import { isNotEmpty, isObject } from './utils/is.js'
+import xor from './utils/xor.js'
 import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
@@ -9,6 +10,7 @@ export interface Props extends Record<string, unknown> {
   quoted?: boolean
   headerRow?: boolean
   columnPrefix?: string
+  direction?: 'to' | 'from'
 }
 
 const createStringifyOptions = ({
@@ -137,7 +139,9 @@ function serialize(data: unknown, props: Props) {
 
 const transformer: Transformer = function csv(props: Props) {
   return () => (data, state) =>
-    state.rev ? serialize(data, props) : normalize(data, props)
+    xor(state.rev, props.direction === 'from')
+      ? serialize(data, props)
+      : normalize(data, props)
 }
 
 export default transformer
