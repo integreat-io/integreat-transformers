@@ -155,6 +155,17 @@ test('should set a part of the date/time', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should set a part of the date/time in UTC', (t) => {
+  const value = '2022-12-07T14:43:11.153'
+  const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
+  const tz = 'Etc/UTC'
+  const expected = new Date('2022-12-01T00:00:00.000+00:00')
+
+  const ret = date({ tz, set: period })(options)(value, context)
+
+  t.deepEqual(ret, expected)
+})
+
 test('should parse date on a path', (t) => {
   const value = { the_time: '22.05.2019 kl 18:11' }
   const path = 'the_time'
