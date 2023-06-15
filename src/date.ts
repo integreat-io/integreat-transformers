@@ -100,7 +100,7 @@ export function castDate(props: Props = {}) {
       return null
     } else if (isDate(value)) {
       if (!Number.isNaN(value.getTime())) {
-        date = DateTime.fromJSDate(value)
+        date = DateTime.fromJSDate(value, { zone })
       }
     } else if (typeof value === 'string') {
       if (format || zone) {
@@ -114,8 +114,8 @@ export function castDate(props: Props = {}) {
       }
     } else if (typeof value === 'number') {
       date = isSeconds
-        ? DateTime.fromSeconds(value)
-        : DateTime.fromMillis(value)
+        ? DateTime.fromSeconds(value, { zone })
+        : DateTime.fromMillis(value, { zone })
     }
 
     if (!date || !date.isValid) {
