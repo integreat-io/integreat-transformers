@@ -114,8 +114,8 @@ export function castDate(props: Props = {}) {
       }
     } else if (typeof value === 'number') {
       date = isSeconds
-        ? DateTime.fromSeconds(value)
-        : DateTime.fromMillis(value)
+        ? DateTime.fromSeconds(value, { zone })
+        : DateTime.fromMillis(value, { zone })
     }
 
     if (!date || !date.isValid) {
