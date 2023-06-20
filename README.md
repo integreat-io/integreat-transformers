@@ -18,6 +18,7 @@ the transformers set as properties:
 - [`csv`](#csv)
 - [`date`](#date)
 - [`exclude`](#exclude)
+- [`formatDate`](#formatDate)
 - [`hash`](#hash)
 - [`join`](#join)
 - [`lowercase`](#lowercase)
@@ -337,8 +338,8 @@ the result of `range` will be `undefined`.
 
 ### `replace`
 
-Will replace the `from` property with the `to` property in the given string value.
-If the value is not a string, it will be passed on untouched.
+Will replace the `from` property with the `to` property in the given string
+value. If the value is not a string, it will be passed on untouched.
 
 ### `round`
 
@@ -347,12 +348,12 @@ Will round the pipeline value to the given `precision`. Default precision is
 in order to always round up or down to the next integer.
 
 - Strings are parsed to a float if possible
-- If the value is equally distant from the closest value in both directions, the value furthest 
-  away from zero will be selected by default, e.g. -3.5 will be rounded to -4, and not -3. This 
-  behavior can be changed to rounding towards +∞ by setting the `roundTowardsInfinity` property 
-  to `true`.
+- If the value is equally distant from the closest value in both directions, the
+  value furthest away from zero will be selected by default, e.g. -3.5 will be
+  rounded to -4, and not -3. This behavior can be changed to rounding towards
+  +∞ by setting the `roundTowardsInfinity` property to `true`.
 - `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
-  `floor` will always be away from +∞ and `ceil` towards +∞. 
+  `floor` will always be away from +∞ and `ceil` towards +∞.
 
 ### `size`
 
