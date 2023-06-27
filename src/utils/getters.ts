@@ -7,12 +7,12 @@ export function getPathOrData(path?: string) {
 export function getPathOrDefault(
   path?: string,
   def?: unknown,
-  predicate = (data: unknown) => !!data
+  predicate = (data: unknown) => data !== undefined
 ) {
   if (typeof path !== 'string') {
     return () => def
   }
-  const getter = mapTransform(path)
+  const getter = mapTransform(path, { nonvalues: [undefined] })
 
   return function getOrDefault(data: unknown) {
     const value = getter(data)
