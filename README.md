@@ -214,7 +214,7 @@ const result = ['first', 'second', 0, 1, 2, null]
 ```
 
 Dedupe can recieve a path property which removes duplicates based on an embedded
-values. If no path is specified, the first layer of the array will be used.
+values.
 
 An array of:
 
