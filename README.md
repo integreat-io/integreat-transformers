@@ -201,16 +201,16 @@ The available keywords for the keys of a period object are: `year`, `quarter`,
 Removes duplicates from an array. Only the first item that is a match will be
 kept. Any value that is `undefined` will not count as unique and will be removed.
 
-For example, an array with the following data:
+For example:
 
 ```javascript
-;[undefined, 'first', 'first', 'second', 0, 1, 2, 2, null]
+const data = [undefined, 'first', 'first', 'second', 0, 1, 2, 2, null]
 ```
 
 will return:
 
 ```javascript
-;['first', 'second', 0, 1, 2, null]
+const result = ['first', 'second', 0, 1, 2, null]
 ```
 
 Dedupe can recieve a path property which removes duplicates based on an embedded
@@ -219,7 +219,7 @@ values. If no path is specified, the first layer of the array will be used.
 An array of:
 
 ```javascript
-;[
+const data = [
   undefined,
   'undefined due to no path',
   { month: 6, day: 1 },
@@ -233,7 +233,7 @@ An array of:
 and a path of `months` returns:
 
 ```javascript
-;[
+const result = [
   { month: 6, day: 1 },
   { month: 7, day: 1 },
   { month: 8, day: 2 },
