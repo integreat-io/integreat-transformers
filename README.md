@@ -8,12 +8,13 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 The package consists of several transformers that are exported as an object with
 the transformers set as properties:
 
-- [`arrToObject`](#arrToObject)
+- [`arrToObject`](#arrtoobject)
 - [`base64`](#base64)
 - [`boolean`](#boolean)
 - [`count`](#count)
 - [`csv`](#csv)
 - [`date`](#date)
+- [`dedupe`](#dedupe)
 - [`hash`](#hash)
 - [`join`](#join)
 - [`lowercase`](#lowercase)
@@ -21,7 +22,7 @@ the transformers set as properties:
 - [`ms`](#ms)
 - [`now`](#now)
 - [`number`](#number)
-- [`objectToArr`](#objectToArr)
+- [`objectToArr`](#objecttoarr)
 - [`pattern`](#pattern)
 - [`range`](#range)
 - [`replace`](#replace)
@@ -34,7 +35,7 @@ the transformers set as properties:
 - [`truncate`](#truncate)
 - [`unique`](#unique)
 - [`uppercase`](#uppercase)
-- [`uriPart`](#uriPart)
+- [`uriPart`](#uripart)
 - [`validate`](#validate)
 - [`xml`](#xml)
 
@@ -194,6 +195,55 @@ For example:
 
 The available keywords for the keys of a period object are: `year`, `quarter`,
 `month`, `week`, `day`, `hour`, `minute`, `second`, and `millisecond`.
+
+### `dedupe`
+
+Removes duplicates from an array. Only the first item that is a match will be
+kept. Any value that is `undefined` will not count as unique and will be removed.
+
+For example:
+
+```javascript
+const data = [undefined, 'first', 'first', 'second', 0, 1, 2, 2, null]
+```
+
+will return:
+
+```javascript
+const result = ['first', 'second', 0, 1, 2, null]
+```
+
+Dedupe can recieve a path property which removes duplicates based on an embedded
+values.
+
+An array of:
+
+```javascript
+const data = [
+  undefined,
+  'undefined due to no path',
+  { month: 6, day: 1 },
+  { month: 6, day: 1 },
+  { month: 6, day: 2 },
+  { month: 7, day: 1 },
+  { month: 8, day: 2 },
+]
+```
+
+and a path of `month` returns:
+
+```javascript
+const result = [
+  { month: 6, day: 1 },
+  { month: 7, day: 1 },
+  { month: 8, day: 2 },
+]
+```
+
+**Note:** The objects are considered instances. When comparing 2 objects
+with the same structure both will be kept. When comparing a primitive type
+within objects, using a path, all duplicates will be remove. This may be changed
+in the future.
 
 ### `formatDate`
 
