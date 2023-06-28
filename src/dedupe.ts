@@ -1,17 +1,16 @@
 import type { Transformer } from 'integreat'
-import { isArray, isObject } from './utils/is.js'
+import { isArray } from './utils/is.js'
 import { getPathOrDefault } from './utils/getters.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string
 }
 
-const transformer: Transformer = function removeDuplicates(
-  { path = '.' }: Props,
-  _options
-) {
+const transformer: Transformer = function removeDuplicates({
+  path = '.',
+}: Props) {
   const getter = getPathOrDefault(path)
-  return (data: unknown) => {
+  return () => (data: unknown) => {
     return !isArray(data)
       ? data
       : data.filter((element, index) => {
