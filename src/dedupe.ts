@@ -16,7 +16,9 @@ const transformer: Transformer = function removeDuplicates(
       ? data
       : data.filter((element, index) => {
           const value = getter(element)
-          return data.findIndex((item) => getter(item) === value) === index
+          return value === undefined
+            ? false
+            : data.findIndex((item) => getter(item) === value) === index
         })
   }
 }
