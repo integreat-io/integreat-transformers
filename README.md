@@ -8,7 +8,7 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 The package consists of several transformers that are exported as an object with
 the transformers set as properties:
 
-- [`arrToObject`](#arrToObject)
+- [`arrToObject`](#arrtoobject)
 - [`base64`](#base64)
 - [`boolean`](#boolean)
 - [`count`](#count)
@@ -22,7 +22,7 @@ the transformers set as properties:
 - [`ms`](#ms)
 - [`now`](#now)
 - [`number`](#number)
-- [`objectToArr`](#objectToArr)
+- [`objectToArr`](#objecttoarr)
 - [`pattern`](#pattern)
 - [`range`](#range)
 - [`replace`](#replace)
@@ -35,7 +35,7 @@ the transformers set as properties:
 - [`truncate`](#truncate)
 - [`unique`](#unique)
 - [`uppercase`](#uppercase)
-- [`uriPart`](#uriPart)
+- [`uriPart`](#uripart)
 - [`validate`](#validate)
 - [`xml`](#xml)
 
@@ -230,7 +230,7 @@ const data = [
 ]
 ```
 
-and a path of `months` returns:
+and a path of `month` returns:
 
 ```javascript
 const result = [
@@ -240,7 +240,7 @@ const result = [
 ]
 ```
 
-Note that objects are considered instances. When comparing 2 objects
+**Note:** The objects are considered instances. When comparing 2 objects
 with the same structure both will be kept. When comparing a primitive type
 within objects, using a path, all duplicates will be remove. This may be changed
 in the future.
