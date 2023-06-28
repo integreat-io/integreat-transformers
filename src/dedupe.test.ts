@@ -47,6 +47,24 @@ test('should remove objects with the same values and structures', (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should return empty array if array is empty', (t) => {
+  const value: [] = []
+  const expected: [] = []
+
+  const ret = dedupe({}, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should return data if data is not an array', (t) => {
+  const value = { test: 'whatever' }
+  const expected = { test: 'whatever' }
+
+  const ret = dedupe({}, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
 test('should remove objects with nested values', (t) => {
   const value = [
     { container: { value: '1' } },
