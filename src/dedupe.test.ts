@@ -156,3 +156,45 @@ test('should remove all items where value of path becomes undefined', (t) => {
 
   t.deepEqual(ret, expected)
 })
+
+test('should remove all but the first unique object based on path value', (t) => {
+  const value = [
+    { container: { value: '1', id: '1' } },
+    { container: { value: '1', id: '1' } },
+    { container: { value: '1', id: '2' } },
+    { container: { value: '2' } },
+  ]
+  const expected = [
+    { container: { value: '1', id: '1' } },
+    { container: { value: '2' } },
+  ]
+
+  const ret = dedupe({ path: 'container.value' }, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should keep falsy values, other than undefined', (t) => {
+  const value = [
+    undefined,
+    null,
+    0,
+    NaN,
+    1,
+    '',
+    'string',
+    { container: { value: '1', id: '1' } },
+  ]
+  const expected = [
+    null,
+    0,
+    1,
+    '',
+    'string',
+    { container: { value: '1', id: '1' } },
+  ]
+
+  const ret = dedupe({}, options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
