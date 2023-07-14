@@ -166,7 +166,7 @@ test('should set a part of the date/time in UTC', (t) => {
   t.deepEqual(ret, expected)
 })
 
-test('should set date/time to UTC with miliseconds', (t) => {
+test('should set date/time to UTC with millieseconds', (t) => {
   const value = 1558483205213
   const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
   const tz = 'Etc/UTC'
@@ -208,40 +208,6 @@ test('should parse date on a path', (t) => {
   const expected = new Date('2019-05-22T16:11:00Z')
 
   const ret = date({ path, format, tz })(options)(value, context)
-
-  t.deepEqual(ret, expected)
-})
-
-test('should set date/time to UTC with miliseconds', (t) => {
-  const value = 1558483205213
-  const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
-  const tz = 'Etc/UTC'
-  const expected = new Date('2019-05-01T00:00:00Z')
-
-  const ret = date({ set: period, tz }, options)(value, context)
-
-  t.deepEqual(ret, expected)
-})
-
-test('should set date/time to UTC with seconds', (t) => {
-  const value = 1558483201
-  const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
-  const tz = 'Etc/UTC'
-  const isSeconds = true
-  const expected = new Date('2019-05-01T00:00:00Z')
-
-  const ret = date({ set: period, tz, isSeconds }, options)(value, context)
-
-  t.deepEqual(ret, expected)
-})
-
-test('should set date/time to the first of month in UTC time', (t) => {
-  const value = new Date('2022-12-18 18:43:11')
-  const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
-  const tz = 'Etc/UTC'
-  const expected = new Date('2022-12-01T00:00:00.000+00:00')
-
-  const ret = date({ set: period, tz }, options)(value, context)
 
   t.deepEqual(ret, expected)
 })
