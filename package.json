@@ -36,17 +36,17 @@
     "@types/mustache": "^4.2.2",
     "@types/uuid": "^9.0.2",
     "ajv": "^8.12.0",
-    "csv-parse": "^5.3.6",
-    "csv-stringify": "^6.3.0",
+    "csv-parse": "^5.4.0",
+    "csv-stringify": "^6.4.0",
     "luxon": "^3.3.0",
-    "map-any": "^0.2.1",
-    "map-transform": "^0.4.4",
+    "map-any": "^0.3.0-rc.1",
+    "map-transform": "^0.5.2",
     "mustache": "^4.2.0",
-    "nanoid": "^4.0.1",
+    "nanoid": "^4.0.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@integreat/ts-dev-setup": "^4.1.0",
-    "integreat": "0.8.0-beta.34"
+    "@integreat/ts-dev-setup": "^4.1.1",
+    "integreat": "0.8.9"
   }
 }

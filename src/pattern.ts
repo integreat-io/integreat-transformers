@@ -1,5 +1,5 @@
 import { getPathOrData } from './utils/getters.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string
@@ -7,13 +7,13 @@ export interface Props extends Record<string, unknown> {
   caseinsensitive?: boolean
 }
 
-const transformer: Transformer = ({
+const transformer: AsyncTransformer = ({
   path,
   pattern,
   caseinsensitive = false,
 }: Props) => {
   if (typeof pattern !== 'string') {
-    return () => () => false
+    return () => async () => false
   }
 
   const flags = caseinsensitive ? 'i' : ''
@@ -22,8 +22,8 @@ const transformer: Transformer = ({
   const valueGetter = getPathOrData(path)
 
   return () =>
-    function matchPattern(data) {
-      const value = valueGetter(data)
+    async function matchPattern(data) {
+      const value = await valueGetter(data)
       return typeof value === 'string' && regex.test(value)
     }
 }

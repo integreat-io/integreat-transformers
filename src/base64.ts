@@ -1,6 +1,6 @@
 import mapAny from 'map-any'
 import { castString } from './string.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 function encode(data: unknown) {
   const str = castString(data)
@@ -24,6 +24,6 @@ export const base64Encode: Transformer = () => () => (data, _state) =>
   encode(data)
 
 const transformer: Transformer = () => () => (data, state) =>
-  state.rev ? mapAny(encode, data) : mapAny(decode, data)
+  state.rev ? mapAny(encode)(data) : mapAny(decode)(data)
 
 export default transformer

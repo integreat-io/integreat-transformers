@@ -22,7 +22,7 @@ const options = {}
 
 // Tests
 
-test('should apply template', (t) => {
+test('should apply template', async (t) => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = {
     description: 'Bergen by night',
@@ -30,12 +30,12 @@ test('should apply template', (t) => {
   }
   const expected = 'Bergen by night. By John F.'
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should apply template in reverse', (t) => {
+test('should apply template in reverse', async (t) => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = {
     description: 'Bergen by night',
@@ -43,12 +43,12 @@ test('should apply template in reverse', (t) => {
   }
   const expected = 'Bergen by night. By John F.'
 
-  const ret = template(props)(options)(data, stateRev)
+  const ret = await template(props)(options)(data, stateRev)
 
   t.is(ret, expected)
 })
 
-test('should apply template several times', (t) => {
+test('should apply template several times', async (t) => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data0 = {
     description: 'Bergen by night',
@@ -61,13 +61,13 @@ test('should apply template several times', (t) => {
   const expected0 = 'Bergen by night. By John F.'
   const expected1 = 'Mona Lisa. By Leonardo d.'
 
-  const ret0 = template(props)(options)(data0, state)
-  const ret1 = template(props)(options)(data1, state)
+  const ret0 = await template(props)(options)(data0, state)
+  const ret1 = await template(props)(options)(data1, state)
   t.is(ret0, expected0)
   t.is(ret1, expected1)
 })
 
-test('should apply template from path', (t) => {
+test('should apply template from path', async (t) => {
   const props = { templatePath: 'captionTemplate' }
   const data = {
     description: 'Bergen by night',
@@ -76,12 +76,12 @@ test('should apply template from path', (t) => {
   }
   const expected = 'Bergen by night. By John F.'
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should apply template from root path', (t) => {
+test('should apply template from root path', async (t) => {
   const props = { templatePath: '^^setup.captionTemplate' }
   const data = {
     description: 'Bergen by night',
@@ -96,12 +96,12 @@ test('should apply template from root path', (t) => {
   }
   const expected = 'Bergen by night. By John F.'
 
-  const ret = template(props)(options)(data, stateWithContext)
+  const ret = await template(props)(options)(data, stateWithContext)
 
   t.is(ret, expected)
 })
 
-test('should apply template from path in reverse', (t) => {
+test('should apply template from path in reverse', async (t) => {
   const props = { templatePath: 'captionTemplate' }
   const data = {
     description: 'Bergen by night',
@@ -110,12 +110,12 @@ test('should apply template from path in reverse', (t) => {
   }
   const expected = 'Bergen by night. By John F.'
 
-  const ret = template(props)(options)(data, stateRev)
+  const ret = await template(props)(options)(data, stateRev)
 
   t.is(ret, expected)
 })
 
-test('should apply template from path in flipped reverse', (t) => {
+test('should apply template from path in flipped reverse', async (t) => {
   const props = { templatePath: 'captionTemplate' }
   const data = {
     description: 'Bergen by night',
@@ -124,12 +124,12 @@ test('should apply template from path in flipped reverse', (t) => {
   }
   const expected = 'Bergen by night. By John F.'
 
-  const ret = template(props)(options)(data, { ...stateRev, flip: true })
+  const ret = await template(props)(options)(data, { ...stateRev, flip: true })
 
   t.is(ret, expected)
 })
 
-test('should return undefined when no template at path', (t) => {
+test('should return undefined when no template at path', async (t) => {
   const props = { templatePath: 'captionTemplate' }
   const data = {
     description: 'Bergen by night',
@@ -137,12 +137,12 @@ test('should return undefined when no template at path', (t) => {
   }
   const expected = undefined
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should apply template to array', (t) => {
+test('should apply template to array', async (t) => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = [
     {
@@ -156,24 +156,24 @@ test('should apply template to array', (t) => {
   ]
   const expected = ['Bergen by night. By John F.', 'Water Lilies. By Monet']
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.deepEqual(ret, expected)
 })
 
-test('should leave missing fields empty', (t) => {
+test('should leave missing fields empty', async (t) => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = {
     description: 'Bergen by night',
   }
   const expected = 'Bergen by night. By '
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should force values to string', (t) => {
+test('should force values to string', async (t) => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = {
     description: 'Bergen by night',
@@ -181,12 +181,12 @@ test('should force values to string', (t) => {
   }
   const expected = 'Bergen by night. By [object Object]'
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should support dot notation paths', (t) => {
+test('should support dot notation paths', async (t) => {
   const props = { template: '{{description}}. By {{meta.artist}}' }
   const data = {
     description: 'Bergen by night',
@@ -194,22 +194,22 @@ test('should support dot notation paths', (t) => {
   }
   const expected = 'Bergen by night. By John F.'
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should support a single dot as path', (t) => {
+test('should support a single dot as path', async (t) => {
   const props = { template: 'The title: {{.}}' }
   const data = 'Bergen by night'
   const expected = 'The title: Bergen by night'
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should apply uri encoded template', (t) => {
+test('should apply uri encoded template', async (t) => {
   const props = {
     template: '/production?query={{{query}}}&%24table=%22{{{tableId}}}%22',
   }
@@ -221,12 +221,12 @@ test('should apply uri encoded template', (t) => {
   const expected =
     "/production?query=*%5B_type%3D%3D'table'%26%26key%3D%3D%24table%5D%5B0%5D.fields%7Bkey%2Cname%2Ctype%7D&%24table=%22orders%22"
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should use template without placeholders', (t) => {
+test('should use template without placeholders', async (t) => {
   const props = { template: 'A string!' }
   const data = {
     description: 'Bergen by night',
@@ -234,12 +234,12 @@ test('should use template without placeholders', (t) => {
   }
   const expected = 'A string!'
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
 })
 
-test('should return undefined when no template', (t) => {
+test('should return undefined when no template', async (t) => {
   const props = {}
   const data = {
     description: 'Bergen by night',
@@ -247,7 +247,20 @@ test('should return undefined when no template', (t) => {
   }
   const expected = undefined
 
-  const ret = template(props)(options)(data, state)
+  const ret = await template(props)(options)(data, state)
 
   t.is(ret, expected)
+})
+
+test('should apply template in array', async (t) => {
+  const props = { template: '{{description}}. By {{artist}}' }
+  const data = [{
+    description: 'Bergen by night',
+    artist: 'John F.',
+  }]
+  const expected = ['Bergen by night. By John F.']
+
+  const ret = await template(props)(options)(data, state)
+
+  t.deepEqual(ret, expected)
 })

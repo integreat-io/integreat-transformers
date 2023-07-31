@@ -1,7 +1,9 @@
 import mapTransform from 'map-transform'
 
 export function getPathOrData(path?: string) {
-  return typeof path === 'string' ? mapTransform(path) : (data: unknown) => data
+  return typeof path === 'string'
+    ? mapTransform(path)
+    : async (data: unknown) => data
 }
 
 export function getPathOrDefault(
@@ -10,12 +12,12 @@ export function getPathOrDefault(
   predicate = (data: unknown) => data !== undefined
 ) {
   if (typeof path !== 'string') {
-    return () => def
+    return async () => def
   }
   const getter = mapTransform(path, { nonvalues: [undefined] })
 
-  return function getOrDefault(data: unknown) {
-    const value = getter(data)
+  return async function getOrDefault(data: unknown) {
+    const value = await getter(data)
     return predicate(value) ? value : def
   }
 }

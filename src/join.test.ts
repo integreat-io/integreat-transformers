@@ -22,17 +22,17 @@ tests to make sure the functinionality is reversed.
 
 // Tests -- forward
 
-test('should join a string by a separator char', (t) => {
+test('should join a string by a separator char', async (t) => {
   const value = ['john', 'liz', 'benny']
   const sep = ','
   const expected = 'john,liz,benny'
 
-  const ret = join({ sep })(options)(value, state)
+  const ret = await join({ sep })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
 
-test('should join segmented strings', (t) => {
+test('should join segmented strings', async (t) => {
   const value = [
     'A longer s',
     'tring to s',
@@ -45,24 +45,24 @@ test('should join segmented strings', (t) => {
   const expected =
     'A longer string to split up in smaller parts by a given size'
 
-  const ret = join({ size })(options)(value, state)
+  const ret = await join({ size })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
 
 // Tests -- reverse
 
-test('should split a string by a separator char in reverse', (t) => {
+test('should split a string by a separator char in reverse', async (t) => {
   const value = 'john,liz,benny'
   const sep = ','
   const expected = ['john', 'liz', 'benny']
 
-  const ret = join({ sep })(options)(value, stateRev)
+  const ret = await join({ sep })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
 
-test('should split string into segments in reverse', (t) => {
+test('should split string into segments in reverse', async (t) => {
   const value = 'A longer string to split up in smaller parts by a given size'
   const size = 10
   const expected = [
@@ -74,7 +74,7 @@ test('should split string into segments in reverse', (t) => {
     'given size',
   ]
 
-  const ret = join({ size })(options)(value, stateRev)
+  const ret = await join({ size })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })

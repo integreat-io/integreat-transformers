@@ -1,4 +1,3 @@
-import type { Transformer } from 'integreat'
 import arrToObject from './arrToObject.js'
 import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'
@@ -29,8 +28,9 @@ import unique from './unique.js'
 import uppercase from './uppercase.js'
 import uriPart from './uriPart.js'
 import validate from './validate.js'
+import type { Transformer, AsyncTransformer } from 'map-transform/types.js'
 
-const transformers: Record<string, Transformer> = {
+const transformers: Record<string, Transformer | AsyncTransformer> = {
   arrToObject,
   base64,
   base64Decode,

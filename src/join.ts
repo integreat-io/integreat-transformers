@@ -1,11 +1,11 @@
 import split, { Props } from './split.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
-const transformer: Transformer = function prepareJoin(props: Props) {
+const transformer: AsyncTransformer = function prepareJoin(props: Props) {
   return (options) => {
     const fn = split(props)(options)
 
-    return function (data, state) {
+    return async function (data, state) {
       return fn(data, { ...state, rev: !state.rev })
     }
   }

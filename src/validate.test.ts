@@ -22,92 +22,92 @@ const options = {}
 
 // Test
 
-test('should return true when value at path validates', (t) => {
+test('should return true when value at path validates', async (t) => {
   const schema = { type: 'string' }
   const path = 'item.value'
   const data = { item: { value: 'theValue' } }
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.true(ret)
 })
 
-test('should return true when value at path validates in reverse', (t) => {
+test('should return true when value at path validates in reverse', async (t) => {
   const schema = { type: 'string' }
   const path = 'item.value'
   const data = { item: { value: 'theValue' } }
 
-  const ret = validate({ path, schema })(options)(data, stateRev)
+  const ret = await validate({ path, schema })(options)(data, stateRev)
 
   t.true(ret)
 })
 
-test('should return false when value at path fails validation', (t) => {
+test('should return false when value at path fails validation', async (t) => {
   const schema = { type: 'string' }
   const path = 'item.value'
   const data = { item: { value: 3 } }
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.false(ret)
 })
 
-test('should validate entire array', (t) => {
+test('should validate entire array', async (t) => {
   const schema = { type: 'array' }
   const path = 'item.value'
   const data = { item: { value: ['firstValue', 'secondValue'] } }
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.true(ret)
 })
 
-test('should validate entiry array items according to json schema sec', (t) => {
+test('should validate entiry array items according to json schema sec', async (t) => {
   const schema = { items: { type: 'string' }, type: 'array' }
   const path = 'item.value'
   const data = { item: { value: ['firstValue', 'secondValue'] } }
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.true(ret)
 })
 
-test('should return false when path does not exist on data', (t) => {
+test('should return false when path does not exist on data', async (t) => {
   const schema = { type: 'string' }
   const path = 'item.value'
   const data = {}
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.false(ret)
 })
 
-test('should return true for non-existing path when schema still validates', (t) => {
+test('should return true for non-existing path when schema still validates', async (t) => {
   const schema = {}
   const path = 'item.value'
   const data = {}
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.true(ret)
 })
 
-test('should return true when given no schema', (t) => {
+test('should return true when given no schema', async (t) => {
   const schema = undefined
   const path = 'item.value'
   const data = { item: { value: 'theValue' } }
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.true(ret)
 })
 
-test('should return true when schema is true', (t) => {
+test('should return true when schema is true', async (t) => {
   const schema = true
   const path = 'item.value'
   const data = { item: { value: 'theValue' } }
 
-  const ret = validate({ path, schema })(options)(data, state)
+  const ret = await validate({ path, schema })(options)(data, state)
 
   t.true(ret)
 })

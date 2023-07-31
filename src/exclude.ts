@@ -1,5 +1,5 @@
 import { getPathOrDefault } from './utils/getters.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string
@@ -9,16 +9,16 @@ export interface Props extends Record<string, unknown> {
 const ensureArray = <T>(value: T | T[]): T[] =>
   Array.isArray(value) ? value : [value]
 
-const transformer: Transformer = function exclude({
+const transformer: AsyncTransformer = function exclude({
   path,
   excludePath,
 }: Props) {
   const getArrFn = getPathOrDefault(path)
   const getExcludeFn = getPathOrDefault(excludePath)
 
-  return () => (data: unknown) => {
-    const arr = ensureArray(getArrFn(data))
-    const exclude = ensureArray(getExcludeFn(data))
+  return () => async (data: unknown) => {
+    const arr = ensureArray(await getArrFn(data))
+    const exclude = ensureArray(await getExcludeFn(data))
     return arr.filter((value) => !exclude.includes(value))
   }
 }

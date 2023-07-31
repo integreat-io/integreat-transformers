@@ -1,8 +1,8 @@
-import mapAny from 'map-any'
+import mapAny from 'map-any/async.js'
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isNumeric } from './utils/is.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   operator?: string
@@ -31,7 +31,7 @@ function prepareMath({
   flip = false,
 }: Props) {
   if (typeof opValue !== 'number' && typeof opPath !== 'string') {
-    return () => (value: unknown) =>
+    return () => async (value: unknown) =>
       typeof value === 'number' ? value : undefined
   }
 
@@ -39,9 +39,9 @@ function prepareMath({
   const opValueGetter = getPathOrDefault(opPath, opValue, isNumeric)
 
   return (rev: boolean) =>
-    function doTheMath(data: unknown) {
-      const value = parseNum(valueGetter(data))
-      const opValue = parseNum(opValueGetter(data))
+    async function doTheMath(data: unknown) {
+      const value = parseNum(await valueGetter(data))
+      const opValue = parseNum(await opValueGetter(data))
 
       if (
         typeof value !== 'number' ||
@@ -69,10 +69,10 @@ function prepareMath({
     }
 }
 
-const transformer: Transformer = function mathTransformer(props: Props) {
+const transformer: AsyncTransformer = function mathTransformer(props: Props) {
   const doTheMath = prepareMath(props)
   return () =>
-    (value, { rev = false }) =>
-      mapAny(doTheMath(rev))(value)
+    async (value, { rev = false }) =>
+      await mapAny(doTheMath(rev))(value)
 }
 export default transformer

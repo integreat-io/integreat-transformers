@@ -1,7 +1,7 @@
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isString, isNumber, isNumeric } from './utils/is.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string
@@ -72,7 +72,7 @@ function bySepRev(value: unknown, sep: string) {
   return value
 }
 
-const transformer: Transformer = function prepareSplit(props: Props) {
+const transformer: AsyncTransformer = function prepareSplit(props: Props) {
   const valueGetter = getPathOrData(props.path)
   const sizeGetter = getPathOrDefault(props.sizePath, props.size, isNumeric)
   const sepGetter = getPathOrDefault(
@@ -82,10 +82,10 @@ const transformer: Transformer = function prepareSplit(props: Props) {
   )
 
   return () =>
-    function split(data: unknown, { rev: isRev = false }): unknown {
-      const size = parseNum(sizeGetter(data))
-      const sep = numberToString(sepGetter(data))
-      const value = numberToString(valueGetter(data))
+    async function split(data: unknown, { rev: isRev = false }) {
+      const size = parseNum(await sizeGetter(data))
+      const sep = numberToString(await sepGetter(data))
+      const value = numberToString(await valueGetter(data))
 
       if (isNumber(size)) {
         return isRev ? bySizeRev(value, size) : bySizeFwd(value, size)

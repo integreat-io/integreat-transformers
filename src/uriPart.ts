@@ -1,6 +1,6 @@
 import mapAny from 'map-any'
 import { isDate } from './utils/is.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 const uriPart: Transformer = () => () => (value, state) =>
   mapAny(function (value) {
@@ -16,6 +16,6 @@ const uriPart: Transformer = () => () => (value, state) =>
     }
 
     return state.rev ? encodeURIComponent(part) : decodeURIComponent(part)
-  }, value)
+  })(value)
 
 export default uriPart

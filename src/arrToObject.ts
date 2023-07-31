@@ -1,12 +1,12 @@
 import objectToArr, { Props } from './objectToArr.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
-const transformer: Transformer = function prepareJoin(props: Props) {
+const transformer: AsyncTransformer = function prepareJoin(props: Props) {
   return (options) => {
     const fn = objectToArr(props)(options)
 
-    return function (data, state) {
-      return fn(data, { ...state, rev: !state.rev })
+    return async function (data, state) {
+      return await fn(data, { ...state, rev: !state.rev })
     }
   }
 }

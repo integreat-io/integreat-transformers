@@ -1,7 +1,7 @@
 import Mustache from 'mustache'
 import mapAny from 'map-any'
 import { defToDataMapper } from 'map-transform/definitionHelpers.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 interface Props extends Record<string, unknown> {
   template?: string
@@ -10,11 +10,11 @@ interface Props extends Record<string, unknown> {
 
 function parseAndCreateGenerator(templateStr: string) {
   Mustache.parse(templateStr) // Mustache will keep the parsed template in a cache
-  return (data: unknown) =>
-    mapAny((data: unknown) => Mustache.render(templateStr, data), data)
+  return async (data: unknown) =>
+    mapAny((data: unknown) => Mustache.render(templateStr, data))(data)
 }
 
-const transformer: Transformer = function template({
+const transformer: AsyncTransformer = function template({
   template: templateStr,
   templatePath,
 }: Props) {
@@ -26,8 +26,12 @@ const transformer: Transformer = function template({
     // both create the generator and run it
     const getFn = defToDataMapper(templatePath)
 
-    return () => (data, state) => {
-      const templateStr = getFn(data, { ...state, rev: false, flip: false })
+    return () => async (data, state) => {
+      const templateStr = await getFn(data, {
+        ...state,
+        rev: false,
+        flip: false,
+      })
       if (typeof templateStr === 'string') {
         return parseAndCreateGenerator(templateStr)(data)
       }
@@ -35,7 +39,7 @@ const transformer: Transformer = function template({
     }
   }
 
-  return () => () => undefined
+  return () => async () => undefined
 }
 
 export default transformer

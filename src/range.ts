@@ -1,7 +1,7 @@
 import { getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isNumeric, isNumber } from './utils/is.js'
-import type { Transformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   start?: unknown
@@ -26,16 +26,16 @@ const generateStep = function* (
   }
 }
 
-const transformer: Transformer = function prepareRange(props: Props) {
+const transformer: AsyncTransformer = function prepareRange(props: Props) {
   const startGetter = getPathOrDefault(props.startPath, props.start, isNumeric)
   const endGetter = getPathOrDefault(props.endPath, props.end, isNumeric)
   const stepGetter = getPathOrDefault(props.stepPath, props.step, isNumeric)
 
   return () =>
-    function range(data: unknown): number[] | undefined {
-      const start = parseNum(startGetter(data))
-      const end = parseNum(endGetter(data))
-      const step = parseNum(stepGetter(data)) || 1
+    async function range(data: unknown): Promise<number[] | undefined> {
+      const start = parseNum(await startGetter(data))
+      const end = parseNum(await endGetter(data))
+      const step = parseNum(await stepGetter(data)) || 1
 
       if (!isNumber(start) || !isNumber(end) || !isNumber(step)) {
         return undefined

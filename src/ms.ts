@@ -1,11 +1,10 @@
 import { castDate } from './date.js'
-import { isDate } from './utils/is.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 const transformer: Transformer = () => () =>
   function ms(value: unknown): number | Date | null | undefined {
-    const date = castDate()(value)
-    return isDate(date) ? date?.getTime() : undefined
+    const date = castDate(value)
+    return date?.isValid ? date?.toMillis() : undefined
   }
 
 export default transformer
