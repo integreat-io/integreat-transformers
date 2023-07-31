@@ -179,8 +179,8 @@ parsing a date (when coming from a service), and to modify the date itself
 - `subtract`: Subtracts the number of time intervals given by a period object
   (see below) from a service, and adds when going to a service.
 - `set`: Sets a part of the date/time to the value given by an object in the
-  same format as a period object (see below). E.g. `{ type: 'day', value: 1 }`
-  will return the first in the month from the given date.
+  same format as a period object (see below). E.g. `{ day: 1 }` will return the
+  first in the month from the given date.
 
 A period object has one or more keys refering to a time interval (see valid
 keywords below), with the value specifying the number of time intervals (for
