@@ -37,6 +37,7 @@ the transformers set as properties:
 - [`string`](#string)
 - [`sum`](#sum)
 - [`template`](#template)
+- [`trim`](#trim)
 - [`truncate`](#truncate)
 - [`unique`](#unique)
 - [`uppercase`](#uppercase)
@@ -467,6 +468,11 @@ yield `0`.
 ### `template`
 
 Documentation coming ... :S
+
+### `trim`
+
+Will trim whitespace from the beginning and end of a string, or return it
+untouched if it's not a string.
 
 ### `truncate`
 
