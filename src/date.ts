@@ -133,31 +133,33 @@ export function castDateWithProps(props: Props = {}) {
   return async function doCastDate(data: unknown) {
     const value = await pathGetter(data)
     const date = castDate(value, zone, format, isSeconds)
-    return date
-      ? (await modifyDate(date, add, subtract, set, data)).toJSDate()
-      : date
+    return date ? await modifyDate(date, add, subtract, set, data) : date
+  }
+}
+
+export function castDateWithPropsJS(props: Props = {}) {
+  const cast = castDateWithProps(props)
+
+  return async function doCastDate(data: unknown) {
+    const dateTime = await cast(data)
+    return dateTime && dateTime.isValid ? dateTime.toJSDate() : dateTime
   }
 }
 
 function format(props: Props) {
-  const { tz: zone, format: formatStr, path, ...modifiers } = props
+  const { format: formatStr, path, ...modifiers } = props
   const isSeconds = props.isSeconds === true // Make sure this is true and not just truthy
   const setPath = typeof path === 'string' ? `>${path}` : undefined
   const pathSetter = getPathOrData(setPath) // Works as a setter due to the `>`
 
   return async function doFormatDate(value: unknown) {
-    const date = await castDateWithProps(modifiers)(value)
-    if (!isDate(date) || Number.isNaN(date.getTime())) {
+    const dateTime = await castDateWithProps(modifiers)(value)
+    if (!dateTime || !dateTime.isValid) {
       return undefined
     }
 
     if (!formatStr && !isSeconds) {
-      return await pathSetter(date)
-    }
-
-    let dateTime = DateTime.fromJSDate(date)
-    if (zone) {
-      dateTime = dateTime.setZone(zone)
+      return await pathSetter(dateTime.toJSDate())
     }
 
     if (formatStr === 'iso') {
@@ -185,12 +187,12 @@ export const formatDate: AsyncTransformer = function transformDate({
 
   // Format regardless of direction
   return () => async (data: unknown, _state: State) =>
-    await formatFn(castDateWithProps()(data))
+    await formatFn(castDateWithPropsJS()(data))
 }
 
 const transformer: AsyncTransformer = function transformDate(props: Props) {
   const formatFn = mapAny(format(revProps(props)))
-  const castFn = mapAny(castDateWithProps(props))
+  const castFn = mapAny(castDateWithPropsJS(props))
 
   // Cast from service and format to service
   // Note: We're casting value from Integreat too, in case it arrives as an ISO

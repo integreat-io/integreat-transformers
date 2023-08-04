@@ -344,7 +344,7 @@ test('should add a time period for subtract in reverse', async (t) => {
   const period = { day: 1 }
   const format = 'iso'
   const tz = 'America/Nassau'
-  const expected = '2022-11-06T14:43:11.000-05:00'
+  const expected = '2022-11-06T15:43:11.000-05:00'
 
   const ret = await date({ format, tz, subtract: period })(options)(
     value,
@@ -417,7 +417,7 @@ test('should add a time period when formatting date', async (t) => {
   const period = { day: 1 }
   const format = "dd.MM.yyyy' kl 'HH:mm"
   const tz = 'America/Nassau'
-  const expected = '06.11.2022 kl 14:43'
+  const expected = '06.11.2022 kl 15:43'
 
   const ret = await formatDate({ tz, add: period, format })(options)(
     value,
