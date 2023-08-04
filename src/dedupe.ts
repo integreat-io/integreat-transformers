@@ -1,4 +1,4 @@
-import type { AsyncTransformer } from 'map-transform/types.js'
+import type { AsyncTransformer } from 'integreat'
 import { isArray } from './utils/is.js'
 import { getPathOrDefault } from './utils/getters.js'
 

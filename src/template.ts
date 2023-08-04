@@ -1,7 +1,7 @@
 import Mustache from 'mustache'
 import mapAny from 'map-any'
 import { defToDataMapper } from 'map-transform/definitionHelpers.js'
-import type { AsyncTransformer } from 'map-transform/types.js'
+import type { AsyncTransformer } from 'integreat'
 
 interface Props extends Record<string, unknown> {
   template?: string

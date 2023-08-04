@@ -1,4 +1,4 @@
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 export interface Props {
   precision?: number | 'floor' | 'ceil'
@@ -28,8 +28,8 @@ const getNumber = (value: unknown): number | undefined =>
   typeof value === 'number'
     ? value
     : typeof value === 'string'
-    ? Number.parseFloat(value)
-    : undefined
+      ? Number.parseFloat(value)
+      : undefined
 
 const transformer: Transformer = function round({
   precision,
@@ -39,10 +39,10 @@ const transformer: Transformer = function round({
     precision === 'floor'
       ? roundByFloor
       : precision === 'ceil'
-      ? roundByCeil
-      : roundTowardsInfinity
-      ? roundByFactorTowardsInf
-      : roundByFactorTowardsZero
+        ? roundByCeil
+        : roundTowardsInfinity
+          ? roundByFactorTowardsInf
+          : roundByFactorTowardsZero
   const factor = typeof precision === 'number' ? 10 ** precision : 1
 
   return () =>

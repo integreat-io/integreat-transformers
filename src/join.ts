@@ -1,5 +1,5 @@
 import split, { Props } from './split.js'
-import type { AsyncTransformer } from 'map-transform/types.js'
+import type { AsyncTransformer } from 'integreat'
 
 const transformer: AsyncTransformer = function prepareJoin(props: Props) {
   return (options) => {

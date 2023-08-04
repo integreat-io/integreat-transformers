@@ -1,5 +1,5 @@
 import { isString, isArray, isNumber } from './utils/is.js'
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 const transformer: Transformer = function prepareSize() {
   return () =>
@@ -7,10 +7,10 @@ const transformer: Transformer = function prepareSize() {
       return isNumber(data)
         ? String(data).length
         : isString(data) || isArray(data)
-        ? data.length
-        : data === null || data === undefined
-        ? 0
-        : 1
+          ? data.length
+          : data === null || data === undefined
+            ? 0
+            : 1
     }
 }
 

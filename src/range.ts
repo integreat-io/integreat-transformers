@@ -1,7 +1,7 @@
 import { getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isNumeric, isNumber } from './utils/is.js'
-import type { AsyncTransformer } from 'map-transform/types.js'
+import type { AsyncTransformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   start?: unknown

@@ -1,6 +1,6 @@
 import mapAny from 'map-any'
 import { isDate } from './utils/is.js'
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   precision?: number
@@ -39,7 +39,7 @@ export const castNumber = (precision?: number) => {
 
 const transformer: Transformer =
   ({ precision }: Props) =>
-  () =>
-    mapAny(castNumber(precision))
+    () =>
+      mapAny(castNumber(precision))
 
 export default transformer

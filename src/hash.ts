@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 const replaceRegex = /[+/=]/g
 

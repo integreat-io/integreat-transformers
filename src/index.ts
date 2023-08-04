@@ -29,7 +29,7 @@ import unique from './unique.js'
 import uppercase from './uppercase.js'
 import uriPart from './uriPart.js'
 import validate from './validate.js'
-import type { Transformer, AsyncTransformer } from 'map-transform/types.js'
+import type { Transformer, AsyncTransformer } from 'integreat'
 
 const transformers: Record<string, Transformer | AsyncTransformer> = {
   arrToObject,

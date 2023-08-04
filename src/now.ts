@@ -1,4 +1,4 @@
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 const transformer: Transformer = () => () => () => new Date()
 

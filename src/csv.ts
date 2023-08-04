@@ -3,7 +3,7 @@ import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
 import { isNotEmpty, isObject } from './utils/is.js'
 import xor from './utils/xor.js'
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   delimiter?: string
@@ -48,9 +48,9 @@ const sortFields = ([keyA]: [string, unknown], [keyB]: [string, unknown]) => {
 const expandValueArray = (key: string, value: unknown) =>
   Array.isArray(value)
     ? value.reduce(
-        (obj, val, index) => ({ ...obj, [`${key}-${index + 1}`]: val }),
-        {}
-      )
+      (obj, val, index) => ({ ...obj, [`${key}-${index + 1}`]: val }),
+      {}
+    )
     : { [key]: value }
 
 const reorderFields = <T = unknown>(
@@ -83,14 +83,14 @@ const extractColumns = (
 const extractFields = (row: unknown) =>
   isObject(row)
     ? Object.entries(row)
-        .sort(sortFields)
-        .reduce(
-          (object, [key, value]) => ({
-            ...object,
-            ...expandValueArray(key, value),
-          }),
-          {}
-        )
+      .sort(sortFields)
+      .reduce(
+        (object, [key, value]) => ({
+          ...object,
+          ...expandValueArray(key, value),
+        }),
+        {}
+      )
     : undefined
 
 const createColumnKey = (index: number, headers: string[], prefix: string) =>
@@ -98,14 +98,14 @@ const createColumnKey = (index: number, headers: string[], prefix: string) =>
 
 const normalizeLine =
   (columnPrefix = 'col', headers: string[] = []) =>
-  (fields: string[]) =>
-    fields.reduce(
-      (item, value, index) => ({
-        ...item,
-        [createColumnKey(index, headers, columnPrefix)]: value,
-      }),
-      {}
-    )
+    (fields: string[]) =>
+      fields.reduce(
+        (item, value, index) => ({
+          ...item,
+          [createColumnKey(index, headers, columnPrefix)]: value,
+        }),
+        {}
+      )
 
 const normalizeColumns = (cols: string[]) =>
   cols.map((col) => col.replace(/[\s\.]+/g, '-'))

@@ -1,5 +1,5 @@
 import mapAny from 'map-any'
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 const castBoolean = (value: unknown) => {
   if (value === null || value === undefined) {

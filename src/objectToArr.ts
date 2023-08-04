@@ -1,7 +1,7 @@
 import mapTransform from 'map-transform'
 import { ensureArray } from './utils/array.js'
 import { isObject } from './utils/is.js'
-import type { AsyncTransformer } from 'map-transform/types.js'
+import type { AsyncTransformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
   keys?: string[]

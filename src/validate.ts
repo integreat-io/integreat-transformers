@@ -1,7 +1,7 @@
 import ajv from 'ajv'
 import { getPathOrData } from './utils/getters.js'
 import { isObject } from './utils/is.js'
-import type { AsyncTransformer } from 'map-transform/types.js'
+import type { AsyncTransformer } from 'integreat'
 
 const Ajv = ajv.default
 

@@ -1,5 +1,5 @@
 import mapAny from 'map-any'
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 interface Props extends Record<string, unknown> {
   from?: string

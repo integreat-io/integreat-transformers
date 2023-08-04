@@ -6,6 +6,10 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 [![npm Version](https://img.shields.io/npm/v/integreat-transformers.svg)](https://www.npmjs.com/package/integreat-transformers)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dfebac9f3541a519ccab/maintainability)](https://codeclimate.com/github/integreat-io/integreat-transformers/maintainability)
 
+## Prerequisits
+
+Requires node v18 and Integreat v1.0.
+
 ## Transformers
 
 The package consists of several transformers that are exported as an object with

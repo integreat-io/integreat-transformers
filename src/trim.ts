@@ -1,4 +1,4 @@
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 const trim: Transformer = () => () => (value, _context) =>
   typeof value === 'string' ? value.trim() : value

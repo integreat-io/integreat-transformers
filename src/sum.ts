@@ -1,5 +1,5 @@
 import { parseNum } from './utils/cast.js'
-import type { Transformer } from 'map-transform/types.js'
+import type { Transformer } from 'integreat'
 
 function add(sum: number, value: unknown) {
   const num = parseNum(value)
