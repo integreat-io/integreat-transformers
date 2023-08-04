@@ -25,6 +25,7 @@ the transformers set as properties:
 - [`exclude`](#exclude)
 - [`formatDate`](#formatDate)
 - [`hash`](#hash)
+- [`integer`](#integer)
 - [`join`](#join)
 - [`lowercase`](#lowercase)
 - [`math`](#math)
@@ -281,6 +282,12 @@ be untouched, everything else will be forced to a string before hashing.
 
 In the future, this transform may also create hashes of objects, but for now an
 object will be the hash of `[object Object]`. :(
+
+### `integer`
+
+Cast the given value to an integer when possible. This is just a shortcut for
+the `number` transformer with `precision: 0`, so refer to
+[its documentation](#number) for more details.
 
 ### `join`
 
