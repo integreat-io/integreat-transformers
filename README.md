@@ -53,8 +53,8 @@ the transformers set as properties:
 **Note on properties:** Transformers use properties to define their
 behavior. If an object is defined as a transformer, any property not
 prefixed with `$` will become one of the transformer's properties.
-In this documentation, this is referred to as a `step` property or as
-a transformer's "options".
+For example, the `step` or `path` properties. These properties will
+often be referred to as a transformer's "options", in the documentation.
 
 **Note on direction:** Some transformers behave differently depending on
 whether we are transforming data _from_ a service or _to_ a service. This
