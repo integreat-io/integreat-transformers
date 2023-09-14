@@ -50,20 +50,20 @@ the transformers set as properties:
 - [`validate`](#validate)
 - [`xml`](#xml)
 
-**Note on properties:** Transformers access an object of properties that will
-change how the transformer behaves. When defined as transform objects, any
-property not prefixed with `$` will be handed to the transformer as its
-properties. This is what we refer to in this documentation when we talk about
-e.g. the `step` property. We may also refer to the properties as the
-transformer's "options".
+**Note on properties:** Transformers use properties to define their
+behavior. If an object is defined as a transformer, any property not
+prefixed with `$` will become one of the transformer's properties.
+In this documentation, this is referred to as a `step` property or as
+a transformer's "options".
 
-**Note on direction:** Some transformers will behave differently depending on
-whether we are transforming data _from_ a service or _to_ a service. This is
-commented under each transformer, and there will in many cases be an oposite
-transformer that can be used in the reverse direction. However, flipped
-mutation objects will also flip this behavior, and making the transformer work
-as the oposite direction. This will feel natural when you write configs, even
-though might be confusing when reading the documentation.
+**Note on direction:** Some transformers behave differently depending on
+whether we are transforming data _from_ a service or _to_ a service. This
+behavior will be described underneath each transformer (or just below this
+section). In many cases there is a transformer with oposite functionality
+for the reverse direction. However, flipped mutation objects will also flip
+this behavior, and making the transformer work as the oposite direction.
+This will feel natural when you write configs, even though it might be
+confusing when reading the documentation.
 
 ### `arrToObject`
 
