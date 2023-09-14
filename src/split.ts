@@ -1,6 +1,7 @@
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isString, isNumber, isNumeric } from './utils/is.js'
+import xor from './utils/xor.js'
 import type { AsyncTransformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
@@ -82,7 +83,8 @@ const transformer: AsyncTransformer = function prepareSplit(props: Props) {
   )
 
   return () =>
-    async function split(data: unknown, { rev: isRev = false }) {
+    async function split(data: unknown, state) {
+      const isRev = xor(state.rev, state.flip)
       const size = parseNum(await sizeGetter(data))
       const sep = numberToString(await sepGetter(data))
       const value = numberToString(await valueGetter(data))

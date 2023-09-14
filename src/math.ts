@@ -2,6 +2,7 @@ import mapAny from 'map-any/async.js'
 import { getPathOrData, getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isNumeric } from './utils/is.js'
+import xor from './utils/xor.js'
 import type { AsyncTransformer } from 'integreat'
 
 export interface Props extends Record<string, unknown> {
@@ -71,8 +72,9 @@ function prepareMath({
 
 const transformer: AsyncTransformer = function mathTransformer(props: Props) {
   const doTheMath = prepareMath(props)
-  return () =>
-    async (value, { rev = false }) =>
-      await mapAny(doTheMath(rev))(value)
+  return () => async (value, state) => {
+    const isRev = xor(state.rev, state.flip)
+    return await mapAny(doTheMath(isRev))(value)
+  }
 }
 export default transformer

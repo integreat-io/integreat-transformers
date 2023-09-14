@@ -32,6 +32,17 @@ test('should set the values of an array as props on an object', async (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should operate as in reverse when going forward and flipped', async (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const data = { firstname: 'John', middlename: 'B.', lastname: 'Fjon' }
+  const keys = ['firstname', 'middlename', 'lastname']
+  const expected = ['John', 'B.', 'Fjon']
+
+  const ret = await arrToObject({ keys })(options)(data, stateFlipped)
+
+  t.deepEqual(ret, expected)
+})
+
 // Tests -- reverse
 
 test('should extract the values on an object to an array of values in reverse', async (t) => {
@@ -40,6 +51,17 @@ test('should extract the values on an object to an array of values in reverse', 
   const expected = ['John', 'B.', 'Fjon']
 
   const ret = await arrToObject({ keys })(options)(data, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should operate as forward when in reverse and flipped', async (t) => {
+  const stateFlipped = { ...stateRev, flip: true }
+  const data = ['John', 'B.', 'Fjon']
+  const keys = ['firstname', 'middlename', 'lastname']
+  const expected = { firstname: 'John', middlename: 'B.', lastname: 'Fjon' }
+
+  const ret = await arrToObject({ keys })(options)(data, stateFlipped)
 
   t.deepEqual(ret, expected)
 })

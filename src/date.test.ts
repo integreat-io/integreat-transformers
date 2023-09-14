@@ -5,15 +5,15 @@ import date, { formatDate } from './date.js'
 
 // Setup
 
-const operands = {}
+const props = {}
 const options = {}
-const context = {
+const state = {
   rev: false,
   onlyMappedValues: false,
   context: [],
   value: {},
 }
-const contextRev = {
+const stateRev = {
   rev: true,
   onlyMappedValues: false,
   context: [],
@@ -26,17 +26,14 @@ const theDate = new Date('2019-05-22T13:43:11.345Z')
 
 test('should transform values to date', async (t) => {
   t.deepEqual(
-    await date(operands)(options)(
-      new Date('2019-05-22T13:43:11.345Z'),
-      context
-    ),
+    await date(props)(options)(new Date('2019-05-22T13:43:11.345Z'), state),
     theDate
   )
   t.deepEqual(
-    await date(operands)(options)('2019-05-22T15:43:11.345+02:00', context),
+    await date(props)(options)('2019-05-22T15:43:11.345+02:00', state),
     theDate
   )
-  t.deepEqual(await date(operands)(options)(1558532591345, context), theDate)
+  t.deepEqual(await date(props)(options)(1558532591345, state), theDate)
 })
 
 test('should set local dates according to the given time zone', async (t) => {
@@ -44,7 +41,7 @@ test('should set local dates according to the given time zone', async (t) => {
   const tz = 'America/Los_Angeles' // Note this test will always succeed on a computer in this timezone
   const expected = new Date('2019-05-22T20:43:11Z')
 
-  const ret = await date({ tz })(options)(value, context)
+  const ret = await date({ tz })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -55,7 +52,7 @@ test('should parse date from a given format', async (t) => {
   const tz = 'Europe/Oslo'
   const expected = new Date('2019-05-22T16:11:00Z')
 
-  const ret = await date({ format, tz })(options)(value, context)
+  const ret = await date({ format, tz })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -65,7 +62,7 @@ test('should return undefined for invalid format', async (t) => {
   const format = 'What is this format?'
   const expected = undefined
 
-  const ret = await date({ format })(options)(value, context)
+  const ret = await date({ format })(options)(value, state)
 
   t.is(ret, expected)
 })
@@ -75,30 +72,27 @@ test('should treat number as seconds since poc when isSeconds is true', async (t
   const value = 1558532591
   const expected = new Date('2019-05-22T13:43:11Z')
 
-  const ret = await date({ isSeconds })(options)(value, context)
+  const ret = await date({ isSeconds })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
 
 test('should not touch null and undefined', async (t) => {
-  t.is(await date(operands)(options)(null, context), null)
-  t.is(await date(operands)(options)(undefined, context), undefined)
+  t.is(await date(props)(options)(null, state), null)
+  t.is(await date(props)(options)(undefined, state), undefined)
 })
 
 test('should transform illegal values to undefined', async (t) => {
-  t.is(await date(operands)(options)('Not a date', context), undefined)
-  t.is(await date(operands)(options)({}, context), undefined)
+  t.is(await date(props)(options)('Not a date', state), undefined)
+  t.is(await date(props)(options)({}, state), undefined)
   t.is(
-    await date(operands)(options)({ id: '12345', title: 'Wrong' }, context),
+    await date(props)(options)({ id: '12345', title: 'Wrong' }, state),
     undefined
   )
-  t.is(
-    await date(operands)(options)(new Date('Not a date'), context),
-    undefined
-  )
-  t.is(await date(operands)(options)(NaN, context), undefined)
-  t.is(await date(operands)(options)(true, context), undefined)
-  t.is(await date(operands)(options)(false, context), undefined)
+  t.is(await date(props)(options)(new Date('Not a date'), state), undefined)
+  t.is(await date(props)(options)(NaN, state), undefined)
+  t.is(await date(props)(options)(true, state), undefined)
+  t.is(await date(props)(options)(false, state), undefined)
 })
 
 test('should iterate arrays', async (t) => {
@@ -123,7 +117,7 @@ test('should iterate arrays', async (t) => {
     undefined,
   ]
 
-  const ret = await date(operands)(options)(value, context)
+  const ret = await date(props)(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -134,7 +128,7 @@ test('should add a time period', async (t) => {
   const tz = 'America/Nassau'
   const expected = new Date('2022-11-06T18:46:16Z')
 
-  const ret = await date({ tz, add: period })(options)(value, context)
+  const ret = await date({ tz, add: period })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -145,7 +139,7 @@ test('should subtract a time period', async (t) => {
   const tz = 'America/Nassau'
   const expected = new Date('2022-10-24T18:43:11Z')
 
-  const ret = await date({ tz, subtract: period })(options)(value, context)
+  const ret = await date({ tz, subtract: period })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -156,7 +150,7 @@ test('should set a part of the date/time', async (t) => {
   const tz = 'Europe/Oslo'
   const expected = new Date('2022-12-01T00:00:00.000+01:00')
 
-  const ret = await date({ tz, set: period })(options)(value, context)
+  const ret = await date({ tz, set: period })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -167,7 +161,7 @@ test('should set a part of the date/time in UTC', async (t) => {
   const tz = 'Etc/UTC'
   const expected = new Date('2022-12-01T00:00:00.000+00:00')
 
-  const ret = await date({ tz, set: period })(options)(value, context)
+  const ret = await date({ tz, set: period })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -178,7 +172,7 @@ test('should set date/time to UTC with millieseconds', async (t) => {
   const tz = 'Etc/UTC'
   const expected = new Date('2019-05-01T00:00:00Z')
 
-  const ret = await date({ set: period, tz })(options)(value, context)
+  const ret = await date({ set: period, tz })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -190,10 +184,7 @@ test('should set date/time to UTC with seconds', async (t) => {
   const isSeconds = true
   const expected = new Date('2019-05-01T00:00:00Z')
 
-  const ret = await date({ set: period, tz, isSeconds })(options)(
-    value,
-    context
-  )
+  const ret = await date({ set: period, tz, isSeconds })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -204,7 +195,7 @@ test('should set date/time to the first of month in UTC time', async (t) => {
   const tz = 'Etc/UTC'
   const expected = new Date('2022-12-01T00:00:00.000+00:00')
 
-  const ret = await date({ set: period, tz })(options)(value, context)
+  const ret = await date({ set: period, tz })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -216,7 +207,7 @@ test('should parse date on a path', async (t) => {
   const tz = 'Europe/Oslo'
   const expected = new Date('2019-05-22T16:11:00Z')
 
-  const ret = await date({ path, format, tz })(options)(value, context)
+  const ret = await date({ path, format, tz })(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
@@ -228,9 +219,20 @@ test('should add a time period from a path to a date from a path', async (t) => 
   const tz = 'America/Nassau'
   const expected = new Date('2022-11-08T18:43:16Z')
 
-  const ret = await date({ tz, path, add: period })(options)(value, context)
+  const ret = await date({ tz, path, add: period })(options)(value, state)
 
   t.deepEqual(ret, expected)
+})
+
+test('should transform date to ISO string from service when flipped', async (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const value = new Date('2019-05-22T13:43:11.345Z')
+  const format = 'iso'
+  const expected = DateTime.fromJSDate(value).toISO() // Use local zone
+
+  const ret = await date({ format })(options)(value, stateFlipped)
+
+  t.is(ret, expected)
 })
 
 // Tests -- reverse
@@ -239,7 +241,7 @@ test('should not touch date without format string to rev', async (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
   const expected = value
 
-  const ret = await date(operands)(options)(value, contextRev)
+  const ret = await date(props)(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -249,7 +251,7 @@ test('should transform date to ISO string', async (t) => {
   const format = 'iso'
   const expected = DateTime.fromJSDate(value).toISO() // Use local zone
 
-  const ret = await date({ format })(options)(value, contextRev)
+  const ret = await date({ format })(options)(value, stateRev)
 
   t.is(ret, expected)
 })
@@ -260,7 +262,7 @@ test('should transform date to ISO string with time zone', async (t) => {
   const tz = 'America/New_York'
   const expected = '2019-05-22T09:43:11.345-04:00'
 
-  const ret = await date({ format, tz })(options)(value, contextRev)
+  const ret = await date({ format, tz })(options)(value, stateRev)
 
   t.is(ret, expected)
 })
@@ -271,7 +273,7 @@ test('should format date to a given format', async (t) => {
   const tz = 'Europe/Oslo'
   const expected = '22.05.2019 kl 18:11'
 
-  const ret = await date({ format, tz })(options)(value, contextRev)
+  const ret = await date({ format, tz })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -281,7 +283,7 @@ test('should return number in seconds when isSeconds is true', async (t) => {
   const value = new Date('2019-05-22T13:43:11Z')
   const expected = 1558532591
 
-  const ret = await date({ isSeconds })(options)(value, contextRev)
+  const ret = await date({ isSeconds })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -290,7 +292,7 @@ test('should cast date string to Date in reverse', async (t) => {
   const value = '2019-05-22T13:43:11.345Z'
   const expected = new Date('2019-05-22T15:43:11.345+02:00')
 
-  const ret = await date(operands)(options)(value, contextRev)
+  const ret = await date(props)(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -301,7 +303,7 @@ test('should cast from within Integreat without using format and tz', async (t) 
   const tz = 'Europe/Oslo'
   const expected = '22.05.2019 kl 18:11'
 
-  const ret = await date({ format, tz })(options)(value, contextRev)
+  const ret = await date({ format, tz })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -310,7 +312,7 @@ test('should return undefined when not a date', async (t) => {
   const value = null
   const expected = undefined
 
-  const ret = await date(operands)(options)(value, contextRev)
+  const ret = await date(props)(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -319,7 +321,7 @@ test('should return undefined when invalid date', async (t) => {
   const value = new Date('Not a date')
   const expected = undefined
 
-  const ret = await date(operands)(options)(value, contextRev)
+  const ret = await date(props)(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -331,10 +333,7 @@ test('should subtract a time period for add in reverse', async (t) => {
   const tz = 'America/Nassau'
   const expected = '2022-10-24T14:43:11.000-04:00'
 
-  const ret = await date({ format, tz, add: period })(options)(
-    value,
-    contextRev
-  )
+  const ret = await date({ format, tz, add: period })(options)(value, stateRev)
 
   t.is(ret, expected)
 })
@@ -348,7 +347,7 @@ test('should add a time period for subtract in reverse', async (t) => {
 
   const ret = await date({ format, tz, subtract: period })(options)(
     value,
-    contextRev
+    stateRev
   )
 
   t.is(ret, expected)
@@ -361,10 +360,7 @@ test('should set a part of the date/time in reverse', async (t) => {
   const tz = 'Europe/Oslo'
   const expected = '2022-12-01T14:43:11.000+01:00'
 
-  const ret = await date({ format, tz, set: period })(options)(
-    value,
-    contextRev
-  )
+  const ret = await date({ format, tz, set: period })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -375,7 +371,19 @@ test('should transform date to ISO string and set on a path', async (t) => {
   const format = 'iso'
   const expected = { date: DateTime.fromJSDate(value).toISO() } // Use local zone
 
-  const ret = await date({ path, format })(options)(value, contextRev)
+  const ret = await date({ path, format })(options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should parse string to a date in reverse when flipped', async (t) => {
+  const value = '22.05.2019 kl 18:11'
+  const format = "dd.MM.yyyy' kl 'HH:mm"
+  const tz = 'Europe/Oslo'
+  const expected = new Date('2019-05-22T16:11:00Z')
+  const stateFlipped = { ...stateRev, flip: true }
+
+  const ret = await date({ format, tz })(options)(value, stateFlipped)
 
   t.deepEqual(ret, expected)
 })
@@ -386,7 +394,7 @@ test('should format date as ISO string', async (t) => {
   const value = new Date('2019-05-22T13:43:11.345Z')
   const expected = DateTime.fromJSDate(value).toISO() // Use local zone
 
-  const ret = await formatDate(operands)(options)(value, context)
+  const ret = await formatDate(props)(options)(value, state)
 
   t.is(ret, expected)
 })
@@ -397,7 +405,7 @@ test('should format date to a given format in the given timezone', async (t) => 
   const tz = 'Europe/Oslo'
   const expected = '22.05.2019 kl 18:11'
 
-  const ret = await formatDate({ format, tz })(options)(value, contextRev)
+  const ret = await formatDate({ format, tz })(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
@@ -407,7 +415,7 @@ test('should format milliseconds as day of the week', async (t) => {
   const format = 'E'
   const expected = '1'
 
-  const ret = await formatDate({ format })(options)(value, context)
+  const ret = await formatDate({ format })(options)(value, state)
 
   t.is(ret, expected)
 })
@@ -421,7 +429,7 @@ test('should add a time period when formatting date', async (t) => {
 
   const ret = await formatDate({ tz, add: period, format })(options)(
     value,
-    context
+    state
   )
 
   t.deepEqual(ret, expected)
@@ -436,7 +444,7 @@ test('should subtract a time period when formatting date', async (t) => {
 
   const ret = await formatDate({ tz, subtract: period, format })(options)(
     value,
-    context
+    state
   )
 
   t.deepEqual(ret, expected)
@@ -451,7 +459,7 @@ test('should subtract a time period when formatting date in reverse', async (t) 
 
   const ret = await formatDate({ tz, subtract: period, format })(options)(
     value,
-    contextRev
+    stateRev
   )
 
   t.deepEqual(ret, expected)
@@ -466,7 +474,7 @@ test('should set a part of the date/time when formatting date', async (t) => {
 
   const ret = await formatDate({ tz, set: period, format })(options)(
     value,
-    context
+    state
   )
 
   t.deepEqual(ret, expected)

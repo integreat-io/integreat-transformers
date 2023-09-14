@@ -1,5 +1,6 @@
 import mapAny from 'map-any'
 import { castString } from './string.js'
+import xor from './utils/xor.js'
 import type { Transformer } from 'integreat'
 
 function encode(data: unknown) {
@@ -24,6 +25,6 @@ export const base64Encode: Transformer = () => () => (data, _state) =>
   encode(data)
 
 const transformer: Transformer = () => () => (data, state) =>
-  state.rev ? mapAny(encode)(data) : mapAny(decode)(data)
+  xor(state.rev, state.flip) ? mapAny(encode)(data) : mapAny(decode)(data)
 
 export default transformer

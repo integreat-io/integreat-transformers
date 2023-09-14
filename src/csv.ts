@@ -48,9 +48,9 @@ const sortFields = ([keyA]: [string, unknown], [keyB]: [string, unknown]) => {
 const expandValueArray = (key: string, value: unknown) =>
   Array.isArray(value)
     ? value.reduce(
-      (obj, val, index) => ({ ...obj, [`${key}-${index + 1}`]: val }),
-      {}
-    )
+        (obj, val, index) => ({ ...obj, [`${key}-${index + 1}`]: val }),
+        {}
+      )
     : { [key]: value }
 
 const reorderFields = <T = unknown>(
@@ -83,14 +83,14 @@ const extractColumns = (
 const extractFields = (row: unknown) =>
   isObject(row)
     ? Object.entries(row)
-      .sort(sortFields)
-      .reduce(
-        (object, [key, value]) => ({
-          ...object,
-          ...expandValueArray(key, value),
-        }),
-        {}
-      )
+        .sort(sortFields)
+        .reduce(
+          (object, [key, value]) => ({
+            ...object,
+            ...expandValueArray(key, value),
+          }),
+          {}
+        )
     : undefined
 
 const createColumnKey = (index: number, headers: string[], prefix: string) =>
@@ -98,14 +98,14 @@ const createColumnKey = (index: number, headers: string[], prefix: string) =>
 
 const normalizeLine =
   (columnPrefix = 'col', headers: string[] = []) =>
-    (fields: string[]) =>
-      fields.reduce(
-        (item, value, index) => ({
-          ...item,
-          [createColumnKey(index, headers, columnPrefix)]: value,
-        }),
-        {}
-      )
+  (fields: string[]) =>
+    fields.reduce(
+      (item, value, index) => ({
+        ...item,
+        [createColumnKey(index, headers, columnPrefix)]: value,
+      }),
+      {}
+    )
 
 const normalizeColumns = (cols: string[]) =>
   cols.map((col) => col.replace(/[\s\.]+/g, '-'))
@@ -138,10 +138,12 @@ function serialize(data: unknown, props: Props) {
 }
 
 const transformer: Transformer = function csv(props: Props) {
-  return () => (data, state) =>
-    xor(state.rev, props.direction === 'from')
+  return () => (data, state) => {
+    const isRev = xor(state.rev, state.flip)
+    return xor(isRev, props.direction === 'from')
       ? serialize(data, props)
       : normalize(data, props)
+  }
 }
 
 export default transformer
