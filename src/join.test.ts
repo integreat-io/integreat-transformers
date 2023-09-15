@@ -50,6 +50,17 @@ test('should join segmented strings', async (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should join going forward when flipped', async (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const value = 'john,liz,benny'
+  const sep = ','
+  const expected = ['john', 'liz', 'benny']
+
+  const ret = await join({ sep })(options)(value, stateFlipped)
+
+  t.deepEqual(ret, expected)
+})
+
 // Tests -- reverse
 
 test('should split a string by a separator char in reverse', async (t) => {
@@ -75,6 +86,17 @@ test('should split string into segments in reverse', async (t) => {
   ]
 
   const ret = await join({ size })(options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should join in reverse when flipped', async (t) => {
+  const stateFlipped = { ...stateRev, flip: true }
+  const value = ['john', 'liz', 'benny']
+  const sep = ','
+  const expected = 'john,liz,benny'
+
+  const ret = await join({ sep })(options)(value, stateFlipped)
 
   t.deepEqual(ret, expected)
 })

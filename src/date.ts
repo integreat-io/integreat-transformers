@@ -3,7 +3,9 @@ import { DateTime } from 'luxon'
 import mapAny from 'map-any/async.js'
 import { getPathOrData } from './utils/getters.js'
 import { isDate, isNumber } from './utils/is.js'
+import xor from './utils/xor.js'
 import type { AsyncTransformer } from 'integreat'
+import type { State } from 'map-transform/types.js'
 
 const LEGAL_PERIOD_TYPES = [
   'year',
@@ -38,10 +40,6 @@ export interface Props extends Record<string, unknown> {
   subtract?: PeriodObject
   set?: PeriodObject
   path?: string
-}
-
-export interface State {
-  rev?: boolean
 }
 
 const periodStringFromType = (type: string) =>
@@ -198,8 +196,10 @@ const transformer: AsyncTransformer = function transformDate(props: Props) {
   // Note: We're casting value from Integreat too, in case it arrives as an ISO
   // string. This should probably not be necessary, but it happens, so we need
   // to account for it.
-  return () => async (data: unknown, state: State) =>
-    state.rev ? await formatFn(data) : await castFn(data)
+  return () => async (data, state) => {
+    const isRev = xor(state.rev, state.flip)
+    return isRev ? await formatFn(data) : await castFn(data)
+  }
 }
 
 export default transformer

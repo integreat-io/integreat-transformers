@@ -50,11 +50,20 @@ the transformers set as properties:
 - [`validate`](#validate)
 - [`xml`](#xml)
 
-_Note:_ Transformers access an object of properties that will change how the
-transformer behaves. When defined as transform objects, any property not
-prefixed with `$` will be handed to the transformer as its properties. This is
-what we refer to in this documentation when we talk about e.g. the `step`
-property. We may also refer to the properties as the transformer's "options".
+**Note on properties:** Transformers use properties to define their
+behavior. If an object is defined as a transformer, any property not
+prefixed with `$` will become one of the transformer's properties.
+For example, the `step` or `path` properties. These properties will
+often be referred to as a transformer's "options", in the documentation.
+
+**Note on direction:** Some transformers behave differently depending on
+whether we are transforming data _from_ a service or _to_ a service. This
+behavior will be described underneath each transformer (or just below this
+section). In many cases there is a transformer with oposite functionality
+for the reverse direction. However, flipped mutation objects will also flip
+this behavior, and making the transformer work as the oposite direction.
+This will feel natural when you write configs, even though it might be
+confusing when reading the documentation.
 
 ### `arrToObject`
 
@@ -67,10 +76,14 @@ as the values in the pipeline value. Values in the array without corresponding
 order of the keys given in an array of keys on the `keys` property. Keys on the
 object not included in `keys` will be skipped.
 
+In a flipped mutation object, the direction of this transformer is also
+flipped.
+
 ### `base64`
 
 Will decode any base64 string coming _from_ a service, or encode a value with
-base64 going _to_ a service.
+base64 going _to_ a service. In a flipped mutation object, the directions are
+also flipped.
 
 A non-string value will be treated differenlty depending on the direction:
 
@@ -125,6 +138,9 @@ the order of the keys on the object, unless some or all keys match the
 `columnPrefix` or the default `'col'`. In this case, the prefixed keys will
 be sorted in ascending order by their number, before any other keys.
 
+In a flipped mutation object, the direction of this transformer is also
+flipped.
+
 The transformer handles objects with different keys by leaving columns empty
 in the places that other rows has values. The order of the keys will be
 determined with priority to its first occurence, so if a field is missing on the
@@ -157,6 +173,9 @@ The following options are available:
 Going forward – from a service, `date` will try its best at transforming the
 given value to a date, or it returns `undefined`. In reverse – to a service, it
 will format the date according to a given `format`.
+
+In a flipped mutation object, the direction of this transformer is also
+flipped.
 
 - Dates are untouched, unless its an invalid date, which will return `undefined`
 - Numbers are treated as milliseconds since epoc (midnight 1970-01-01), unless
@@ -294,6 +313,9 @@ the `number` transformer with `precision: 0`, so refer to
 This transformer works exactly as the [`split`](#split) transformer, expect that
 the direction is reversed, so refer to [its documentation](#split) below.
 
+In a flipped mutation object, the direction of this transformer is also
+flipped.
+
 ### `lowercase`
 
 Any string will be returned in lowercase, all other values will be untouched.
@@ -320,7 +342,9 @@ a `path` to get data from an object. Also, as an alternative to specifying the
 - The operations works in reverse as well, with `add` subtracting, `multiply`
   dividing, and the other way around
 - Set the `rev` property to `true` to "reverse the reversing", i.e. to apply the
-  defined operation in reverse, and the oposite operation going forward
+  defined operation in reverse, and the oposite operation going forward. This
+  will also be the case in a flipped mutation object (not to be confused with
+  the `flip` property of this transfomrer).
 - If the pipeline value is a string, an attempt will be made to parse a number
   (float) from it
 - If the pipeline value is not a number (or parsed to a number), it will result
@@ -368,6 +392,9 @@ are given as an array in the `keys` property, and are matched in the same order
 as the values in the pipeline value. Values in the array without corresponding
 `keys` will be skipped.
 
+In a flipped mutation object, the direction of this transformer is also
+flipped.
+
 ### `pattern`
 
 Will return `true` or `false` depending on whether the provided regex `pattern`
@@ -405,7 +432,10 @@ the result of `range` will be `undefined`.
 ### `replace`
 
 Will replace the `from` property with the `to` property in the given string
-value. If the value is not a string, it will be passed on untouched.
+value in data _from_ a service, and the other way around in data going _to_ a
+service. In a flipped mutation object, this behavior is reversed.
+
+If the value is not a string, it will be passed on untouched.
 
 ### `round`
 
@@ -458,6 +488,9 @@ using the data directly.
 arrays. When concatinating string, the `sep` or `sepPath` character will be
 used as a separator. If not an array, the value will be returned untouched.
 
+In a flipped mutation object, the direction of this transformer is also
+flipped.
+
 ### `string`
 
 Transforms any given value to a string, according to normal JavaScript behavior,
@@ -479,6 +512,11 @@ yield `0`.
 ### `template`
 
 Documentation coming ... :S
+
+Note that `template` is supposed to have the reverse transformer `parse`, that
+is not implemented yet, so it will do nothing in reverse. The template will be
+applied on data coming from a service or going to a service in a flipped
+mutation object.
 
 ### `trim`
 
@@ -514,7 +552,10 @@ Any string will be returned in uppercase, all other values will be untouched.
 ### `uriPart`
 
 Will uri decode going forward (from a service) and uri encode in reverse (going
-to a service). The uri encoding is done by replacing each instance of certain
+to a service), unless we're in a flipped mutation object, in which case the
+direction is flipped.
+
+The uri encoding is done by replacing each instance of certain
 characters by one, two, three, or four escape sequences representing the UTF-8
 encoding of the character. It is intended for encoding e.g. query param values,
 so characters allowed other places in urls will also be encoded, like `:`, `\`,

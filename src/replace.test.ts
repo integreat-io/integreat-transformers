@@ -5,13 +5,13 @@ import replace from './replace.js'
 // Setup
 
 const options = {}
-const context = {
+const state = {
   onlyMappedValues: false,
   context: [],
   value: {},
   rev: false,
 }
-const contextRev = {
+const stateRev = {
   onlyMappedValues: false,
   context: [],
   value: {},
@@ -21,70 +21,92 @@ const contextRev = {
 // Tests
 
 test('should replace from service', (t) => {
-  const operands = { from: ':', to: '|' }
+  const props = { from: ':', to: '|' }
   const value = 'three:parts:here'
   const expected = 'three|parts|here'
 
-  const ret = replace(operands)(options)(value, context)
+  const ret = replace(props)(options)(value, state)
 
   t.is(ret, expected)
 })
 
 test('should replace to service', (t) => {
-  const operands = { from: ':', to: '|' }
+  const props = { from: ':', to: '|' }
   const value = 'three|parts|here'
   const expected = 'three:parts:here'
 
-  const ret = replace(operands)(options)(value, contextRev)
+  const ret = replace(props)(options)(value, stateRev)
 
   t.is(ret, expected)
 })
 
 test('should replace from service in array', (t) => {
-  const operands = { from: ':', to: '|' }
+  const props = { from: ':', to: '|' }
   const value = ['three:parts:here']
   const expected = ['three|parts|here']
 
-  const ret = replace(operands)(options)(value, context)
+  const ret = replace(props)(options)(value, state)
 
   t.deepEqual(ret, expected)
 })
 
 test('should replace to service in array', (t) => {
-  const operands = { from: ':', to: '|' }
+  const props = { from: ':', to: '|' }
   const value = ['three|parts|here']
   const expected = ['three:parts:here']
 
-  const ret = replace(operands)(options)(value, contextRev)
+  const ret = replace(props)(options)(value, stateRev)
 
   t.deepEqual(ret, expected)
 })
 
-test('should do nothing when operands are missing', (t) => {
-  const operands = {}
+test('should do nothing when props are missing', (t) => {
+  const props = {}
   const value = 'three:parts:here'
   const expected = value
 
-  const ret = replace(operands)(options)(value, context)
+  const ret = replace(props)(options)(value, state)
 
   t.is(ret, expected)
 })
 
 test('should replace to empty string from service', (t) => {
-  const operands = { from: ' ', to: '' }
+  const props = { from: ' ', to: '' }
   const value = 'three parts here'
   const expected = 'threepartshere'
 
-  const ret = replace(operands)(options)(value, context)
+  const ret = replace(props)(options)(value, state)
 
   t.is(ret, expected)
 })
 
 test('should not touch no-strings', (t) => {
-  const operands = { from: ':', to: '|' }
+  const props = { from: ':', to: '|' }
 
-  t.is(replace(operands)(options)(3, context), 3)
-  t.deepEqual(replace(operands)(options)({}, context), {})
-  t.is(replace(operands)(options)(null, context), null)
-  t.is(replace(operands)(options)(undefined, context), undefined)
+  t.is(replace(props)(options)(3, state), 3)
+  t.deepEqual(replace(props)(options)({}, state), {})
+  t.is(replace(props)(options)(null, state), null)
+  t.is(replace(props)(options)(undefined, state), undefined)
+})
+
+test('should act as forward in reverse when flipped', (t) => {
+  const stateFlipped = { ...stateRev, flip: true }
+  const props = { from: ':', to: '|' }
+  const value = 'three:parts:here'
+  const expected = 'three|parts|here'
+
+  const ret = replace(props)(options)(value, stateFlipped)
+
+  t.is(ret, expected)
+})
+
+test('should act as reverse going forward when flipped', (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const props = { from: ':', to: '|' }
+  const value = 'three|parts|here'
+  const expected = 'three:parts:here'
+
+  const ret = replace(props)(options)(value, stateFlipped)
+
+  t.is(ret, expected)
 })

@@ -57,6 +57,17 @@ test('should return empty array when not an object', async (t) => {
   t.deepEqual(await objectToArr({ keys })(options)(undefined, state), [])
 })
 
+test('should operate as in reverse when going forward and flipped', async (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const data = ['John', 'B.', 'Fjon']
+  const keys = ['firstname', 'middlename', 'lastname']
+  const expected = { firstname: 'John', middlename: 'B.', lastname: 'Fjon' }
+
+  const ret = await objectToArr({ keys })(options)(data, stateFlipped)
+
+  t.deepEqual(ret, expected)
+})
+
 // Tests -- reverse
 
 test('should set the values of an array as props on an object in reverse', async (t) => {
@@ -97,4 +108,15 @@ test('should return null when not an array in reverse', async (t) => {
   t.is(await objectToArr({ keys })(options)(new Date(), stateRev), null)
   t.is(await objectToArr({ keys })(options)(null, stateRev), null)
   t.is(await objectToArr({ keys })(options)(undefined, stateRev), null)
+})
+
+test('should operate as forward when in reverse and flipped', async (t) => {
+  const stateFlipped = { ...stateRev, flip: true }
+  const data = { firstname: 'John', middlename: 'B.', lastname: 'Fjon' }
+  const keys = ['firstname', 'middlename', 'lastname']
+  const expected = ['John', 'B.', 'Fjon']
+
+  const ret = await objectToArr({ keys })(options)(data, stateFlipped)
+
+  t.deepEqual(ret, expected)
 })

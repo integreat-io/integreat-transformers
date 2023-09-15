@@ -140,6 +140,20 @@ test('should serialize from service when direction is from', (t) => {
   t.is(ret, expectedData)
 })
 
+test('should serialize array of data from service when flipped', (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const data = [
+    { value: 1, text: 'Several words here', age: 39 },
+    { value: 2, text: 'And more here', age: 45 },
+    { value: 3, text: 'Even more', age: 81 },
+  ]
+  const expectedData = commaString
+
+  const ret = csv({})(options)(data, stateFlipped)
+
+  t.is(ret, expectedData)
+})
+
 // Tests -- to service
 
 test('should serialize array of data', (t) => {
@@ -266,6 +280,20 @@ test('should normalize to service when direction is from', (t) => {
   ]
 
   const ret = csv({ direction })(options)(data, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
+test('should normalize basic csv data to service when flipped', (t) => {
+  const stateFlipped = { ...stateRev, flip: true }
+  const data = commaString
+  const expected = [
+    { col1: '1', col2: 'Several words here', col3: '39' },
+    { col1: '2', col2: 'And more here', col3: '45' },
+    { col1: '3', col2: 'Even more', col3: '81' },
+  ]
+
+  const ret = csv({})(options)(data, stateFlipped)
 
   t.deepEqual(ret, expected)
 })

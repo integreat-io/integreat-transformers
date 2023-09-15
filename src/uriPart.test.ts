@@ -55,3 +55,25 @@ test('should return undefined for other values', (t) => {
   t.is(uriPart(operands)(options)(null, stateRev), undefined)
   t.is(uriPart(operands)(options)(undefined, stateRev), undefined)
 })
+
+test('should act like forward in reverse when flipped', (t) => {
+  const stateFlipped = { ...stateRev, flip: true }
+  const value =
+    "*%5B_type%3D%3D'table'%26%26key%3D%3D%24table%5D%5B0%5D.fields%7Bkey%2Cname%2Ctype%7D"
+  const expected = "*[_type=='table'&&key==$table][0].fields{key,name,type}"
+
+  const ret = uriPart(operands)(options)(value, stateFlipped)
+
+  t.is(ret, expected)
+})
+
+test('should act like reverse going forward when flipped', (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const value = "*[_type=='table'&&key==$table][0].fields{key,name,type}"
+  const expected =
+    "*%5B_type%3D%3D'table'%26%26key%3D%3D%24table%5D%5B0%5D.fields%7Bkey%2Cname%2Ctype%7D"
+
+  const ret = uriPart(operands)(options)(value, stateFlipped)
+
+  t.is(ret, expected)
+})

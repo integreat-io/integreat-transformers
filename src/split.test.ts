@@ -202,6 +202,21 @@ test('should use size prop as a fallback value for sizePath', async (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should split in reverse when flipped', async (t) => {
+  const stateFlipped = { ...stateRev, flip: true }
+  const value = ['An', 'array', 'of', 'words', 'to', 'group', 'in', 'segments']
+  const size = 3
+  const expected = [
+    ['An', 'array', 'of'],
+    ['words', 'to', 'group'],
+    ['in', 'segments'],
+  ]
+
+  const ret = await split({ size })(options)(value, stateFlipped)
+
+  t.deepEqual(ret, expected)
+})
+
 // Tests -- join with size -- reverse
 
 test('should join segmented strings in reverse', async (t) => {
@@ -357,6 +372,30 @@ test('should return other values untouched when splitting by sep', async (t) => 
   t.is(await split({ sep })(options)(date, state), date)
   t.is(await split({ sep })(options)(null, state), null)
   t.is(await split({ sep })(options)(undefined, state), undefined)
+})
+
+test('should join going forward when flipped', async (t) => {
+  const stateFlipped = { ...state, flip: true }
+  const value = [
+    ['An', 'array', 'of'],
+    ['words', 'to', 'group'],
+    ['in', 'segments'],
+  ]
+  const size = 3
+  const expected = [
+    'An',
+    'array',
+    'of',
+    'words',
+    'to',
+    'group',
+    'in',
+    'segments',
+  ]
+
+  const ret = await split({ size })(options)(value, stateFlipped)
+
+  t.deepEqual(ret, expected)
 })
 
 // Tests -- join with separator -- reverse
