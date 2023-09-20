@@ -1,6 +1,5 @@
 import mapAny from 'map-any'
 import { isDate } from './utils/is.js'
-import xor from './utils/xor.js'
 import type { Transformer } from 'integreat'
 
 const isEncodable = (value: unknown): value is string | number | boolean =>
@@ -20,7 +19,7 @@ const uriPart: Transformer = () => () => (value, state) =>
     if (part === undefined) {
       return undefined
     } else {
-      const isRev = xor(state.rev, state.flip)
+      const isRev = state.rev
       return isRev ? encodeURIComponent(part) : decodeURIComponent(String(part))
     }
   })(value)

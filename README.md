@@ -552,8 +552,8 @@ Any string will be returned in uppercase, all other values will be untouched.
 ### `uriPart`
 
 Will uri decode going forward (from a service) and uri encode in reverse (going
-to a service), unless we're in a flipped mutation object, in which case the
-direction is flipped.
+to a service). This transformer is not affected by being in flipped mutation
+object, and will decode from and encode to a service either way.
 
 The uri encoding is done by replacing each instance of certain
 characters by one, two, three, or four escape sequences representing the UTF-8
