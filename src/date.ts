@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DateTime } from 'luxon'
 import mapAny from 'map-any/async.js'
 import { getPathOrData } from './utils/getters.js'
