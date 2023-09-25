@@ -48,6 +48,6 @@
   },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^5.0.0",
-    "integreat": "1.3.4"
+    "integreat": "1.3.6"
   }
 }
