@@ -2,6 +2,7 @@ import Mustache from 'mustache'
 import mapAny from 'map-any'
 import { defToDataMapper } from 'map-transform/definitionHelpers.js'
 import xor from './utils/xor.js'
+import { isNullOrUndefined } from './utils/is.js'
 import type { AsyncTransformer } from 'integreat'
 
 interface Props extends Record<string, unknown> {
@@ -23,6 +24,9 @@ const transformer: AsyncTransformer = function template({
     // We already got a template -- preparse it and return a generator
     const generator = parseAndCreateGenerator(templateStr)
     return () => async (data, state) => {
+      if (isNullOrUndefined(data)) {
+        return undefined
+      }
       const isRev = xor(state.rev, state.flip)
       return isRev ? data : generator(data)
     }

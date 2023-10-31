@@ -18,3 +18,6 @@ export const isNumeric = (value: unknown) => !Number.isNaN(parseNum(value))
 
 export const isArray = (value: unknown): value is unknown[] =>
   Array.isArray(value)
+
+export const isNullOrUndefined = (value: unknown): value is null | undefined =>
+  value === null || value === undefined

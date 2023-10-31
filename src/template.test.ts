@@ -240,6 +240,20 @@ test('should apply template in array', async (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should return undefined when no data', async (t) => {
+  const props = { template: '{{description}}. By {{artist}}' }
+
+  t.is(await template(props)(options)(null, state), undefined)
+  t.is(await template(props)(options)(undefined, state), undefined)
+})
+
+test('should return undefined when no from template on path', async (t) => {
+  const props = { templatePath: 'captionTemplate' }
+
+  t.is(await template(props)(options)(null, state), undefined)
+  t.is(await template(props)(options)(undefined, state), undefined)
+})
+
 // Tests -- reverse
 
 test('should not touch value in reverse, as parsing is not implemented yet', async (t) => {
