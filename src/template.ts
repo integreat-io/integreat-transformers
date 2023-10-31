@@ -25,7 +25,7 @@ const transformer: AsyncTransformer = function template({
     const generator = parseAndCreateGenerator(templateStr)
     return () => async (data, state) => {
       if (isNullOrUndefined(data)) {
-        return undefined
+        data = {}
       }
       const isRev = xor(state.rev, state.flip)
       return isRev ? data : generator(data)

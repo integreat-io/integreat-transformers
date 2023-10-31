@@ -240,11 +240,12 @@ test('should apply template in array', async (t) => {
   t.deepEqual(ret, expected)
 })
 
-test('should return undefined when no data', async (t) => {
+test('should apply template with no data', async (t) => {
   const props = { template: '{{description}}. By {{artist}}' }
+  const expected = '. By '
 
-  t.is(await template(props)(options)(null, state), undefined)
-  t.is(await template(props)(options)(undefined, state), undefined)
+  t.is(await template(props)(options)(null, state), expected)
+  t.is(await template(props)(options)(undefined, state), expected)
 })
 
 test('should return undefined when no from template on path', async (t) => {
