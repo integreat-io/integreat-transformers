@@ -27,11 +27,11 @@ const theDate = new Date('2019-05-22T13:43:11.345Z')
 test('should transform values to date', async (t) => {
   t.deepEqual(
     await date(props)(options)(new Date('2019-05-22T13:43:11.345Z'), state),
-    theDate
+    theDate,
   )
   t.deepEqual(
     await date(props)(options)('2019-05-22T15:43:11.345+02:00', state),
-    theDate
+    theDate,
   )
   t.deepEqual(await date(props)(options)(1558532591345, state), theDate)
 })
@@ -87,7 +87,7 @@ test('should transform illegal values to undefined', async (t) => {
   t.is(await date(props)(options)({}, state), undefined)
   t.is(
     await date(props)(options)({ id: '12345', title: 'Wrong' }, state),
-    undefined
+    undefined,
   )
   t.is(await date(props)(options)(new Date('Not a date'), state), undefined)
   t.is(await date(props)(options)(NaN, state), undefined)
@@ -158,7 +158,7 @@ test('should set a part of the date/time', async (t) => {
 test('should set a part of the date/time in UTC', async (t) => {
   const value = '2022-12-07T14:43:11.153'
   const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
-  const tz = 'Etc/UTC'
+  const tz = 'utc'
   const expected = new Date('2022-12-01T00:00:00.000+00:00')
 
   const ret = await date({ tz, set: period })(options)(value, state)
@@ -169,7 +169,7 @@ test('should set a part of the date/time in UTC', async (t) => {
 test('should set date/time to UTC with millieseconds', async (t) => {
   const value = 1558483205213
   const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
-  const tz = 'Etc/UTC'
+  const tz = 'utc'
   const expected = new Date('2019-05-01T00:00:00Z')
 
   const ret = await date({ set: period, tz })(options)(value, state)
@@ -180,7 +180,7 @@ test('should set date/time to UTC with millieseconds', async (t) => {
 test('should set date/time to UTC with seconds', async (t) => {
   const value = 1558483201
   const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
-  const tz = 'Etc/UTC'
+  const tz = 'utc'
   const isSeconds = true
   const expected = new Date('2019-05-01T00:00:00Z')
 
@@ -192,7 +192,7 @@ test('should set date/time to UTC with seconds', async (t) => {
 test('should set date/time to the first of month in UTC time', async (t) => {
   const value = new Date('2022-12-18 18:43:11')
   const period = { day: 1, hour: 0, minute: 0, second: 0, millisecond: 0 }
-  const tz = 'Etc/UTC'
+  const tz = 'utc'
   const expected = new Date('2022-12-01T00:00:00.000+00:00')
 
   const ret = await date({ set: period, tz })(options)(value, state)
@@ -347,7 +347,7 @@ test('should add a time period for subtract in reverse', async (t) => {
 
   const ret = await date({ format, tz, subtract: period })(options)(
     value,
-    stateRev
+    stateRev,
   )
 
   t.is(ret, expected)
@@ -410,6 +410,17 @@ test('should format date to a given format in the given timezone', async (t) => 
   t.deepEqual(ret, expected)
 })
 
+test('should use Z as timezone for UTC', async (t) => {
+  const value = new Date('2019-05-22T16:11:00Z')
+  const format = 'iso'
+  const tz = 'utc'
+  const expected = '2019-05-22T16:11:00.000Z'
+
+  const ret = await formatDate({ format, tz })(options)(value, stateRev)
+
+  t.deepEqual(ret, expected)
+})
+
 test('should format milliseconds as day of the week', async (t) => {
   const value = 1666569600000
   const format = 'E'
@@ -429,7 +440,7 @@ test('should add a time period when formatting date', async (t) => {
 
   const ret = await formatDate({ tz, add: period, format })(options)(
     value,
-    state
+    state,
   )
 
   t.deepEqual(ret, expected)
@@ -444,7 +455,7 @@ test('should subtract a time period when formatting date', async (t) => {
 
   const ret = await formatDate({ tz, subtract: period, format })(options)(
     value,
-    state
+    state,
   )
 
   t.deepEqual(ret, expected)
@@ -459,7 +470,7 @@ test('should subtract a time period when formatting date in reverse', async (t) 
 
   const ret = await formatDate({ tz, subtract: period, format })(options)(
     value,
-    stateRev
+    stateRev,
   )
 
   t.deepEqual(ret, expected)
@@ -474,7 +485,7 @@ test('should set a part of the date/time when formatting date', async (t) => {
 
   const ret = await formatDate({ tz, set: period, format })(options)(
     value,
-    state
+    state,
   )
 
   t.deepEqual(ret, expected)

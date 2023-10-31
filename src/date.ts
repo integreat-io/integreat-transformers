@@ -62,9 +62,9 @@ const periodFromObject = async (obj: PeriodObject, data?: unknown) =>
         Object.entries(obj).map(async ([key, value]) => [
           periodStringFromType(key),
           await extractPeriodValue(value, data),
-        ])
+        ]),
       )
-    ).filter(([key]) => !!key)
+    ).filter(([key]) => !!key),
   )
 
 async function modifyDate(
@@ -72,7 +72,7 @@ async function modifyDate(
   add?: PeriodObject,
   subtract?: PeriodObject,
   set?: PeriodObject,
-  data?: unknown
+  data?: unknown,
 ) {
   if (add) {
     date = date.plus(await periodFromObject(add, data))
@@ -90,7 +90,7 @@ export function castDate(
   value: unknown,
   zone?: string,
   format?: string,
-  isSeconds = false
+  isSeconds = false,
 ) {
   let date = undefined
 
@@ -162,7 +162,7 @@ function format(props: Props) {
     if (formatStr === 'iso') {
       return await pathSetter(dateTime.toISO())
     } else if (typeof formatStr === 'string') {
-      return await pathSetter(dateTime.toFormat(formatStr!))
+      return await pathSetter(dateTime.toFormat(formatStr))
     } else {
       // isSeconds === true
       return await pathSetter(dateTime.toSeconds())
