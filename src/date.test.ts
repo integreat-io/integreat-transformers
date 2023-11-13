@@ -491,4 +491,14 @@ test('should set a part of the date/time when formatting date', async (t) => {
   t.deepEqual(ret, expected)
 })
 
+test('should format date to number in seconds when isSeconds is true', async (t) => {
+  const isSeconds = true
+  const value = new Date('2019-05-22T13:43:11Z')
+  const expected = 1558532591
+
+  const ret = await formatDate({ isSeconds })(options)(value, state)
+
+  t.deepEqual(ret, expected)
+})
+
 // All other tests should be covered by the rev version of `date`

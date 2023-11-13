@@ -176,11 +176,19 @@ const revProps = ({ add, subtract, ...props }: Props) => ({
   subtract: add,
 })
 
+const defaultFormatStr = (formatStr?: string, isSeconds?: boolean) =>
+  typeof formatStr !== 'string' && !isSeconds ? 'iso' : formatStr
+
 export const formatDate: AsyncTransformer = function transformDate({
   format: formatStr,
   ...props
 }: Props) {
-  const formatFn = mapAny(format({ ...props, format: formatStr || 'iso' }))
+  const formatFn = mapAny(
+    format({
+      ...props,
+      format: defaultFormatStr(formatStr, props.isSeconds),
+    }),
+  )
 
   // Format regardless of direction
   return () => async (data: unknown, _state: State) =>
