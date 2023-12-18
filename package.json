@@ -49,6 +49,6 @@
   "devDependencies": {
     "@integreat/ts-dev-setup": "^5.0.3",
     "@types/luxon": "^3.3.4",
-    "integreat": "1.4.6"
+    "integreat": "1.5.3"
   }
 }
