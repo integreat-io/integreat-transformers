@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import unique from './unique.js'
 
@@ -21,65 +22,65 @@ const options = {}
 
 // Tests
 
-test('should return unique string', (t) => {
+test('should return unique string', () => {
   const ret1 = unique({})(options)(undefined, state)
   const ret2 = unique({})(options)(undefined, state)
 
-  t.is(typeof ret1, 'string')
-  t.is(typeof ret2, 'string')
-  t.not(ret1, ret2)
+  assert.deepEqual(typeof ret1, 'string')
+  assert.deepEqual(typeof ret2, 'string')
+  assert.notEqual(ret1, ret2)
 })
 
-test('should return uuid in lowercase', (t) => {
+test('should return uuid in lowercase', () => {
   const ret1 = unique({ type: 'uuid' })(options)(undefined, state)
   const ret2 = unique({ type: 'uuid' })(options)(undefined, state)
 
-  t.regex(
+  assert.match(
     ret1 as string,
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
   )
-  t.regex(
+  assert.match(
     ret2 as string,
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
   )
-  t.not(ret1, ret2)
+  assert.notEqual(ret1, ret2)
 })
 
-test('should return uuid in lowercase when using alias', (t) => {
+test('should return uuid in lowercase when using alias', () => {
   const ret1 = unique({ type: 'uuidLower' })(options)(undefined, state)
   const ret2 = unique({ type: 'uuidLower' })(options)(undefined, state)
 
-  t.regex(
+  assert.match(
     ret1 as string,
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
   )
-  t.regex(
+  assert.match(
     ret2 as string,
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
   )
-  t.not(ret1, ret2)
+  assert.notEqual(ret1, ret2)
 })
 
-test('should return uuid in uppercase', (t) => {
+test('should return uuid in uppercase', () => {
   const ret1 = unique({ type: 'uuidUpper' })(options)(undefined, state)
   const ret2 = unique({ type: 'uuidUpper' })(options)(undefined, state)
 
-  t.regex(
+  assert.match(
     ret1 as string,
-    /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/
+    /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/,
   )
-  t.regex(
+  assert.match(
     ret2 as string,
-    /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/
+    /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/,
   )
-  t.not(ret1, ret2)
+  assert.notEqual(ret1, ret2)
 })
 
-test('should return unique string in rev', (t) => {
+test('should return unique string in rev', () => {
   const ret1 = unique({})(options)(undefined, stateRev)
   const ret2 = unique({})(options)(undefined, stateRev)
 
-  t.is(typeof ret1, 'string')
-  t.is(typeof ret2, 'string')
-  t.not(ret1, ret2)
+  assert.deepEqual(typeof ret1, 'string')
+  assert.deepEqual(typeof ret2, 'string')
+  assert.notEqual(ret1, ret2)
 })

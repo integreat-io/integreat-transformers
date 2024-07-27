@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import boolean from './boolean.js'
 
@@ -15,25 +16,25 @@ const context = {
 
 // Tests
 
-test('should transform values to boolean', (t) => {
-  t.true(boolean(operands)(options)(true, context))
-  t.false(boolean(operands)(options)(false, context))
-  t.true(boolean(operands)(options)('true', context))
-  t.false(boolean(operands)(options)('false', context))
-  t.true(boolean(operands)(options)(1, context))
-  t.false(boolean(operands)(options)(0, context))
+test('should transform values to boolean', () => {
+  assert.equal(boolean(operands)(options)(true, context), true)
+  assert.equal(boolean(operands)(options)(false, context), false)
+  assert.equal(boolean(operands)(options)('true', context), true)
+  assert.equal(boolean(operands)(options)('false', context), false)
+  assert.equal(boolean(operands)(options)(1, context), true)
+  assert.equal(boolean(operands)(options)(0, context), false)
 })
 
-test('should not touch null and undefined', (t) => {
-  t.is(boolean(operands)(options)(null, context), null)
-  t.is(boolean(operands)(options)(undefined, context), undefined)
+test('should not touch null and undefined', () => {
+  assert.deepEqual(boolean(operands)(options)(null, context), null)
+  assert.deepEqual(boolean(operands)(options)(undefined, context), undefined)
 })
 
-test('should iterate array', (t) => {
+test('should iterate array', () => {
   const value = [true, false, 'true', 'false', 1, 0, undefined, null]
   const expected = [true, false, true, false, true, false, undefined, null]
 
   const ret = boolean(operands)(options)(value, context)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })

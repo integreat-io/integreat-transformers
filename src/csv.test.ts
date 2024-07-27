@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import csv from './csv.js'
 
@@ -29,7 +30,7 @@ const semicolonString = `1;Several words here;39
 
 // Tests -- from service
 
-test('should normalize basic csv data', (t) => {
+test('should normalize basic csv data', () => {
   const data = commaString
   const expected = [
     { col1: '1', col2: 'Several words here', col3: '39' },
@@ -39,10 +40,10 @@ test('should normalize basic csv data', (t) => {
 
   const ret = csv({})(options)(data, state)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should normalize with semicolon', (t) => {
+test('should normalize with semicolon', () => {
   const data = semicolonString
   const expected = [
     { col1: '1', col2: 'Several words here', col3: '39' },
@@ -52,10 +53,10 @@ test('should normalize with semicolon', (t) => {
 
   const ret = csv({ delimiter: ';' })(options)(data, state)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should normalize with customized column prefix', (t) => {
+test('should normalize with customized column prefix', () => {
   const data = commaString
   const expected = [
     { field_1: '1', field_2: 'Several words here', field_3: '39' },
@@ -65,10 +66,10 @@ test('should normalize with customized column prefix', (t) => {
 
   const ret = csv({ columnPrefix: 'field_' })(options)(data, state)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should normalize with header row', (t) => {
+test('should normalize with header row', () => {
   const data = '"Id","Text","Age"\n' + commaString
   const expected = [
     { Id: '1', Text: 'Several words here', Age: '39' },
@@ -78,10 +79,10 @@ test('should normalize with header row', (t) => {
 
   const ret = csv({ headerRow: true })(options)(data, state)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should normalize with rows of different number of columns', (t) => {
+test('should normalize with rows of different number of columns', () => {
   const commaString = `"John F.","45","Fjonveien 18"
     "Mary K.","52","Kvølstadbakken 11","911 88 123","true"
     "Simon P.","23","Praiestakken 21A","904 13 411"`
@@ -105,28 +106,28 @@ test('should normalize with rows of different number of columns', (t) => {
 
   const ret = csv({})(options)(data, state)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
 // Note: This might not be wanted behavior, but it's what we can do for now
-test('should return undefined when csv string is invalid', (t) => {
+test('should return undefined when csv string is invalid', () => {
   const data = '"invalid","csv"\n"file","'
 
   const ret = csv({})(options)(data, state)
 
-  t.is(ret, undefined)
+  assert.deepEqual(ret, undefined)
 })
 
-test('return undefined when data is not a string', async (t) => {
-  t.is(csv({})(options)({}, state), undefined)
-  t.is(csv({})(options)(3, state), undefined)
-  t.is(csv({})(options)(true, state), undefined)
-  t.is(csv({})(options)(new Date(), state), undefined)
-  t.is(csv({})(options)(null, state), undefined)
-  t.is(csv({})(options)(undefined, state), undefined)
+test('return undefined when data is not a string', async () => {
+  assert.deepEqual(csv({})(options)({}, state), undefined)
+  assert.deepEqual(csv({})(options)(3, state), undefined)
+  assert.deepEqual(csv({})(options)(true, state), undefined)
+  assert.deepEqual(csv({})(options)(new Date(), state), undefined)
+  assert.deepEqual(csv({})(options)(null, state), undefined)
+  assert.deepEqual(csv({})(options)(undefined, state), undefined)
 })
 
-test('should serialize from service when direction is from', (t) => {
+test('should serialize from service when direction is from', () => {
   const direction = 'from'
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
@@ -137,10 +138,10 @@ test('should serialize from service when direction is from', (t) => {
 
   const ret = csv({ direction })(options)(data, state)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('should serialize array of data from service when flipped', (t) => {
+test('should serialize array of data from service when flipped', () => {
   const stateFlipped = { ...state, flip: true }
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
@@ -151,12 +152,12 @@ test('should serialize array of data from service when flipped', (t) => {
 
   const ret = csv({})(options)(data, stateFlipped)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
 // Tests -- to service
 
-test('should serialize array of data', (t) => {
+test('should serialize array of data', () => {
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
     { value: 2, text: 'And more here', age: 45 },
@@ -166,10 +167,10 @@ test('should serialize array of data', (t) => {
 
   const ret = csv({})(options)(data, stateRev)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('should serialize with semicolons and no quotation marks', (t) => {
+test('should serialize with semicolons and no quotation marks', () => {
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
     { value: 2, text: 'And more here', age: 45 },
@@ -179,10 +180,10 @@ test('should serialize with semicolons and no quotation marks', (t) => {
 
   const ret = csv({ quoted: false, delimiter: ';' })(options)(data, stateRev)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('should include header row', async (t) => {
+test('should include header row', async () => {
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
     { value: 2, text: 'And more here', age: 45 },
@@ -192,10 +193,10 @@ test('should include header row', async (t) => {
 
   const ret = csv({ headerRow: true })(options)(data, stateRev)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('should serialize data objects with different number of keys', async (t) => {
+test('should serialize data objects with different number of keys', async () => {
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
     {
@@ -214,10 +215,10 @@ test('should serialize data objects with different number of keys', async (t) =>
 
   const ret = csv({})(options)(data, stateRev)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('should order col-keys and put them before other keys', (t) => {
+test('should order col-keys and put them before other keys', () => {
   const data = [
     { col2: 'Several words here', age: 39, col1: 1 },
     { age: 45, col2: 'And more here', col1: 2 },
@@ -230,10 +231,10 @@ test('should order col-keys and put them before other keys', (t) => {
 
   const ret = csv({})(options)(data, stateRev)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('should expand arrays in place', async (t) => {
+test('should expand arrays in place', async () => {
   const data = [
     { age: 39, col1: [1, 'Several words here'] },
     { age: 45, col1: [2, 'And more here'] },
@@ -243,10 +244,10 @@ test('should expand arrays in place', async (t) => {
 
   const ret = csv({})(options)(data, stateRev)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('should skip non-objects', async (t) => {
+test('should skip non-objects', async () => {
   const data = [
     { value: 1, text: 'Several words here', age: 39 },
     null,
@@ -258,19 +259,19 @@ test('should skip non-objects', async (t) => {
 
   const ret = csv({})(options)(data, stateRev)
 
-  t.is(ret, expectedData)
+  assert.deepEqual(ret, expectedData)
 })
 
-test('return undefined when data is not an array', async (t) => {
-  t.is(csv({})(options)('No data', stateRev), undefined)
-  t.is(csv({})(options)(3, stateRev), undefined)
-  t.is(csv({})(options)(true, stateRev), undefined)
-  t.is(csv({})(options)(new Date(), stateRev), undefined)
-  t.is(csv({})(options)(null, stateRev), undefined)
-  t.is(csv({})(options)(undefined, stateRev), undefined)
+test('return undefined when data is not an array', async () => {
+  assert.deepEqual(csv({})(options)('No data', stateRev), undefined)
+  assert.deepEqual(csv({})(options)(3, stateRev), undefined)
+  assert.deepEqual(csv({})(options)(true, stateRev), undefined)
+  assert.deepEqual(csv({})(options)(new Date(), stateRev), undefined)
+  assert.deepEqual(csv({})(options)(null, stateRev), undefined)
+  assert.deepEqual(csv({})(options)(undefined, stateRev), undefined)
 })
 
-test('should normalize to service when direction is from', (t) => {
+test('should normalize to service when direction is from', () => {
   const direction = 'from'
   const data = commaString
   const expected = [
@@ -281,10 +282,10 @@ test('should normalize to service when direction is from', (t) => {
 
   const ret = csv({ direction })(options)(data, stateRev)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should normalize basic csv data to service when flipped', (t) => {
+test('should normalize basic csv data to service when flipped', () => {
   const stateFlipped = { ...stateRev, flip: true }
   const data = commaString
   const expected = [
@@ -295,5 +296,5 @@ test('should normalize basic csv data to service when flipped', (t) => {
 
   const ret = csv({})(options)(data, stateFlipped)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })

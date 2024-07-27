@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import now from './now.js'
 
@@ -21,24 +22,24 @@ const contextRev = {
 
 // Tests
 
-test('should return the current date', (t) => {
+test('should return the current date', () => {
   const before = Date.now()
   const ret = now(operands)(options)(undefined, context)
   const after = Date.now()
 
-  t.true(ret instanceof Date)
-  t.true((ret as Date).getTime() >= before)
-  t.true((ret as Date).getTime() <= after)
+  assert(ret instanceof Date)
+  assert((ret as Date).getTime() >= before)
+  assert((ret as Date).getTime() <= after)
 })
 
-test('should override any value from the pipeline', (t) => {
+test('should override any value from the pipeline', () => {
   const ret = now(operands)(options)({ text: 'Lot of stuff' }, context)
 
-  t.true(ret instanceof Date)
+  assert(ret instanceof Date)
 })
 
-test('should return the current date in reverse', (t) => {
+test('should return the current date in reverse', () => {
   const ret = now(operands)(options)(undefined, contextRev)
 
-  t.true(ret instanceof Date)
+  assert(ret instanceof Date)
 })

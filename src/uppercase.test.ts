@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import uppercase from './uppercase.js'
 
@@ -15,26 +16,26 @@ const state = {
 
 // Tests
 
-test('should return uppercase)', (t) => {
+test('should return uppercase)', () => {
   const value = 'julestjerne'
   const expected = 'JULESTJERNE'
 
   const ret = uppercase(operands)(options)(value, state)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should return null when null', (t) => {
+test('should return null when null', () => {
   const ret = uppercase(operands)(options)(null, state)
 
-  t.is(ret, null)
+  assert.deepEqual(ret, null)
 })
 
-test('should iterate array', (t) => {
+test('should iterate array', () => {
   const value = ['julestjerne', 'påskelilje', undefined]
   const expected = ['JULESTJERNE', 'PÅSKELILJE', undefined]
 
   const ret = uppercase(operands)(options)(value, state)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })

@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import replace from './replace.js'
 
@@ -20,76 +21,76 @@ const stateRev = {
 
 // Tests
 
-test('should replace from service', (t) => {
+test('should replace from service', () => {
   const props = { from: ':', to: '|' }
   const value = 'three:parts:here'
   const expected = 'three|parts|here'
 
   const ret = replace(props)(options)(value, state)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should replace to service', (t) => {
+test('should replace to service', () => {
   const props = { from: ':', to: '|' }
   const value = 'three|parts|here'
   const expected = 'three:parts:here'
 
   const ret = replace(props)(options)(value, stateRev)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should replace from service in array', (t) => {
+test('should replace from service in array', () => {
   const props = { from: ':', to: '|' }
   const value = ['three:parts:here']
   const expected = ['three|parts|here']
 
   const ret = replace(props)(options)(value, state)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should replace to service in array', (t) => {
+test('should replace to service in array', () => {
   const props = { from: ':', to: '|' }
   const value = ['three|parts|here']
   const expected = ['three:parts:here']
 
   const ret = replace(props)(options)(value, stateRev)
 
-  t.deepEqual(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should do nothing when props are missing', (t) => {
+test('should do nothing when props are missing', () => {
   const props = {}
   const value = 'three:parts:here'
   const expected = value
 
   const ret = replace(props)(options)(value, state)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should replace to empty string from service', (t) => {
+test('should replace to empty string from service', () => {
   const props = { from: ' ', to: '' }
   const value = 'three parts here'
   const expected = 'threepartshere'
 
   const ret = replace(props)(options)(value, state)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should not touch no-strings', (t) => {
+test('should not touch no-strings', () => {
   const props = { from: ':', to: '|' }
 
-  t.is(replace(props)(options)(3, state), 3)
-  t.deepEqual(replace(props)(options)({}, state), {})
-  t.is(replace(props)(options)(null, state), null)
-  t.is(replace(props)(options)(undefined, state), undefined)
+  assert.deepEqual(replace(props)(options)(3, state), 3)
+  assert.deepEqual(replace(props)(options)({}, state), {})
+  assert.deepEqual(replace(props)(options)(null, state), null)
+  assert.deepEqual(replace(props)(options)(undefined, state), undefined)
 })
 
-test('should act as forward in reverse when flipped', (t) => {
+test('should act as forward in reverse when flipped', () => {
   const stateFlipped = { ...stateRev, flip: true }
   const props = { from: ':', to: '|' }
   const value = 'three:parts:here'
@@ -97,10 +98,10 @@ test('should act as forward in reverse when flipped', (t) => {
 
   const ret = replace(props)(options)(value, stateFlipped)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should act as reverse going forward when flipped', (t) => {
+test('should act as reverse going forward when flipped', () => {
   const stateFlipped = { ...state, flip: true }
   const props = { from: ':', to: '|' }
   const value = 'three|parts|here'
@@ -108,5 +109,5 @@ test('should act as reverse going forward when flipped', (t) => {
 
   const ret = replace(props)(options)(value, stateFlipped)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })

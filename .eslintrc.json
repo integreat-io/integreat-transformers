@@ -7,7 +7,7 @@
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:promise/recommended",
-    "plugin:security/recommended"
+    "plugin:security/recommended-legacy"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -18,7 +18,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "promise", "security", "node", "ava"],
+  "plugins": ["@typescript-eslint", "promise", "security", "node"],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": 0,
     "no-unused-vars": "off",
@@ -35,7 +35,7 @@
   },
   "overrides": [
     {
-      "files": ["*.test.ts","*.test.js"],
+      "files": ["*.test.ts", "*.test.js"],
       "rules": {
         "node/no-extraneous-import": "off"
       }

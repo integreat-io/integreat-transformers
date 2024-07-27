@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import count from './count.js'
 
@@ -15,54 +16,54 @@ const state = {
 
 // Tests
 
-test('should count the number of items in an array', (t) => {
+test('should count the number of items in an array', () => {
   const data = [1, 3, {}, new Date(), true, 'hello']
   const expected = 6
 
   const ret = count({})(options)(data, state)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should not count null and undefined in an array', (t) => {
+test('should not count null and undefined in an array', () => {
   const data = [1, 3, undefined, {}, new Date(), null, true, 'hello']
   const expected = 6
 
   const ret = count({})(options)(data, state)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should skip provided values when counting', (t) => {
+test('should skip provided values when counting', () => {
   const data = [1, 3, undefined, {}, new Date(), null, true, 'hello']
   const skip = [3, 'hello', '**undefined**']
   const expected = 5
 
   const ret = count({ skip })(options)(data, state)
 
-  t.is(ret, expected)
+  assert.deepEqual(ret, expected)
 })
 
-test('should count a non-array element as 1', (t) => {
-  t.is(count({})(options)({}, state), 1)
-  t.is(count({})(options)(new Date(), state), 1)
-  t.is(count({})(options)(3, state), 1)
-  t.is(count({})(options)('hello', state), 1)
-  t.is(count({})(options)(true, state), 1)
+test('should count a non-array element as 1', () => {
+  assert.deepEqual(count({})(options)({}, state), 1)
+  assert.deepEqual(count({})(options)(new Date(), state), 1)
+  assert.deepEqual(count({})(options)(3, state), 1)
+  assert.deepEqual(count({})(options)('hello', state), 1)
+  assert.deepEqual(count({})(options)(true, state), 1)
 })
 
-test('should count undefined and null as 0', (t) => {
-  t.is(count({})(options)(undefined, state), 0)
-  t.is(count({})(options)(null, state), 0)
+test('should count undefined and null as 0', () => {
+  assert.deepEqual(count({})(options)(undefined, state), 0)
+  assert.deepEqual(count({})(options)(null, state), 0)
 })
 
-test('should not count skipped values', (t) => {
+test('should not count skipped values', () => {
   const skip = [3, 'hello', '**undefined**']
-  t.is(count({ skip })(options)({}, state), 1)
-  t.is(count({ skip })(options)(new Date(), state), 1)
-  t.is(count({ skip })(options)(3, state), 0)
-  t.is(count({ skip })(options)('hello', state), 0)
-  t.is(count({ skip })(options)(true, state), 1)
-  t.is(count({ skip })(options)(undefined, state), 0)
-  t.is(count({ skip })(options)(null, state), 1)
+  assert.deepEqual(count({ skip })(options)({}, state), 1)
+  assert.deepEqual(count({ skip })(options)(new Date(), state), 1)
+  assert.deepEqual(count({ skip })(options)(3, state), 0)
+  assert.deepEqual(count({ skip })(options)('hello', state), 0)
+  assert.deepEqual(count({ skip })(options)(true, state), 1)
+  assert.deepEqual(count({ skip })(options)(undefined, state), 0)
+  assert.deepEqual(count({ skip })(options)(null, state), 1)
 })

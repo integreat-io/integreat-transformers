@@ -1,4 +1,5 @@
-import test from 'ava'
+import test from 'node:test'
+import assert from 'node:assert/strict'
 
 import trim from './trim.js'
 
@@ -15,21 +16,27 @@ const state = {
 
 // Tests
 
-test('should trim from service', (t) => {
-  t.is(
+test('should trim from service', () => {
+  assert.deepEqual(
     trim(operands)(options)(' Space on each side ', state),
-    'Space on each side'
+    'Space on each side',
   )
-  t.is(trim(operands)(options)(' Space in front', state), 'Space in front')
-  t.is(trim(operands)(options)('Space on the end ', state), 'Space on the end')
-  t.is(trim(operands)(options)('No space', state), 'No space')
-  t.is(trim(operands)(options)(' ', state), '')
+  assert.deepEqual(
+    trim(operands)(options)(' Space in front', state),
+    'Space in front',
+  )
+  assert.deepEqual(
+    trim(operands)(options)('Space on the end ', state),
+    'Space on the end',
+  )
+  assert.deepEqual(trim(operands)(options)('No space', state), 'No space')
+  assert.deepEqual(trim(operands)(options)(' ', state), '')
 })
 
-test('should not touch things that are not string from service', (t) => {
-  t.is(trim(operands)(options)(3, state), 3)
-  t.is(trim(operands)(options)(true, state), true)
-  t.is(trim(operands)(options)(null, state), null)
-  t.is(trim(operands)(options)(undefined, state), undefined)
-  t.deepEqual(trim(operands)(options)({}, state), {})
+test('should not touch things that are not string from service', () => {
+  assert.deepEqual(trim(operands)(options)(3, state), 3)
+  assert.deepEqual(trim(operands)(options)(true, state), true)
+  assert.deepEqual(trim(operands)(options)(null, state), null)
+  assert.deepEqual(trim(operands)(options)(undefined, state), undefined)
+  assert.deepEqual(trim(operands)(options)({}, state), {})
 })
