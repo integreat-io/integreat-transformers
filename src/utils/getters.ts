@@ -1,5 +1,7 @@
 import mapTransform from 'map-transform'
 
+export type Predicate = (value: unknown) => boolean
+
 export function getPathOrData(path?: string) {
   return typeof path === 'string'
     ? mapTransform(path)
@@ -9,7 +11,7 @@ export function getPathOrData(path?: string) {
 export function getPathOrDefault(
   path?: string,
   def?: unknown,
-  predicate = (data: unknown) => data !== undefined
+  predicate: Predicate = (data: unknown) => data !== undefined,
 ) {
   if (typeof path !== 'string') {
     return async () => def
