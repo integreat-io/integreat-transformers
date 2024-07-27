@@ -103,9 +103,12 @@ export function castDate(
   } else if (typeof value === 'string') {
     if (format || zone) {
       // Use Luxon when a format or timezone is given ...
-      date = format
-        ? DateTime.fromFormat(value, format, { zone })
-        : DateTime.fromISO(value, { zone })
+      date =
+        format === 'iso'
+          ? DateTime.fromISO(value, { zone })
+          : format
+            ? DateTime.fromFormat(value, format, { zone })
+            : DateTime.fromISO(value, { zone })
     } else {
       // ... otherwise use normal JS parsing to do the best we can
       date = DateTime.fromJSDate(new Date(value))

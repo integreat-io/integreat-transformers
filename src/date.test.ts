@@ -228,6 +228,16 @@ test('should add a time period from a path to a date from a path', async () => {
   assert.deepEqual(ret, expected)
 })
 
+test('should transform value to date even with iso format specified', async () => {
+  const value = '2019-05-22T15:43:11.345+02:00'
+  const format = 'iso'
+  const expected = new Date('2019-05-22T13:43:11.345Z')
+
+  const ret = await date({ format })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
+})
+
 test('should transform date to ISO string from service when flipped', async () => {
   const stateFlipped = { ...state, flip: true }
   const value = new Date('2019-05-22T13:43:11.345Z')
