@@ -536,14 +536,17 @@ Generates a universally unique id. The incoming value is disregarded.
 Set the `type` property to indicate what type of id you want, or omit it to get
 `nanoid`:
 
-- `nanoid` (default): A small (130 bytes) string generated with
-  [`nanoid`](https://github.com/ai/nanoid). Uses the letters `A-Za-z0-9_-`
+- `nanoid` (default): A small 21 character string generated with
+  [`nanoid`](https://github.com/ai/nanoid). Uses the letters `A-Za-z0-9_-`.
+- `alpha`: Also a [`nanoid`](https://github.com/ai/nanoid) string, but with
+  the letters `A-Za-z0-9` -- no hyphen or underscore. This reduces the
+  probability for collisions a bit, but only slightly.
 - `uuid` or `uuidLower`: A RFC4122 version 4 id in lowercase, e.g.
   `'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'`, generated with
-  [`uuid`](https://github.com/uuidjs/uuid)
+  [`uuid`](https://github.com/uuidjs/uuid).
 - `uuidUpper`: A RFC4122 version 4 id in uppercase, e.g.
   `'9B1DEB4D-3B7D-4BAD-9BDD-2B0D7B3DCB6D'`, generated with
-  [`uuid`](https://github.com/uuidjs/uuid)
+  [`uuid`](https://github.com/uuidjs/uuid).
 
 ### `uppercase`
 

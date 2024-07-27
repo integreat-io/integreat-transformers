@@ -26,8 +26,19 @@ test('should return unique string', () => {
   const ret1 = unique({})(options)(undefined, state)
   const ret2 = unique({})(options)(undefined, state)
 
-  assert.deepEqual(typeof ret1, 'string')
-  assert.deepEqual(typeof ret2, 'string')
+  assert.equal(typeof ret1, 'string')
+  assert.equal(typeof ret2, 'string')
+  assert.match(ret1 as string, /^[a-zA-Z0-9_-]{21}$/)
+  assert.match(ret2 as string, /^[a-zA-Z0-9_-]{21}$/)
+  assert.notEqual(ret1, ret2)
+})
+
+test('should return unique string with only alphanumeric characters', () => {
+  const ret1 = unique({ type: 'alpha' })(options)(undefined, state)
+  const ret2 = unique({ type: 'alpha' })(options)(undefined, state)
+
+  assert.match(ret1 as string, /^[a-zA-Z0-9]{21}$/)
+  assert.match(ret2 as string, /^[a-zA-Z0-9]{21}$/)
   assert.notEqual(ret1, ret2)
 })
 
