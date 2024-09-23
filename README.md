@@ -25,6 +25,7 @@ the transformers set as properties:
 - [`exclude`](#exclude)
 - [`formatDate`](#formatDate)
 - [`hash`](#hash)
+- [`htmlEntities`](#htmlEntities)
 - [`integer`](#integer)
 - [`join`](#join)
 - [`lowercase`](#lowercase)
@@ -48,7 +49,6 @@ the transformers set as properties:
 - [`uppercase`](#uppercase)
 - [`uriPart`](#uripart)
 - [`validate`](#validate)
-- [`xml`](#xml)
 
 **Note on properties:** Transformers use properties to define their
 behavior. If an object is defined as a transformer, any property not
@@ -301,6 +301,27 @@ be untouched, everything else will be forced to a string before hashing.
 
 In the future, this transform may also create hashes of objects, but for now an
 object will be the hash of `[object Object]`. :(
+
+### `htmlEntities`
+
+Will decode a string with HTML entities going forward (from a service), and
+decode in reverse (going to a service). This transformer is not affected by
+being inside a flipped mutation object, and will decode from and encode to a
+service regardless.
+
+Example: When we get `'foo &copy; bar &#8800; baz &#x1D306; qux'` from a
+service, this transformer will turn it into `'foo © bar ≠ baz 𝌆 qux'`,
+and vica versa.
+
+We are using [the `he` package]{https://github.com/mathiasbynens/he} under
+the hood, with named references enabled and hexadecimal escapes. This means
+that `'©'` will be encoded as `'&copy;'`, as there exists a named reference,
+while any special char without a named reference, like `'𝌆'` will be encode
+with its character reference as a hexadecimal number (e.g. `'&#x1D306;'`).
+When decoding, all variants are allowed.
+
+Values are forced to a string or `undefined` by the rules mentioned under
+[`string`](#string).
 
 ### `integer`
 
