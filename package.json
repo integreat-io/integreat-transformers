@@ -16,7 +16,7 @@
     "test:legacy": "node --import tsx --no-deprecation --test --enable-source-maps src/*.test.ts src/**/*.test.ts",
     "test:inspect": "node --inspect node_modules/ava/profile.js",
     "test:watch": "npm run dev",
-    "dev": "node --import tsx --test --enable-source-maps --test-reporter node-test-reporter --watch 'src/**/*.test.ts' || exit 0",
+    "dev": "node --import tsx --test --enable-source-maps --test-reporter node-test-reporter --watch \"src/**/*.test.ts\" || exit 0",
     "build": "tsc",
     "prepublishOnly": "npm run build",
     "lint": "eslint --ext .ts src",
