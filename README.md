@@ -15,6 +15,7 @@ Requires node v18 and Integreat v1.0.
 The package consists of several transformers that are exported as an object with
 the transformers set as properties:
 
+- [`absolute`](#absolute)
 - [`arrToObject`](#arrtoobject)
 - [`base64`](#base64)
 - [`boolean`](#boolean)
@@ -22,6 +23,7 @@ the transformers set as properties:
 - [`csv`](#csv)
 - [`date`](#date)
 - [`dedupe`](#dedupe)
+- [`extractNumber`](#extractNumber)
 - [`exclude`](#exclude)
 - [`formatDate`](#formatDate)
 - [`hash`](#hash)
@@ -64,6 +66,11 @@ for the reverse direction. However, flipped mutation objects will also flip
 this behavior, and making the transformer work as the oposite direction.
 This will feel natural when you write configs, even though it might be
 confusing when reading the documentation.
+
+### `absolute`
+
+Returns the absolute value (i.e. distance from zero) of a `number`.  If the 
+input is not a number, `undefined` is returned instead. 
 
 ### `arrToObject`
 
@@ -275,6 +282,11 @@ const result = [
 with the same structure both will be kept. When comparing a primitive type
 within objects, using a path, all duplicates will be remove. This may be changed
 in the future.
+
+### `extractNumber`
+
+Extracts all digits from a string and returns a them as a `number`.  If a `number` 
+is provided it will remain unchanged.  All other types are returned as `undefined`. 
 
 ### `exclude`
 
