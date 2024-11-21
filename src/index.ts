@@ -1,3 +1,4 @@
+import absolute from './absolute.js'
 import arrToObject from './arrToObject.js'
 import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'
@@ -6,6 +7,7 @@ import csv from './csv.js'
 import date, { formatDate } from './date.js'
 import dedupe from './dedupe.js'
 import exclude from './exclude.js'
+import extractNumber from './extractNumber.js'
 import hash from './hash.js'
 import htmlEntities from './htmlEntities.js'
 import integer from './integer.js'
@@ -34,6 +36,7 @@ import validate from './validate.js'
 import type { Transformer, AsyncTransformer } from 'integreat'
 
 const transformers: Record<string, Transformer | AsyncTransformer> = {
+  absolute,
   arrToObject,
   base64,
   base64Decode,
@@ -44,6 +47,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   date,
   dedupe,
   exclude,
+  extractNumber,
   formatDate,
   hash,
   htmlEntities,
