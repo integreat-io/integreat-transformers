@@ -40,8 +40,16 @@ test('should return positive float from a negative', () => {
   assert.equal(ret, expected)
 })
 
-test('should return undefined when value is not a number', () => {
-  const value = '5'
+test('should return postive number when value string can be parsed to num', () => {
+  const value = '-5'
+  const expected = 5
+  const ret = absolute({})(options)(value, state)
+
+  assert.equal(ret, expected)
+})
+
+test('should return undefined for non-parsable strings', () => {
+  const value = 'test'
   const expected = undefined
   const ret = absolute({})(options)(value, state)
 
