@@ -49,12 +49,12 @@ const expandValueArray = (key: string, value: unknown) =>
   Array.isArray(value)
     ? value.reduce(
         (obj, val, index) => ({ ...obj, [`${key}-${index + 1}`]: val }),
-        {}
+        {},
       )
     : { [key]: value }
 
 const reorderFields = <T = unknown>(
-  item: Record<string, T>
+  item: Record<string, T>,
 ): Record<string, T> =>
   Object.entries(item)
     .sort(sortFields)
@@ -63,35 +63,23 @@ const reorderFields = <T = unknown>(
         ...object,
         ...expandValueArray(key, value),
       }),
-      {}
+      {},
     )
 
 const extractColumns = (
-  rows: Record<string, unknown>[]
+  rows: Record<string, unknown>[],
 ): Record<string, string> =>
-  reorderFields(
-    rows.reduce<Record<string, string>>(
-      (fields, row) =>
-        Object.keys(row).reduce(
-          (fields, field) => ({ ...fields, [field]: field }),
-          fields
-        ),
-      {}
-    )
+  rows.reduce<Record<string, string>>(
+    (fields, row) =>
+      Object.keys(row).reduce(
+        (fields, field) => ({ ...fields, [field]: field }),
+        fields,
+      ),
+    {},
   )
 
 const extractFields = (row: unknown) =>
-  isObject(row)
-    ? Object.entries(row)
-        .sort(sortFields)
-        .reduce(
-          (object, [key, value]) => ({
-            ...object,
-            ...expandValueArray(key, value),
-          }),
-          {}
-        )
-    : undefined
+  isObject(row) ? reorderFields(row) : undefined
 
 const createColumnKey = (index: number, headers: string[], prefix: string) =>
   headers[index] || `${prefix}${index + 1}`
@@ -104,7 +92,7 @@ const normalizeLine =
         ...item,
         [createColumnKey(index, headers, columnPrefix)]: value,
       }),
-      {}
+      {},
     )
 
 const normalizeColumns = (cols: string[]) =>
@@ -133,7 +121,7 @@ function serialize(data: unknown, props: Props) {
     return undefined
   }
   const rows = data.map(extractFields).filter(isNotEmpty)
-  const columns = extractColumns(rows)
+  const columns = reorderFields(extractColumns(rows))
   return stringify(rows, { ...createStringifyOptions(props), columns })
 }
 
