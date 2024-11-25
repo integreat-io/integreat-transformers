@@ -46,7 +46,7 @@
     "uuid": "^11.0.3"
   },
   "devDependencies": {
-    "@integreat/ts-dev-setup": "^7.1.1",
+    "@integreat/ts-dev-setup": "^8.0.0",
     "@types/he": "^1.2.3",
     "@types/luxon": "^3.4.2",
     "@types/mustache": "^4.2.5",
