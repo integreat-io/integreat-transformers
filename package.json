@@ -42,7 +42,6 @@
     "luxon": "^3.5.0",
     "map-any": "^1.0.0",
     "map-transform": "^1.5.3",
-    "mustache": "^4.2.0",
     "nanoid": "^5.0.9",
     "uuid": "^11.0.3"
   },

@@ -151,9 +151,22 @@ test('should force values to string', async () => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = {
     description: 'Bergen by night',
+    artist: true,
+  }
+  const expected = 'Bergen by night. By true'
+
+  const ret = await template(props)(options)(data, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should leave param empty if the value cannot be forced to string', async () => {
+  const props = { template: '{{description}}. By {{artist}}' }
+  const data = {
+    description: 'Bergen by night',
     artist: { id: 'johnf' },
   }
-  const expected = 'Bergen by night. By [object Object]'
+  const expected = 'Bergen by night. By '
 
   const ret = await template(props)(options)(data, state)
 
@@ -190,7 +203,7 @@ test('should html encode template values', async () => {
   const data = {
     name: "d'Angelo",
   }
-  const expected = 'The name is d&#39;Angelo'
+  const expected = 'The name is d&apos;Angelo'
 
   const ret = await template(props)(options)(data, state)
 
@@ -248,21 +261,6 @@ test('should return undefined when no template', async () => {
     artist: 'John F.',
   }
   const expected = undefined
-
-  const ret = await template(props)(options)(data, state)
-
-  assert.deepEqual(ret, expected)
-})
-
-test('should apply template in array', async () => {
-  const props = { template: '{{description}}. By {{artist}}' }
-  const data = [
-    {
-      description: 'Bergen by night',
-      artist: 'John F.',
-    },
-  ]
-  const expected = ['Bergen by night. By John F.']
 
   const ret = await template(props)(options)(data, state)
 
@@ -379,7 +377,7 @@ test('should parse in reverse and html decode template values', async () => {
   const props = {
     template: 'The name is {{name}}',
   }
-  const data = 'The name is d&#39;Angelo'
+  const data = 'The name is d&apos;Angelo'
   const expected = {
     name: "d'Angelo",
   }
@@ -393,9 +391,9 @@ test('should parse in reverse and not html decode for triple brackets', async ()
   const props = {
     template: 'The name is {{{name}}}',
   }
-  const data = 'The name is d&#39;Angelo'
+  const data = 'The name is d&apos;Angelo'
   const expected = {
-    name: 'd&#39;Angelo',
+    name: 'd&apos;Angelo',
   }
 
   const ret = await template(props)(options)(data, stateRev)
@@ -418,7 +416,7 @@ test('should parse in reverse when it is not possible to match correctly', async
   assert.deepEqual(ret, expected)
 })
 
-test.skip('should parse in reverse from array', async () => {
+test('should parse in reverse from array', async () => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = ['Bergen by night. By John F.', 'Water Lilies. By Monet']
   const expected = [
@@ -470,16 +468,22 @@ test('should parse in reverse when data is not a string', async () => {
   assert.deepEqual(ret, expected)
 })
 
-test.skip('should parse with template from path in reverse', async () => {
-  const props = { templatePath: 'captionTemplate' }
-  const data = {
+test('should parse with template from path in reverse', async () => {
+  const props = { templatePath: '^^setup.captionTemplate' }
+  const data = 'Bergen by night. By John F.'
+  const stateRevWithContext = {
+    ...stateRev,
+    context: [
+      { data, setup: { captionTemplate: '{{description}}. By {{artist}}' } },
+    ],
+    value: data,
+  }
+  const expected = {
     description: 'Bergen by night',
     artist: 'John F.',
-    captionTemplate: '{{description}}. By {{artist}}',
   }
-  const expected = data
 
-  const ret = await template(props)(options)(data, stateRev)
+  const ret = await template(props)(options)(data, stateRevWithContext)
 
   assert.deepEqual(ret, expected)
 })

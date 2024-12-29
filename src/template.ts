@@ -1,59 +1,93 @@
-import Mustache from 'mustache'
-import mapAny from 'map-any'
+import mapAny from 'map-any/async.js'
 import mapTransform from 'map-transform'
 import { defToDataMapper } from 'map-transform/definitionHelpers.js'
-import htmlEntities from './htmlEntities.js'
+import { htmlEncode } from './htmlEntities.js'
 import xor from './utils/xor.js'
-import { isNullOrUndefined } from './utils/is.js'
 import type { AsyncTransformer } from 'integreat'
-import type { DataMapper } from 'map-transform/types.js'
+import type { DataMapper, State } from 'map-transform/types.js'
 
 interface Props extends Record<string, unknown> {
   template?: string
   templatePath?: string
 }
 
-interface Param {
-  path: string
-  encode: boolean
-}
-
-function parseAndCreateGenerator(templateStr: string) {
-  Mustache.parse(templateStr) // Mustache will keep the parsed template in a cache
-  return async (data: unknown) =>
-    mapAny((data: unknown) => Mustache.render(templateStr, data))(data)
-}
-
 const templateRegex = /(\{\{\{?.*?\}?\}\})/
 
+/**
+ * Extract the path from the param and return a DataMapper to get or set its
+ * value when we generate or parse from the template later. If the param is
+ * given with two brackets, we HTML encode/decode, if it has three brackets, we
+ * use it as it is.
+ */
 function parseParam(param: string) {
   const isTripleBrackets = param.startsWith('{{{') && param.endsWith('}}}')
   const path = isTripleBrackets ? param.slice(3, -3) : param.slice(2, -2)
-  return { path, encode: !isTripleBrackets }
+  return mapTransform([
+    path,
+    ...(isTripleBrackets ? [] : [{ $transform: htmlEncode({}) }]), // HTML encode/decode if we don't have three brackets
+  ])
 }
 
 /**
- * Split the template into parts with the string parts as strings and the params
- * as objects with a `path` property.
+ * Remove the last part if it is an empty string.
  */
-function prepareTemplate(template: string): (string | Param)[] {
+const removeTrailingEmptyString = (parts: (string | DataMapper)[]) =>
+  parts[parts.length - 1] === '' ? parts.slice(0, -1) : parts
+
+/**
+ * Split the template into parts and return a generate and a parse function
+ */
+function prepareTemplate(template: string) {
   const parts = template.split(templateRegex)
-  const compiled = parts.map((part, index) =>
-    index % 2 === 1 ? parseParam(part) : part,
+  const compiled = removeTrailingEmptyString(
+    parts.map((part, index) => (index % 2 === 1 ? parseParam(part) : part)),
   )
-  return compiled[compiled.length - 1] === '' ? compiled.slice(0, -1) : compiled // Remove the last element if it's an empty string
+
+  return {
+    generate: mapAny(async (item) => generateFromTemplate(item, compiled)),
+    parse: mapAny(async (item) => parseFromTemplate(item, compiled)),
+  }
+}
+
+/**
+ * Generate a string from the given template, by replacing params with values
+ * extracted from the data.
+ */
+async function generateFromTemplate(
+  data: unknown,
+  template: (string | DataMapper)[],
+) {
+  const target: string[] = []
+  for (const part of template) {
+    if (typeof part === 'string') {
+      // A string part -- just push it to the target
+      target.push(part)
+    } else {
+      // A param part -- retrieve the value from the data and push it
+      const value = await part(data)
+      if (value) {
+        target.push(String(value))
+      }
+    }
+  }
+
+  // Join all the parts together as one string
+  return target.join('')
 }
 
 /**
  * Parse the individual param values from a string with the given template
  * parts, and set them on back on the paths in the respective param positions.
  */
-async function parseFromTemplate(data: unknown, parts: (string | Param)[]) {
+async function parseFromTemplate(
+  data: unknown,
+  template: (string | DataMapper)[],
+) {
   let target: unknown = undefined
   if (typeof data === 'string') {
     let startIndex = -1
     let nextSetter: DataMapper | null = null
-    for (const part of parts) {
+    for (const part of template) {
       if (typeof part === 'string') {
         // This is a string part, so find where it starts
         const nextIndex = data.indexOf(part, startIndex)
@@ -66,7 +100,12 @@ async function parseFromTemplate(data: unknown, parts: (string | Param)[]) {
           // the last string to the beginning of this one, and set it on the
           // target with the setter.
           const value = data.slice(startIndex, nextIndex)
-          target = await nextSetter(value, { target, value, context: [] })
+          target = await nextSetter(value, {
+            target,
+            value,
+            context: [], // The context has no meaning here, but need to be set
+            rev: true, // Run in reverse to make this act as a setter
+          })
           nextSetter = null // We're ready for a new param
         }
 
@@ -74,38 +113,59 @@ async function parseFromTemplate(data: unknown, parts: (string | Param)[]) {
         // value.
         startIndex = nextIndex + part.length
       } else {
-        // This is a param part. Prepare a setter that will set the value on the
-        // target when we get to the next string.
-        nextSetter = mapTransform([
-          ...(part.encode ? [{ $transform: htmlEntities({}) }] : []), // Html decode values when they would have been encoded
-          `>${part.path}`,
-        ])
+        // This is a param part, so we'll just retrieve the setter function
+        // provided here. It will work as a setter, as we will run it in reverse
+        // when we use it.
+        nextSetter = part
       }
     }
     if (nextSetter) {
       // There's one more setter here, so let's extract the rest of the string
       // and set it on the target.
       const value = data.slice(startIndex)
-      target = await nextSetter(value, { target, value, context: [] })
+      target = await nextSetter(value, {
+        target,
+        value,
+        context: [],
+        rev: true,
+      })
     }
   }
   return target
 }
 
+/**
+ * Run the `generate` function on the `data` if the `state` tells us we're going
+ * forward, or the `parse` function if we're going in reverse.
+ */
+async function parseOrGenerate(
+  data: unknown,
+  state: State,
+  generate: (value: unknown) => Promise<string>,
+  parse: (value: unknown) => Promise<unknown>,
+) {
+  const isRev = xor(state.rev, state.flip)
+  return isRev ? await parse(data) : await generate(data)
+}
+
+/**
+ * The `template` transformer will generate a string from the given template
+ * when we're going forward and will try to parse values from the string
+ * according to the template in reverse.
+ *
+ * As an alternative, you may use a template from the data by setting the
+ * `templatePath` to a path pointing at it. This can be a full pipeline.
+ */
 const transformer: AsyncTransformer = function template({
   template: templateStr,
   templatePath,
 }: Props) {
   if (typeof templateStr === 'string') {
-    // We already got a template -- preparse it and return a generator
-    const generator = parseAndCreateGenerator(templateStr)
-    const parts = prepareTemplate(templateStr)
+    // We already got a template -- prepare generate and parse functions
+    const { generate, parse } = prepareTemplate(templateStr)
+
     return () => async (data, state) => {
-      if (isNullOrUndefined(data)) {
-        data = {}
-      }
-      const isRev = xor(state.rev, state.flip)
-      return isRev ? await parseFromTemplate(data, parts) : generator(data)
+      return parseOrGenerate(data, state, generate, parse)
     }
   } else if (typeof templatePath === 'string') {
     // The template will be provided in the data -- return a function that will
@@ -113,18 +173,14 @@ const transformer: AsyncTransformer = function template({
     const getFn = defToDataMapper(templatePath)
 
     return () => async (data, state) => {
-      const isRev = xor(state.rev, state.flip)
-      if (isRev) {
-        return data
-      }
-
       const templateStr = await getFn(data, {
         ...state,
         rev: false,
         flip: false,
       })
       if (typeof templateStr === 'string') {
-        return parseAndCreateGenerator(templateStr)(data)
+        const { generate, parse } = prepareTemplate(templateStr)
+        return parseOrGenerate(data, state, generate, parse)
       }
       return undefined
     }
