@@ -19,7 +19,8 @@
     "dev": "node --import tsx --test --enable-source-maps --test-reporter node-test-reporter --watch \"src/**/*.test.ts\" || exit 0",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "lint": "eslint --ext .ts src",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit --strict",
     "verify": "npm run lint && npm test"
   },
   "repository": {
@@ -42,15 +43,15 @@
     "map-any": "^1.0.0",
     "map-transform": "^1.5.3",
     "mustache": "^4.2.0",
-    "nanoid": "^5.0.8",
+    "nanoid": "^5.0.9",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
-    "@integreat/ts-dev-setup": "^7.1.1",
+    "@integreat/ts-dev-setup": "^8.0.0",
     "@types/he": "^1.2.3",
     "@types/luxon": "^3.4.2",
     "@types/mustache": "^4.2.5",
-    "@types/node": "^22.9.1",
+    "@types/node": "^22.10.2",
     "@types/uuid": "^10.0.0",
     "integreat": "^1.5.10"
   }
