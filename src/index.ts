@@ -29,6 +29,7 @@ import sum from './sum.js'
 import { template, parse } from './template.js'
 import trim from './trim.js'
 import truncate from './truncate.js'
+import type from './type.js'
 import unique from './unique.js'
 import uppercase from './uppercase.js'
 import uriPart from './uriPart.js'
@@ -74,6 +75,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   template,
   trim,
   truncate,
+  type,
   unique,
   uppercase,
   uriPart,

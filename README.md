@@ -49,6 +49,7 @@ the transformers set as properties:
 - [`template`](#template)
 - [`trim`](#trim)
 - [`truncate`](#truncate)
+- [`type`](#type)
 - [`unique`](#unique)
 - [`uppercase`](#uppercase)
 - [`uriPart`](#uripart)
@@ -598,6 +599,26 @@ untouched if it's not a string.
 When a `length` property is set, a given string that is longer than this length
 is shortened. If a `postfix` is given, it is appended to the end and the total
 length of the shortened text will still be no longer than `length`.
+
+### `type`
+
+The transformer will return a string indicating what type the pipeline data is.
+The known types are:
+
+- `string`
+- `number`
+- `boolean`
+- `date`
+- `null`
+- `undefined`
+- `object`
+- `array`
+
+This transformer works the same in both directions, as there is no way to go
+back to the original value. (If you do run data produced by this tranformer back
+in reverse, you will always end up with `'string'`, which is not very
+meaningful, but again -- there is no way to reproduce the value that we started
+with.)
 
 ### `unique`
 
