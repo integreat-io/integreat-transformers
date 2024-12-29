@@ -1,19 +1,25 @@
 import he from 'he'
 import { castString } from './string.js'
+import xor from './utils/xor.js'
 import type { Transformer } from 'integreat'
 
 const decodeOptions = {}
 const encodeOptions = { useNamedReferences: true, decimal: false }
 
-const htmlEntities: Transformer = () => () => (value, state) => {
-  const str = castString(value)
-  if (typeof str !== 'string') {
-    return undefined
+const htmlEntities =
+  (encodeFwd: boolean): Transformer =>
+  () =>
+  () =>
+  (value, state) => {
+    const str = castString(value)
+    if (typeof str !== 'string') {
+      return undefined
+    }
+
+    return xor(state.rev, encodeFwd)
+      ? he.encode(str, encodeOptions)
+      : he.decode(str, decodeOptions)
   }
 
-  return state.rev
-    ? he.encode(str, encodeOptions)
-    : he.decode(str, decodeOptions)
-}
-
-export default htmlEntities
+export const htmlDecode = htmlEntities(false)
+export const htmlEncode = htmlEntities(true)

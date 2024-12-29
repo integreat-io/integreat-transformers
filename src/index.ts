@@ -9,7 +9,7 @@ import dedupe from './dedupe.js'
 import exclude from './exclude.js'
 import extractNumber from './extractNumber.js'
 import hash from './hash.js'
-import htmlEntities from './htmlEntities.js'
+import { htmlDecode, htmlEncode } from './htmlEntities.js'
 import integer from './integer.js'
 import join from './join.js'
 import lowercase from './lowercase.js'
@@ -50,7 +50,9 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   extractNumber,
   formatDate,
   hash,
-  htmlEntities,
+  htmlDecode,
+  htmlEncode,
+  htmlEntities: htmlDecode,
   integer,
   join,
   lowercase,

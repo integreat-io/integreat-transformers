@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import htmlEntities from './htmlEntities.js'
+import { htmlDecode, htmlEncode } from './htmlEntities.js'
 
 // Setup
 
@@ -20,13 +20,13 @@ const stateRev = {
   value: {},
 }
 
-// Tests -- forward
+// Tests -- htmlDecode forward
 
 test('should decode html entities in text going forward', () => {
   const value = 'foo &copy; bar &#8800; baz &#x1D306; qux'
   const expected = 'foo © bar ≠ baz 𝌆 qux'
 
-  const ret = htmlEntities(props)(options)(value, state)
+  const ret = htmlDecode(props)(options)(value, state)
 
   assert.equal(ret, expected)
 })
@@ -36,33 +36,44 @@ test('should not be affected by flip going forward', () => {
   const value = 'foo &copy; bar &#8800; baz &#x1D306; qux'
   const expected = 'foo © bar ≠ baz 𝌆 qux'
 
-  const ret = htmlEntities(props)(options)(value, stateFlipped)
+  const ret = htmlDecode(props)(options)(value, stateFlipped)
 
   assert.equal(ret, expected)
 })
 
 test('should force values to string going forward', () => {
-  assert.equal(htmlEntities(props)(options)(3, state), '3')
-  assert.equal(htmlEntities(props)(options)(true, state), 'true')
+  assert.equal(htmlDecode(props)(options)(3, state), '3')
+  assert.equal(htmlDecode(props)(options)(true, state), 'true')
   assert.equal(
-    htmlEntities(props)(options)(new Date('2020-08-12T13:15:43Z'), state),
+    htmlDecode(props)(options)(new Date('2020-08-12T13:15:43Z'), state),
     '2020-08-12T13:15:43.000Z',
   )
 })
 
 test('should return undefined for some values going forward', () => {
-  assert.equal(htmlEntities(props)(options)({}, state), undefined)
-  assert.equal(htmlEntities(props)(options)(null, state), undefined)
-  assert.equal(htmlEntities(props)(options)(undefined, state), undefined)
+  assert.equal(htmlDecode(props)(options)({}, state), undefined)
+  assert.equal(htmlDecode(props)(options)(null, state), undefined)
+  assert.equal(htmlDecode(props)(options)(undefined, state), undefined)
 })
 
-// Tests -- reverse
+// Tests -- htmlEncode forward
+
+test('htmlEncode should encode html entities in text going forward', () => {
+  const value = 'foo © bar ≠ baz 𝌆 qux'
+  const expected = 'foo &copy; bar &ne; baz &#x1D306; qux'
+
+  const ret = htmlEncode(props)(options)(value, state)
+
+  assert.equal(ret, expected)
+})
+
+// Tests -- htmlDecode reverse
 
 test('should encode html entities in text in reverse', () => {
   const value = 'foo © bar ≠ baz 𝌆 qux'
   const expected = 'foo &copy; bar &ne; baz &#x1D306; qux'
 
-  const ret = htmlEntities(props)(options)(value, stateRev)
+  const ret = htmlDecode(props)(options)(value, stateRev)
 
   assert.equal(ret, expected)
 })
@@ -72,22 +83,33 @@ test('should not be affected by flip in reverse', () => {
   const value = 'foo © bar ≠ baz 𝌆 qux'
   const expected = 'foo &copy; bar &ne; baz &#x1D306; qux'
 
-  const ret = htmlEntities(props)(options)(value, stateFlipped)
+  const ret = htmlDecode(props)(options)(value, stateFlipped)
 
   assert.equal(ret, expected)
 })
 
 test('should force values to string in reverse', () => {
-  assert.equal(htmlEntities(props)(options)(3, stateRev), '3')
-  assert.equal(htmlEntities(props)(options)(true, stateRev), 'true')
+  assert.equal(htmlDecode(props)(options)(3, stateRev), '3')
+  assert.equal(htmlDecode(props)(options)(true, stateRev), 'true')
   assert.equal(
-    htmlEntities(props)(options)(new Date('2020-08-12T13:15:43Z'), stateRev),
+    htmlDecode(props)(options)(new Date('2020-08-12T13:15:43Z'), stateRev),
     '2020-08-12T13:15:43.000Z',
   )
 })
 
 test('should return undefined for some values in reverse', () => {
-  assert.equal(htmlEntities(props)(options)({}, stateRev), undefined)
-  assert.equal(htmlEntities(props)(options)(null, stateRev), undefined)
-  assert.equal(htmlEntities(props)(options)(undefined, stateRev), undefined)
+  assert.equal(htmlDecode(props)(options)({}, stateRev), undefined)
+  assert.equal(htmlDecode(props)(options)(null, stateRev), undefined)
+  assert.equal(htmlDecode(props)(options)(undefined, stateRev), undefined)
+})
+
+// Tests -- htmlEncode reverse
+
+test('htmlEncode should decode html entities in text in reverse', () => {
+  const value = 'foo &copy; bar &#8800; baz &#x1D306; qux'
+  const expected = 'foo © bar ≠ baz 𝌆 qux'
+
+  const ret = htmlEncode(props)(options)(value, stateRev)
+
+  assert.equal(ret, expected)
 })
