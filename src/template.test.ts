@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import template from './template.js'
+import { template, parse } from './template.js'
 
 // Setup
 
@@ -21,7 +21,7 @@ const stateRev = {
 
 const options = {}
 
-// Tests -- forward
+// Tests -- template forward
 
 test('should apply template', async () => {
   const props = { template: '{{description}}. By {{artist}}' }
@@ -282,7 +282,36 @@ test('should return undefined when no from template on path', async () => {
   assert.deepEqual(await template(props)(options)(undefined, state), undefined)
 })
 
-// Tests -- reverse
+// Tests -- parse forward
+
+test('parse should parse going forward', async () => {
+  const props = { template: '{{description}}. By {{artist}}' }
+  const data = 'Bergen by night. By John F.'
+  const expected = {
+    description: 'Bergen by night',
+    artist: 'John F.',
+  }
+
+  const ret = await parse(props)(options)(data, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('parse should html decode template values going forward', async () => {
+  const props = {
+    template: 'The name is {{name}}',
+  }
+  const data = 'The name is d&apos;Angelo'
+  const expected = {
+    name: "d'Angelo",
+  }
+
+  const ret = await parse(props)(options)(data, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+// Tests -- template reverse
 
 test('should parse in reverse', async () => {
   const props = { template: '{{description}}. By {{artist}}' }
@@ -484,6 +513,35 @@ test('should parse with template from path in reverse', async () => {
   }
 
   const ret = await template(props)(options)(data, stateRevWithContext)
+
+  assert.deepEqual(ret, expected)
+})
+
+// Tests -- parse reverse
+
+test('parse should apply template in reverse', async () => {
+  const props = { template: '{{description}}. By {{artist}}' }
+  const data = {
+    description: 'Bergen by night',
+    artist: 'John F.',
+  }
+  const expected = 'Bergen by night. By John F.'
+
+  const ret = await parse(props)(options)(data, stateRev)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('parse should html encode template values in reverse', async () => {
+  const props = {
+    template: 'The name is {{name}}',
+  }
+  const data = {
+    name: "d'Angelo",
+  }
+  const expected = 'The name is d&apos;Angelo'
+
+  const ret = await parse(props)(options)(data, stateRev)
 
   assert.deepEqual(ret, expected)
 })

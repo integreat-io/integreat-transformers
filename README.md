@@ -27,6 +27,7 @@ the transformers set as properties:
 - [`exclude`](#exclude)
 - [`formatDate`](#formatDate)
 - [`hash`](#hash)
+- [`htmlDecode`](#htmlDecode)
 - [`htmlEntities`](#htmlEntities)
 - [`integer`](#integer)
 - [`join`](#join)
@@ -36,6 +37,7 @@ the transformers set as properties:
 - [`now`](#now)
 - [`number`](#number)
 - [`objectToArr`](#objecttoarr)
+- [`parse`](#parse)
 - [`pattern`](#pattern)
 - [`range`](#range)
 - [`replace`](#replace)
@@ -69,8 +71,8 @@ confusing when reading the documentation.
 
 ### `absolute`
 
-Returns the absolute value (i.e. distance from zero) of a `number`.  If the 
-input is not a number, `undefined` is returned instead. 
+Returns the absolute value (i.e. distance from zero) of a `number`.  If the
+input is not a number, `undefined` is returned instead.
 
 ### `arrToObject`
 
@@ -285,8 +287,8 @@ in the future.
 
 ### `extractNumber`
 
-Extracts all digits from a string and returns a them as a `number`.  If a `number` 
-is provided it will remain unchanged.  All other types are returned as `undefined`. 
+Extracts all digits from a string and returns a them as a `number`.  If a `number`
+is provided it will remain unchanged.  All other types are returned as `undefined`.
 
 ### `exclude`
 
@@ -314,10 +316,10 @@ be untouched, everything else will be forced to a string before hashing.
 In the future, this transform may also create hashes of objects, but for now an
 object will be the hash of `[object Object]`. :(
 
-### `htmlEntities`
+### `htmlDecode`
 
 Will decode a string with HTML entities going forward (from a service), and
-decode in reverse (going to a service). This transformer is not affected by
+encode in reverse (going to a service). This transformer is not affected by
 being inside a flipped mutation object, and will decode from and encode to a
 service regardless.
 
@@ -334,6 +336,17 @@ When decoding, all variants are allowed.
 
 Values are forced to a string or `undefined` by the rules mentioned under
 [`string`](#string).
+
+### `htmlEncode`
+
+Will encode a string with HTML entities going forward (from a service), and
+decode in reverse (going to a service). This is the oposite of
+[`htmlDecode`](#htmlDecode), so see that transformer for more details.
+
+### `htmlEntities`
+
+This is an alias for [`htmlDecode`](#htmlDecode), kept for backward
+compatability.
 
 ### `integer`
 
@@ -427,6 +440,11 @@ as the values in the pipeline value. Values in the array without corresponding
 
 In a flipped mutation object, the direction of this transformer is also
 flipped.
+
+### `parse`
+
+Will parse with a template coming __from__ a service. This is the oposite of the
+[`template` transformer](#template), so see it's documentation for more details.
 
 ### `pattern`
 
@@ -544,12 +562,31 @@ yield `0`.
 
 ### `template`
 
-Documentation coming ... :S
+Takes the template in the `template` property and applies it to the data in the
+pipeline, replacing `{{path}}` with the value given at the path. `path` is just
+an example here, so replace it with your actual path. Only simple dot notation
+paths are allowed, no parents or roots etc. The value will be html encoded by
+default, and you may use tripple curly brackets `{{{path}}}` to replace the
+value without any encoding.
 
-Note that `template` is supposed to have the reverse transformer `parse`, that
-is not implemented yet, so it will do nothing in reverse. The template will be
-applied on data coming from a service or going to a service in a flipped
-mutation object.
+When going in reverse, or in a flipped mutation, `template` will instead parse
+the values in the positions that is otherwise replaced, and set them on the
+respective paths, replacing the pipeline value. All values will be strings, as
+it not possible to know if a number is supposed to be a number. Note also that
+the transformer will do its best, but there might be cases where it is
+impossible to match the template to the actual value. We plan to support "hints"
+in the template in a future version, to be able to provide help for these hard
+cases.
+
+Example of a template: `'User {{id}} is called {{details.name}}'`
+
+The template may alternatively be provided in the pipeline data, with the
+`templatePath` prop pointing at it. The template will then be extracted at
+runtime. If no template is found at the path, the transformer returns
+`undefined`. `templatePath` may be a full pipeline.
+
+`template` also have a reversed transformer [`parse`](#parse), that behaves in
+the same way, but for the oposite direction.
 
 ### `trim`
 

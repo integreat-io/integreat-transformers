@@ -26,7 +26,7 @@ import size from './size.js'
 import split from './split.js'
 import stringFn from './string.js'
 import sum from './sum.js'
-import template from './template.js'
+import { template, parse } from './template.js'
 import trim from './trim.js'
 import truncate from './truncate.js'
 import unique from './unique.js'
@@ -61,6 +61,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   now,
   number,
   objectToArr,
+  parse,
   pattern,
   range,
   replace,

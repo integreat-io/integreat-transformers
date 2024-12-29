@@ -143,8 +143,9 @@ async function parseOrGenerate(
   state: State,
   generate: (value: unknown) => Promise<string>,
   parse: (value: unknown) => Promise<unknown>,
+  parseForward: boolean,
 ) {
-  const isRev = xor(state.rev, state.flip)
+  const isRev = xor(xor(state.rev, state.flip), parseForward) // Double xor to flip if we're parsing forward
   return isRev ? await parse(data) : await generate(data)
 }
 
@@ -156,37 +157,37 @@ async function parseOrGenerate(
  * As an alternative, you may use a template from the data by setting the
  * `templatePath` to a path pointing at it. This can be a full pipeline.
  */
-const transformer: AsyncTransformer = function template({
-  template: templateStr,
-  templatePath,
-}: Props) {
-  if (typeof templateStr === 'string') {
-    // We already got a template -- prepare generate and parse functions
-    const { generate, parse } = prepareTemplate(templateStr)
+const createTransformer = (parseForward: boolean): AsyncTransformer =>
+  function template({ template: templateStr, templatePath }: Props) {
+    if (typeof templateStr === 'string') {
+      // We already got a template -- prepare generate and parse functions
+      const { generate, parse } = prepareTemplate(templateStr)
 
-    return () => async (data, state) => {
-      return parseOrGenerate(data, state, generate, parse)
-    }
-  } else if (typeof templatePath === 'string') {
-    // The template will be provided in the data -- return a function that will
-    // both create the generator and run it
-    const getFn = defToDataMapper(templatePath)
-
-    return () => async (data, state) => {
-      const templateStr = await getFn(data, {
-        ...state,
-        rev: false,
-        flip: false,
-      })
-      if (typeof templateStr === 'string') {
-        const { generate, parse } = prepareTemplate(templateStr)
-        return parseOrGenerate(data, state, generate, parse)
+      return () => async (data, state) => {
+        return parseOrGenerate(data, state, generate, parse, parseForward)
       }
-      return undefined
+    } else if (typeof templatePath === 'string') {
+      // The template will be provided in the data -- return a function that will
+      // both create the generator and run it
+      const getFn = defToDataMapper(templatePath)
+
+      return () => async (data, state) => {
+        const templateStr = await getFn(data, {
+          ...state,
+          rev: false,
+          flip: false,
+        })
+        if (typeof templateStr === 'string') {
+          const { generate, parse } = prepareTemplate(templateStr)
+          return parseOrGenerate(data, state, generate, parse, parseForward)
+        }
+        return undefined
+      }
     }
+
+    // We don't have a template nor a templatePath, so always return `undefined`
+    return () => async () => undefined
   }
 
-  return () => async () => undefined
-}
-
-export default transformer
+export const template = createTransformer(false)
+export const parse = createTransformer(true)
