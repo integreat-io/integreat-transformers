@@ -310,7 +310,7 @@ test('should join segmented strings from a path in reverse', async () => {
 
 // Tests -- split with separator -- forward
 
-test('should split a string by a separator char', async () => {
+test('should split a string by a separator', async () => {
   const value = 'john,liz,benny'
   const sep = ','
   const expected = ['john', 'liz', 'benny']
@@ -320,7 +320,17 @@ test('should split a string by a separator char', async () => {
   assert.deepEqual(ret, expected)
 })
 
-test('should split a string by default separator char', async () => {
+test('should split a string by a numeric separator', async () => {
+  const value = 'john9liz9benny'
+  const sep = 9
+  const expected = ['john', 'liz', 'benny']
+
+  const ret = await split({ sep })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should split a string by default separator', async () => {
   const value = 'The string to split'
   const sep = undefined
   const expected = ['The', 'string', 'to', 'split']
@@ -330,7 +340,17 @@ test('should split a string by default separator char', async () => {
   assert.deepEqual(ret, expected)
 })
 
-test('should split a string by a separator char found at sepPath', async () => {
+test('should split a string by an array of separators', async () => {
+  const value = 'john,liz,benny|john again'
+  const sep = [',', '|']
+  const expected = ['john', 'liz', 'benny', 'john again']
+
+  const ret = await split({ sep })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should split a string by a separator found at sepPath', async () => {
   const value = { users: 'john,liz,benny', separator: ',' }
   const path = 'users'
   const sepPath = 'separator'
@@ -368,14 +388,42 @@ test('should return other values untouched when splitting by sep', async () => {
   const sep = ' '
   const date = new Date()
   const object = {}
-  const arr = ['A', 'split', 'string']
 
   assert.deepEqual(await split({ sep })(options)(true, state), true)
-  assert.deepEqual(await split({ sep })(options)(arr, state), arr)
   assert.deepEqual(await split({ sep })(options)(object, state), object)
   assert.deepEqual(await split({ sep })(options)(date, state), date)
   assert.deepEqual(await split({ sep })(options)(null, state), null)
   assert.deepEqual(await split({ sep })(options)(undefined, state), undefined)
+})
+
+test('should split an array by a separator', async () => {
+  const value = ['john', 'liz', '|', 'benny', '|', 'john again']
+  const sep = '|'
+  const expected = [['john', 'liz'], ['benny'], ['john again']]
+
+  const ret = await split({ sep })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should split an array by an array of separators', async () => {
+  const value = ['john', 'liz', '|', 'benny', 'or', 'john again']
+  const sep = ['|', 'or']
+  const expected = [['john', 'liz'], ['benny'], ['john again']]
+
+  const ret = await split({ sep })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should split an array by a separator when the seperator is not in the array', async () => {
+  const value = ['john', 'liz', 'benny']
+  const sep = '|'
+  const expected = [['john', 'liz', 'benny']]
+
+  const ret = await split({ sep })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
 })
 
 test('should join going forward when flipped', async () => {
@@ -404,7 +452,7 @@ test('should join going forward when flipped', async () => {
 
 // Tests -- join with separator -- reverse
 
-test('should join a string by a separator char in reverse', async () => {
+test('should join a string by a separator in reverse', async () => {
   const value = ['john', 'liz', 'benny']
   const sep = ','
   const expected = 'john,liz,benny'
@@ -414,7 +462,7 @@ test('should join a string by a separator char in reverse', async () => {
   assert.deepEqual(ret, expected)
 })
 
-test('should join a string with space as default separator char in reverse', async () => {
+test('should join a string with space as default separator in reverse', async () => {
   const value = ['The', 'string', 'to', 'split']
   const sep = undefined
   const expected = 'The string to split'
@@ -424,7 +472,7 @@ test('should join a string with space as default separator char in reverse', asy
   assert.deepEqual(ret, expected)
 })
 
-test('should join a string by an empty separator char in reverse', async () => {
+test('should join a string by an empty separator in reverse', async () => {
   const value = ['john', 'liz', 'benny']
   const sep = ''
   const expected = 'johnlizbenny'
@@ -434,7 +482,17 @@ test('should join a string by an empty separator char in reverse', async () => {
   assert.deepEqual(ret, expected)
 })
 
-test('should join a string by a separator char found at sepPath in reverse', async () => {
+test('should join a string by the first separator in array in reverse', async () => {
+  const value = ['john', 'liz', 'benny']
+  const sep = [',', '|']
+  const expected = 'john,liz,benny'
+
+  const ret = await split({ sep })(options)(value, stateRev)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should join a string by a separator found at sepPath in reverse', async () => {
   const value = { users: ['john', 'liz', 'benny'], separator: ',' }
   const path = 'users'
   const sepPath = 'separator'
@@ -492,4 +550,24 @@ test('should return other values untouched when joining by sep in reverse', asyn
     await split({ sep })(options)(undefined, stateRev),
     undefined,
   )
+})
+
+test('should join an array by a separator in reverse', async () => {
+  const value = [['john', 'liz'], ['benny']]
+  const sep = '|'
+  const expected = ['john', 'liz', '|', 'benny']
+
+  const ret = await split({ sep })(options)(value, stateRev)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should join an array by the first of an array of separators in reverse', async () => {
+  const value = [['john', 'liz'], ['benny']]
+  const sep = ['|', 'or']
+  const expected = ['john', 'liz', '|', 'benny']
+
+  const ret = await split({ sep })(options)(value, stateRev)
+
+  assert.deepEqual(ret, expected)
 })

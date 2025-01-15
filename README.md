@@ -519,10 +519,14 @@ regardless of direction, in the following ways:
 **Forward:** Will split the given value if it can be split:
 
 - A string will be split into an array of segments by the given `size` property
-  or by the character given by `sep`. When no `size` or `sep` is given, the
-  string will be split at each space (`' '`)
+  or by the string given by `sep`. When no `size` or `sep` is given, the string
+  will be split at each space (`' '`)
 - A number will be converted to a string, and segmented as a string
-- An array will be split into an array of subarrays by the given `size`
+- An array will be split into an array of subarrays by the given `size` or at
+  any point where we find an element that is equal to `sep`
+
+The `sep` may also be an array, in which case we will split by any of the values
+in the array.
 
 All other types will be left untouched, but we may add new ways to split values
 in the future.
@@ -539,6 +543,8 @@ using the data directly.
 **Reverse:** An array will be joined, either by concatinating strings or joining
 arrays. When concatinating string, the `sep` or `sepPath` character will be
 used as a separator. If not an array, the value will be returned untouched.
+
+If `sep` is an array, the first value will be used for joining.
 
 In a flipped mutation object, the direction of this transformer is also
 flipped.
