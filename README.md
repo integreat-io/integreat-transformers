@@ -12,8 +12,9 @@ Requires node v18 and Integreat v1.0.
 
 ## Transformers
 
-The package consists of several transformers that are exported as an object with
-the transformers set as properties:
+The package provides common transformers for Integreat. They are exported as an
+object with the transformer ids as keys, to be easily included in an integreat
+setup:
 
 - [`absolute`](#absolute)
 - [`arrToObject`](#arrtoobject)
@@ -56,25 +57,19 @@ the transformers set as properties:
 - [`uriPart`](#uripart)
 - [`validate`](#validate)
 
-**Note on properties:** Transformers use properties to define their
-behavior. If an object is defined as a transformer, any property not
-prefixed with `$` will become one of the transformer's properties.
-For example, the `step` or `path` properties. These properties will
-often be referred to as a transformer's "options", in the documentation.
-
 **Note on direction:** Some transformers behave differently depending on
 whether we are transforming data _from_ a service or _to_ a service. This
-behavior will be described underneath each transformer (or just below this
-section). In many cases there is a transformer with oposite functionality
-for the reverse direction. However, flipped mutation objects will also flip
-this behavior, and making the transformer work as the oposite direction.
-This will feel natural when you write configs, even though it might be
-confusing when reading the documentation.
+behavior will be described for the relevant transformer. Flipped mutation
+objects will flip this behavior, making the transformer work as if it was
+running in the opposite direction. This should feel natural when you write
+configs, even though it might be confusing when reading the documentation.
 
 ### `absolute`
 
 Returns the absolute value (i.e. distance from zero) of a `number`. If the
 input is not a number, `undefined` is returned instead.
+
+This is applied in both directions.
 
 ### `arrToObject`
 
@@ -89,6 +84,8 @@ object not included in `keys` will be skipped.
 
 In a flipped mutation object, the direction of this transformer is also
 flipped.
+
+This transformer is the exact opposite of [`objectToArr`](#objectToArr).
 
 ### `base64`
 
@@ -117,6 +114,8 @@ Will base64 decode the value regardless of direction.
 Transforms values to boolean by JavaScript rules, except the string `'false'`,
 which is transformed to `false`. `null` and `undefined` are not touched.
 
+This is applied in both directions.
+
 ### `checksum`
 
 Will generate a checksum from the data it is given, according to these rules:
@@ -143,8 +142,8 @@ a checksum of what it is given.
 
 ### `count`
 
-It does what you think it does: It counts the values you provide it. An array of
-eight items returns `8`, one item (non-array) returns `1`.
+It does exactly what you think it does: It counts the values you provide it. An
+array of eight items returns `8`, one item (non-array) returns `1`.
 
 By default it will not count `null` or `undefined`, either in an array or as a
 non-array item. By providing an array of values to skip in the `skip` property,
@@ -155,12 +154,12 @@ the list too, for them to be skipped. So to count every value, including `null`
 and `undefined`, set `skip: []`.
 
 When defining this as JSON, you may use `**undefined**` in the `skip` list
-instead of `undefined`. (`undefined` does not have a literal in JSON.)
+instead of `undefined`, as `undefined` does not have a literal in JSON.
 
 ### `csv`
 
 This transformer takes a CSV string coming _from_ a service, and returns an
-array of data objects. Going _to_ a service, it does the oposite.
+array of data objects. Going _to_ a service, it does the opposite.
 
 Each line in the CSV is converted to an object. When the `headerRow` prop is
 `true`, the first line will be treated as headers and thus used as keys on the
@@ -339,8 +338,9 @@ See [`date`](#date) for available options.
 Will create a url-friendly hash from a given string. `null` and `undefined` will
 be untouched, everything else will be forced to a string before hashing.
 
-In the future, this transform may also create hashes of objects, but for now an
-object will be the hash of `[object Object]`. :(
+This transformer does not work well with objects, as they will become the hash
+of `[object Object]`. If you need a hash of object, see the
+[`checksum`](#checksum) transformer.
 
 ### `htmlDecode`
 
@@ -466,6 +466,8 @@ as the values in the pipeline value. Values in the array without corresponding
 
 In a flipped mutation object, the direction of this transformer is also
 flipped.
+
+This transformer is the exact opposite of [`arrToObject`](#arrToObject).
 
 ### `parse`
 
