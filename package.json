@@ -20,8 +20,8 @@
     "build": "tsc",
     "prepublishOnly": "npm run build",
     "lint": "eslint src",
-    "typecheck": "tsc --noEmit --strict",
-    "verify": "npm run lint && npm test"
+    "check-types": "tsc --noEmit --strict",
+    "verify": "npm run check-types && npm run lint && npm test"
   },
   "repository": {
     "type": "git",
