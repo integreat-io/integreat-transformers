@@ -19,6 +19,7 @@ the transformers set as properties:
 - [`arrToObject`](#arrtoobject)
 - [`base64`](#base64)
 - [`boolean`](#boolean)
+- [`checksum`](#checksum)
 - [`count`](#count)
 - [`csv`](#csv)
 - [`date`](#date)
@@ -72,7 +73,7 @@ confusing when reading the documentation.
 
 ### `absolute`
 
-Returns the absolute value (i.e. distance from zero) of a `number`.  If the
+Returns the absolute value (i.e. distance from zero) of a `number`. If the
 input is not a number, `undefined` is returned instead.
 
 ### `arrToObject`
@@ -116,10 +117,34 @@ Will base64 decode the value regardless of direction.
 Transforms values to boolean by JavaScript rules, except the string `'false'`,
 which is transformed to `false`. `null` and `undefined` are not touched.
 
+### `checksum`
+
+Will generate a checksum from the data it is given, according to these rules:
+
+- An object will give a checksum that will be consistent regardless of the order
+  of the keys.
+- Strings will be hashed to generate their checksum.
+- An array will result in an array of the checksums for each item.
+- `null` or `undefined` will remain untouched.
+- For a date, we hash its ISO string.
+- All other values will forced to a string, and then checksummed. This means
+  that `300` will have the same checksum as `'300'`, and `true` will have the
+  same checksum as `'true'`.
+
+There's a special option for objects, that allows you to generate a checksum for
+only the specified props. Set the `includeKeys` prop to an array of dot notation
+paths. When encountering non-objects, this prop is simply disregarded.
+
+Note: Checksum consistency is not guarantied across version of this package or
+node.js.
+
+The `checksum` works the same way in both directions -- it will always generate
+a checksum of what it is given.
+
 ### `count`
 
-It does what you thing: It counts the values you provide it. An array of eight
-items returns `8`, one item (non-array) returns `1`.
+It does what you think it does: It counts the values you provide it. An array of
+eight items returns `8`, one item (non-array) returns `1`.
 
 By default it will not count `null` or `undefined`, either in an array or as a
 non-array item. By providing an array of values to skip in the `skip` property,
@@ -288,8 +313,8 @@ in the future.
 
 ### `extractNumber`
 
-Extracts all digits from a string and returns a them as a `number`.  If a `number`
-is provided it will remain unchanged.  All other types are returned as `undefined`.
+Extracts all digits from a string and returns them as `number`. If a `number`
+is provided it will remain unchanged. All other types are returned as `undefined`.
 
 ### `exclude`
 
@@ -444,7 +469,7 @@ flipped.
 
 ### `parse`
 
-Will parse with a template coming __from__ a service. This is the oposite of the
+Will parse with a template coming _from_ a service. This is the oposite of the
 [`template` transformer](#template), so see it's documentation for more details.
 
 ### `pattern`
