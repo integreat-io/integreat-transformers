@@ -21,5 +21,5 @@ const htmlEntities =
       : he.decode(str, decodeOptions)
   }
 
-export const htmlDecode = htmlEntities(false)
-export const htmlEncode = htmlEntities(true)
+export const htmlDecode: Transformer = htmlEntities(false)
+export const htmlEncode: Transformer = htmlEntities(true)

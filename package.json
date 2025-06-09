@@ -41,7 +41,7 @@
     "he": "^1.2.0",
     "luxon": "^3.6.1",
     "map-any": "^1.0.0",
-    "map-transform": "^1.5.3",
+    "map-transform": "^1.6.0-beta.5",
     "nanoid": "^5.1.5",
     "uuid": "^11.1.0"
   },

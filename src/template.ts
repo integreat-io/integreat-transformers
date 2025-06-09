@@ -1,10 +1,9 @@
 import mapAny from 'map-any/async.js'
 import mapTransform from 'map-transform'
 import { defToDataMapper } from 'map-transform/definitionHelpers.js'
-import { htmlEncode } from './htmlEntities.js'
 import xor from './utils/xor.js'
 import type { AsyncTransformer } from 'integreat'
-import type { DataMapper, State } from 'map-transform/types.js'
+import type { DataMapper, State, Options } from 'map-transform/types.js'
 
 interface Props extends Record<string, unknown> {
   template?: string
@@ -19,13 +18,16 @@ const templateRegex = /(\{\{\{?.*?\}?\}\})/
  * given with two brackets, we HTML encode/decode, if it has three brackets, we
  * use it as it is.
  */
-function parseParam(param: string) {
+function parseParam(param: string, options: Options) {
   const isTripleBrackets = param.startsWith('{{{') && param.endsWith('}}}')
   const path = isTripleBrackets ? param.slice(3, -3) : param.slice(2, -2)
-  return mapTransform([
-    path,
-    ...(isTripleBrackets ? [] : [{ $transform: htmlEncode({}) }]), // HTML encode/decode if we don't have three brackets
-  ])
+  return mapTransform(
+    [
+      path,
+      ...(isTripleBrackets ? [] : [{ $transform: 'htmlEncode' }]), // HTML encode/decode if we don't have three brackets
+    ],
+    options,
+  )
 }
 
 /**
@@ -37,10 +39,12 @@ const removeTrailingEmptyString = (parts: (string | DataMapper)[]) =>
 /**
  * Split the template into parts and return a generate and a parse function
  */
-function prepareTemplate(template: string) {
+function prepareTemplate(template: string, options: Options) {
   const parts = template.split(templateRegex)
   const compiled = removeTrailingEmptyString(
-    parts.map((part, index) => (index % 2 === 1 ? parseParam(part) : part)),
+    parts.map((part, index) =>
+      index % 2 === 1 ? parseParam(part, options) : part,
+    ),
   )
 
   return {
@@ -159,35 +163,37 @@ async function parseOrGenerate(
  */
 const createTransformer = (parseForward: boolean): AsyncTransformer =>
   function template({ template: templateStr, templatePath }: Props) {
-    if (typeof templateStr === 'string') {
-      // We already got a template -- prepare generate and parse functions
-      const { generate, parse } = prepareTemplate(templateStr)
+    return (options) => {
+      if (typeof templateStr === 'string') {
+        // We already got a template -- prepare generate and parse functions
+        const { generate, parse } = prepareTemplate(templateStr, options)
 
-      return () => async (data, state) => {
-        return parseOrGenerate(data, state, generate, parse, parseForward)
-      }
-    } else if (typeof templatePath === 'string') {
-      // The template will be provided in the data -- return a function that will
-      // both create the generator and run it
-      const getFn = defToDataMapper(templatePath)
-
-      return () => async (data, state) => {
-        const templateStr = await getFn(data, {
-          ...state,
-          rev: false,
-          flip: false,
-        })
-        if (typeof templateStr === 'string') {
-          const { generate, parse } = prepareTemplate(templateStr)
+        return async (data, state) => {
           return parseOrGenerate(data, state, generate, parse, parseForward)
         }
-        return undefined
-      }
-    }
+      } else if (typeof templatePath === 'string') {
+        // The template will be provided in the data -- return a function that will
+        // both create the generator and run it
+        const getFn = defToDataMapper(templatePath, {})
 
-    // We don't have a template nor a templatePath, so always return `undefined`
-    return () => async () => undefined
+        return async (data, state) => {
+          const templateStr = await getFn(data, {
+            ...state,
+            rev: false,
+            flip: false,
+          })
+          if (typeof templateStr === 'string') {
+            const { generate, parse } = prepareTemplate(templateStr, options)
+            return parseOrGenerate(data, state, generate, parse, parseForward)
+          }
+          return undefined
+        }
+      }
+
+      // We don't have a template nor a templatePath, so always return `undefined`
+      return async () => undefined
+    }
   }
 
-export const template = createTransformer(false)
-export const parse = createTransformer(true)
+export const template: AsyncTransformer = createTransformer(false)
+export const parse: AsyncTransformer = createTransformer(true)

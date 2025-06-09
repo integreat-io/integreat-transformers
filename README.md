@@ -595,6 +595,10 @@ runtime. If no template is found at the path, the transformer returns
 `template` also have a reversed transformer [`parse`](#parse), that behaves in
 the same way, but for the oposite direction.
 
+**Note:** If you pick out just some of the available transformers, make sure to
+include the `htmlEncode` transformer if you want to use the `template`
+transformer. There's a dependancy there.
+
 ### `trim`
 
 Will trim whitespace from the beginning and end of a string, or return it

@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { htmlEncode } from './htmlEntities.js'
 
 import { template, parse } from './template.js'
 
@@ -19,7 +20,11 @@ const stateRev = {
   value: {},
 }
 
-const options = {}
+const options = {
+  transformers: {
+    htmlEncode,
+  },
+}
 
 // Tests -- template forward
 
