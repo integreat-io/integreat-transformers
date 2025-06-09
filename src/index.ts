@@ -2,6 +2,7 @@ import absolute from './absolute.js'
 import arrToObject from './arrToObject.js'
 import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'
+import checksum from './checksum.js'
 import count from './count.js'
 import csv from './csv.js'
 import date, { formatDate } from './date.js'
@@ -43,6 +44,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   base64Decode,
   base64Encode,
   boolean,
+  checksum,
   csv,
   count,
   date,
