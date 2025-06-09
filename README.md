@@ -4,7 +4,7 @@ Core transformers for [Integreat](https://github.com/integreat-io/integreat) and
 [MapTransform](https://github.com/integreat-io/map-transform).
 
 [![npm Version](https://img.shields.io/npm/v/integreat-transformers.svg)](https://www.npmjs.com/package/integreat-transformers)
-[![Maintainability](https://api.codeclimate.com/v1/badges/dfebac9f3541a519ccab/maintainability)](https://codeclimate.com/github/integreat-io/integreat-transformers/maintainability)
+[![Maintainability](https://qlty.sh/badges/ab01e862-25fb-4b1d-aa08-6a7d6ea1c3d1/maintainability.svg)](https://qlty.sh/gh/integreat-io/projects/integreat-transformers)
 
 ## Prerequisits
 
