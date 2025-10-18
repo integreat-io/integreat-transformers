@@ -25,16 +25,36 @@ const theDate = new Date('2019-05-22T13:43:11.345Z')
 
 // Tests -- forward
 
-test('should transform values to date', async () => {
-  assert.deepEqual(
-    await date(props)(options)(new Date('2019-05-22T13:43:11.345Z'), state),
-    theDate,
-  )
-  assert.deepEqual(
-    await date(props)(options)('2019-05-22T15:43:11.345+02:00', state),
-    theDate,
-  )
-  assert.deepEqual(await date(props)(options)(1558532591345, state), theDate)
+test('should transform string value to date', async () => {
+  const value = '2019-05-22T15:43:11.345+02:00'
+
+  const ret = await date(props)(options)(value, state)
+
+  assert.deepEqual(ret, theDate)
+})
+
+test('should transform numeric value to date', async () => {
+  const value = 1558532591345
+
+  const ret = await date(props)(options)(value, state)
+
+  assert.deepEqual(ret, theDate)
+})
+
+test('should transform date to date', async () => {
+  const value = new Date('2019-05-22T13:43:11.345Z')
+
+  const ret = await date(props)(options)(value, state)
+
+  assert.deepEqual(ret, theDate)
+})
+
+test('should transform string value with other timezone to date', async () => {
+  const value = '2019-05-22T13:43:11.345+00:00'
+
+  const ret = await date(props)(options)(value, state)
+
+  assert.deepEqual(ret, theDate)
 })
 
 test('should set local dates according to the given time zone', async () => {
