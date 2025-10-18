@@ -1,7 +1,8 @@
+import decircular from 'decircular'
+import sortKeys from 'sort-keys'
 import { mapTransformSync } from 'map-transform'
 import mapAny from 'map-any'
-import { hashSync } from 'hasha'
-import hashObject from 'hash-object'
+import { hashString, uint8ArrayToHex } from './utils/hash.js'
 import { isDate, isObject } from './utils/is.js'
 import type { Transformer, SyncDataMapper } from 'map-transform/types.js'
 
@@ -9,7 +10,49 @@ export interface Props extends Record<string, unknown> {
   includeKeys?: string[]
 }
 
-const options = { algorithm: 'sha256' }
+/**
+ * Normalizes an object, to prepare it for hashing.
+ *
+ * More or less copy/paste from the [hash-object](https://github.com/sindresorhus/hash-object)
+ * package, but implemented here to avoid using `node:crypto`.
+ */
+function normalizeObject(object: unknown): unknown {
+  if (typeof object === 'string') {
+    return object.normalize('NFD')
+  }
+
+  if (Array.isArray(object)) {
+    return object.map((element) => normalizeObject(element))
+  }
+
+  if (isObject(object)) {
+    return Object.fromEntries(
+      Object.entries(object).map(([key, value]) => [
+        key.normalize('NFD'),
+        normalizeObject(value),
+      ]),
+    )
+  }
+
+  return object
+}
+
+/**
+ * Take the given value and return a string that has been prepared for hashing.
+ */
+function prepareForHashing(value: unknown): string {
+  if (isObject(value)) {
+    const normalizedObject = normalizeObject(decircular(value)) as Record<
+      string,
+      unknown
+    >
+    return JSON.stringify(sortKeys(normalizedObject, { deep: true }))
+  } else if (isDate(value)) {
+    return value.toISOString()
+  } else {
+    return String(value)
+  }
+}
 
 /**
  * Generate a checksum by hashing an object, a date, or a plain value. `null`
@@ -18,12 +61,9 @@ const options = { algorithm: 'sha256' }
 const hashValue = (value: unknown): unknown => {
   if (value === null || value === undefined) {
     return value
-  } else if (isObject(value)) {
-    return hashObject(value, options)
-  } else if (isDate(value)) {
-    return hashSync(value.toISOString(), options)
   } else {
-    return hashSync(String(value), options)
+    const hashable = prepareForHashing(value)
+    return uint8ArrayToHex(hashString(hashable))
   }
 }
 

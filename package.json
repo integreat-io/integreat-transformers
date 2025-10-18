@@ -39,13 +39,13 @@
     "ajv": "^8.17.1",
     "csv-parse": "^6.1.0",
     "csv-stringify": "^6.6.0",
-    "hash-object": "^5.0.1",
-    "hasha": "^6.0.0",
+    "decircular": "^1.0.0",
     "he": "^1.2.0",
     "luxon": "^3.7.2",
     "map-any": "^1.0.0",
     "map-transform": "^1.6.0-rc.0",
     "nanoid": "^5.1.6",
+    "sort-keys": "^6.0.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
