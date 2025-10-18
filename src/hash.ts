@@ -1,4 +1,5 @@
-import type { AsyncTransformer } from 'map-transform/types.js'
+import { sha256 } from '@noble/hashes/sha2.js'
+import type { Transformer } from 'map-transform/types.js'
 
 const replaceRegex = /[+/=]/g
 
@@ -17,10 +18,8 @@ const replaceReserved = (hash: string) => {
   })
 }
 
-// Convert ArrayBuffer to Base64 string
-const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
-  const bytes = new Uint8Array(buffer)
-
+// Convert Uint8Array to Base64 string
+const uint8ArrayToBase64 = (bytes: Uint8Array): string => {
   // Use Buffer if available (Node.js), otherwise use btoa (browser)
   if (typeof Buffer !== 'undefined') {
     return Buffer.from(bytes).toString('base64')
@@ -29,8 +28,8 @@ const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
   }
 }
 
-const hash: AsyncTransformer = () => () =>
-  async function hash(value) {
+const hash: Transformer = () => () =>
+  function hash(value) {
     if (value === null || value === undefined || value === '') {
       return value
     }
@@ -38,8 +37,8 @@ const hash: AsyncTransformer = () => () =>
     const stringValue = String(value)
     const encoder = new TextEncoder()
     const data = encoder.encode(stringValue)
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data)
-    const base64Hash = arrayBufferToBase64(hashBuffer)
+    const hashBytes = sha256(data)
+    const base64Hash = uint8ArrayToBase64(hashBytes)
 
     return replaceReserved(base64Hash)
   }
