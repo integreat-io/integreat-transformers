@@ -2,8 +2,12 @@ import mapAny from 'map-any/async.js'
 import mapTransform from 'map-transform'
 import { defToDataMapper } from 'map-transform/definitionHelpers.js'
 import xor from './utils/xor.js'
-import type { AsyncTransformer } from 'integreat'
-import type { DataMapper, State, Options } from 'map-transform/types.js'
+import type {
+  DataMapper,
+  State,
+  Options,
+  AsyncTransformer,
+} from 'map-transform/types.js'
 
 interface Props extends Record<string, unknown> {
   template?: string

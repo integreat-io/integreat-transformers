@@ -1,4 +1,4 @@
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 export interface Props {
   precision?: number | 'floor' | 'ceil'

@@ -1,7 +1,7 @@
 import mapAny from 'map-any'
 import { castString } from './string.js'
 import xor from './utils/xor.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 function encode(data: unknown) {
   const str = castString(data)

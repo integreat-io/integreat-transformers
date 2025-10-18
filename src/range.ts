@@ -1,7 +1,7 @@
 import { getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isNumeric, isNumber } from './utils/is.js'
-import type { AsyncTransformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   start?: unknown
@@ -17,7 +17,7 @@ const generateStep = function* (
   start: number,
   end: number,
   step = 1,
-  includeEnd = false
+  includeEnd = false,
 ) {
   let current = start
   while (current < end || (includeEnd && current === end)) {

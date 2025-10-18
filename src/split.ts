@@ -3,7 +3,7 @@ import { getPathOrData, getPathOrDefault } from './utils/getters.js'
 import { parseNum } from './utils/cast.js'
 import { isString, isNumber, isNumeric } from './utils/is.js'
 import xor from './utils/xor.js'
-import type { AsyncTransformer } from 'integreat'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string

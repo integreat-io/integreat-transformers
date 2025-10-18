@@ -1,6 +1,6 @@
 import { nanoid, customAlphabet } from 'nanoid'
 import { v4 as uuidv4 } from 'uuid'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 export interface Props {
   type?: string

@@ -1,5 +1,5 @@
 import { isString, isArray, isNumber } from './utils/is.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 const transformer: Transformer = function prepareSize() {
   return () =>

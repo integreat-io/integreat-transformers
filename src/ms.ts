@@ -1,5 +1,5 @@
 import { castDate } from './date.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 const transformer: Transformer = () => () =>
   function ms(value: unknown): number | Date | null | undefined {

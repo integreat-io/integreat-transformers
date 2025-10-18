@@ -3,8 +3,7 @@ import mapAny from 'map-any'
 import { hashSync } from 'hasha'
 import hashObject from 'hash-object'
 import { isDate, isObject } from './utils/is.js'
-import type { Transformer } from 'integreat'
-import type { SyncDataMapper } from 'map-transform/types.js'
+import type { Transformer, SyncDataMapper } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   includeKeys?: string[]

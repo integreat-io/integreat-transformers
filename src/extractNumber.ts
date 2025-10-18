@@ -1,6 +1,6 @@
-import type { Transformer } from 'integreat'
 import { parseNum } from './utils/cast.js'
 import { isNumber, isString } from './utils/is.js'
+import type { Transformer } from 'map-transform/types.js'
 
 const extractAndParseInt = (value: string) => {
   const digits = value.replace(/\D/g, '')

@@ -1,6 +1,6 @@
 import mapAny from 'map-any'
 import { isDate } from './utils/is.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 const isEncodable = (value: unknown): value is string | number | boolean =>
   ['string', 'number', 'boolean'].includes(typeof value)
@@ -14,8 +14,8 @@ const uriPart: Transformer = () => () => (value, state) =>
     const part = isDate(value)
       ? value.toISOString()
       : isEncodable(value)
-      ? value
-      : undefined
+        ? value
+        : undefined
     if (part === undefined) {
       return undefined
     } else {

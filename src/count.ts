@@ -1,5 +1,5 @@
 import { unescapeValue } from './utils/escape.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   skip?: unknown[]
@@ -10,15 +10,15 @@ const isCountable = (skip: unknown[]) => (value: unknown) =>
 
 const transformer: Transformer =
   ({ skip }: Props) =>
-    () =>
-      function count(data: unknown): number {
-        const skipValues = Array.isArray(skip)
-          ? skip.map(unescapeValue)
-          : [null, undefined]
+  () =>
+    function count(data: unknown): number {
+      const skipValues = Array.isArray(skip)
+        ? skip.map(unescapeValue)
+        : [null, undefined]
 
-        return Array.isArray(data)
-          ? data.filter(isCountable(skipValues)).length
-          : Number(isCountable(skipValues)(data))
-      }
+      return Array.isArray(data)
+        ? data.filter(isCountable(skipValues)).length
+        : Number(isCountable(skipValues)(data))
+    }
 
 export default transformer

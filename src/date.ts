@@ -3,8 +3,7 @@ import mapAny from 'map-any/async.js'
 import { getPathOrData } from './utils/getters.js'
 import { isDate, isNumber } from './utils/is.js'
 import xor from './utils/xor.js'
-import type { AsyncTransformer } from 'integreat'
-import type { State } from 'map-transform/types.js'
+import type { State, AsyncTransformer } from 'map-transform/types.js'
 
 const LEGAL_PERIOD_TYPES = [
   'year',

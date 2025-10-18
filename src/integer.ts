@@ -1,5 +1,5 @@
 import number from './number.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 export type Props = Record<string, unknown>
 

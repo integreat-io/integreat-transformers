@@ -1,5 +1,5 @@
 import mapAny from 'map-any'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   length?: number
@@ -32,7 +32,7 @@ const truncate = (length?: number, postfix?: string) => {
 
 const transformer: Transformer =
   ({ length, postfix }: Props) =>
-    () =>
-      mapAny(truncate(length, postfix))
+  () =>
+    mapAny(truncate(length, postfix))
 
 export default transformer

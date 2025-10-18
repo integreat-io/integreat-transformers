@@ -1,6 +1,6 @@
-import type { AsyncTransformer } from 'integreat'
 import { isArray } from './utils/is.js'
 import { getPathOrDefault } from './utils/getters.js'
+import type { AsyncTransformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
   path?: string

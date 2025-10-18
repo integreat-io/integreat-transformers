@@ -1,7 +1,7 @@
 import he from 'he'
 import { castString } from './string.js'
 import xor from './utils/xor.js'
-import type { Transformer } from 'integreat'
+import type { Transformer } from 'map-transform/types.js'
 
 const decodeOptions = {}
 const encodeOptions = { useNamedReferences: true, decimal: false }
