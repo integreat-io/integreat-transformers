@@ -73,7 +73,7 @@ async function generateFromTemplate(
     } else {
       // A param part -- retrieve the value from the data and push it
       const value = await part(data)
-      if (value) {
+      if (value !== undefined && value !== null) {
         target.push(String(value))
       }
     }

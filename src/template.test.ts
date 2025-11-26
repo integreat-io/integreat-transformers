@@ -140,6 +140,48 @@ test('should apply template to array', async () => {
   assert.deepEqual(ret, expected)
 })
 
+test('should apply empty string if value is undefined', async () => {
+  const props = {
+    template: '{{{number}}}',
+  }
+  const data = {
+    number: undefined,
+  }
+  const expected = ''
+
+  const ret = await template(props)(options)(data, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should apply empty string if value is null', async () => {
+  const props = {
+    template: '{{{number}}}',
+  }
+  const data = {
+    number: null,
+  }
+  const expected = ''
+
+  const ret = await template(props)(options)(data, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should create a string from the number 0 (when using triple brackets)', async () => {
+  const props = {
+    template: '{{{number}}}',
+  }
+  const data = {
+    number: 0,
+  }
+  const expected = '0'
+
+  const ret = await template(props)(options)(data, state)
+
+  assert.deepEqual(ret, expected)
+})
+
 test('should leave missing fields empty', async () => {
   const props = { template: '{{description}}. By {{artist}}' }
   const data = {
