@@ -1,10 +1,11 @@
 import decircular from 'decircular'
 import sortKeys from 'sort-keys'
-import { mapTransformSync } from 'map-transform'
+import mapTransform from 'map-transform/next'
 import mapAny from 'map-any'
 import { hashString, uint8ArrayToHex } from './utils/hash.js'
 import { isDate, isObject } from './utils/is.js'
-import type { Transformer, SyncDataMapper } from 'map-transform/types.js'
+import type { Transformer } from 'map-transform/types.js'
+import type { SyncDataMapper } from 'map-transform/typesNext.js'
 
 export interface Props extends Record<string, unknown> {
   includeKeys?: string[]
@@ -91,9 +92,7 @@ function hashValueWithGetter(getter?: SyncDataMapper) {
  */
 const transformer: Transformer = function checksum({ includeKeys }: Props) {
   const getter = Array.isArray(includeKeys)
-    ? mapTransformSync(
-        Object.fromEntries(includeKeys.map((path) => [path, path])),
-      )
+    ? mapTransform(Object.fromEntries(includeKeys.map((path) => [path, path])))
     : undefined
 
   return (_options) => {
