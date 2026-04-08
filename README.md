@@ -211,23 +211,24 @@ will format the date according to a given `format`.
 In a flipped mutation object, the direction of this transformer is also
 flipped.
 
-- Dates are untouched, unless its an invalid date, which will return `undefined`
+- Dates are untouched, unless its an invalid date, which will return
+  `undefined`.
 - Numbers are treated as milliseconds since epoc (midnight 1970-01-01), unless
-  `isSeconds` is `true` (see below)
-- Strings are parsed with [Luxon](https://moment.github.io/luxon) if a `format`
-  or a `tz` (timezone) are specified (see below). If not, the string is handed
-  to JavaScript's `new Date()`, which will try its best
-- All other types returns `undefined
+  `isSeconds` is `true` (see below).
+- Strings are parsed with [Luxon](https://moment.github.io/luxon/#/formatting)
+  if a `format` or a `tz` (timezone) are specified (see below). If not, the
+  string is handed to JavaScript's `new Date()`, which will try its best.
+- All other types returns `undefined.
 
 Date also have a few options for formatting a date (when going to a service), or
 parsing a date (when coming from a service), and to modify the date itself
 (before formatting or after parsing):
 
 - `path`: A path to a point in the data from where to pick the date value. When
-  no path is given, the data in the pipeline is used as is. Default is no path
+  no path is given, the data in the pipeline is used as is. Default is no path.
 - `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
   to use for parsing (from service) and formatting (to service), or the string
-  `'iso'` as a shortcut to a full ISO8601 date and time format
+  `'iso'` as a shortcut to a full ISO8601 date and time format.
 - `tz`: A timezone to use when the given date is not specified with timezone.
   Supports the same timezones as Luxon, like IANA (`'America/New_York'`), fixed
   offset (`'UTC+7'`) and some others (like `system`).
