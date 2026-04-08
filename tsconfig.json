@@ -18,6 +18,7 @@
     "alwaysStrict": true,
     "skipLibCheck": true,
     "removeComments": true,
+    "rootDir": "./src",
     "outDir": "./dist",
   },
   "include": ["src/**/*"],
