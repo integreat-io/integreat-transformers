@@ -46,7 +46,7 @@
     "map-transform": "^1.6.0-rc.4",
     "nanoid": "^5.1.7",
     "sort-keys": "^6.0.0",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^9.0.0",
