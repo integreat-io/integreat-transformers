@@ -35,8 +35,8 @@
     "node": ">= 18"
   },
   "dependencies": {
-    "@noble/hashes": "^2.0.1",
-    "ajv": "^8.18.0",
+    "@noble/hashes": "^2.2.0",
+    "ajv": "^8.20.0",
     "csv-parse": "^6.2.1",
     "csv-stringify": "^6.7.0",
     "decircular": "^1.0.0",
@@ -44,16 +44,16 @@
     "luxon": "^3.7.2",
     "map-any": "^1.0.0",
     "map-transform": "^1.6.0-rc.4",
-    "nanoid": "^5.1.7",
+    "nanoid": "^5.1.11",
     "sort-keys": "^6.0.0",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@integreat/ts-dev-setup": "^9.0.0",
     "@types/he": "^1.2.3",
     "@types/luxon": "^3.7.1",
     "@types/mustache": "^4.2.6",
-    "@types/node": "^24.12.2",
+    "@types/node": "^25.6.0",
     "@types/uuid": "^10.0.0"
   }
 }
