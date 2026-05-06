@@ -23,6 +23,7 @@ import pattern from './pattern.js'
 import replace from './replace.js'
 import round from './round.js'
 import range from './range.js'
+import sign from './sign.js'
 import size from './size.js'
 import split from './split.js'
 import stringFn from './string.js'
@@ -69,6 +70,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   range,
   replace,
   round,
+  sign,
   size,
   split,
   splitRange: range, // For compatability (old name)

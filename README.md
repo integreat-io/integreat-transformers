@@ -44,6 +44,7 @@ setup:
 - [`range`](#range)
 - [`replace`](#replace)
 - [`round`](#round)
+- [`sign`](#sign)
 - [`size`](#size)
 - [`split`](#split)
 - [`string`](#string)
@@ -530,6 +531,14 @@ in order to always round up or down to the next integer.
   +∞ by setting the `roundTowardsInfinity` property to `true`.
 - `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
   `floor` will always be away from +∞ and `ceil` towards +∞.
+
+### `sign`
+
+Returns the sign of a `number`: `1` for positive, `-1` for negative, and `0`
+for zero. Strings are parsed to a number first. If the input is not a number
+(or cannot be parsed), `undefined` is returned instead.
+
+This is applied in both directions.
 
 ### `size`
 
