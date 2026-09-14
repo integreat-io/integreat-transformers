@@ -27,6 +27,7 @@ import range from './range.js'
 import sign from './sign.js'
 import size from './size.js'
 import split from './split.js'
+import stateName from './stateName.js'
 import stringFn from './string.js'
 import sum from './sum.js'
 import { template, parse } from './template.js'
@@ -76,6 +77,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   size,
   split,
   splitRange: range, // For compatability (old name)
+  stateName,
   string: stringFn,
   sum,
   template,

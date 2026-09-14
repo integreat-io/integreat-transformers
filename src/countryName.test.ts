@@ -128,6 +128,7 @@ test('should match country name regardless of accents and punctuation in reverse
   assert.equal(countryName({})(options)("Cote d'Ivoire", revState), 'CI')
   assert.equal(countryName({})(options)('Curacao', revState), 'CW')
   assert.equal(countryName({})(options)('St Kitts & Nevis', revState), 'KN')
+  assert.equal(countryName({})(options)('US Virgin Islands', revState), 'VI')
 })
 
 test('should match & in country name with and in reverse', () => {

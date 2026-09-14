@@ -48,6 +48,7 @@ setup:
 - [`sign`](#sign)
 - [`size`](#size)
 - [`split`](#split)
+- [`stateName`](#statename)
 - [`string`](#string)
 - [`sum`](#sum)
 - [`template`](#template)
@@ -59,17 +60,17 @@ setup:
 - [`uriPart`](#uripart)
 - [`validate`](#validate)
 
-**Note on direction:** Some transformers behave differently depending on
-whether we are transforming data _from_ a service or _to_ a service. This
-behavior will be described for the relevant transformer. Flipped mutation
-objects will flip this behavior, making the transformer work as if it was
-running in the opposite direction. This should feel natural when you write
-configs, even though it might be confusing when reading the documentation.
+**Note on direction:** Some transformers behave differently depending on whether
+we are transforming data _from_ a service or _to_ a service. This behavior will
+be described for the relevant transformer. Flipped mutation objects will flip
+this behavior, making the transformer work as if it was running in the opposite
+direction. This should feel natural when you write configs, even though it might
+be confusing when reading the documentation.
 
 ### `absolute`
 
-Returns the absolute value (i.e. distance from zero) of a `number`. If the
-input is not a number, `undefined` is returned instead.
+Returns the absolute value (i.e. distance from zero) of a `number`. If the input
+is not a number, `undefined` is returned instead.
 
 This is applied in both directions.
 
@@ -84,8 +85,7 @@ as the values in the pipeline value. Values in the array without corresponding
 order of the keys given in an array of keys on the `keys` property. Keys on the
 object not included in `keys` will be skipped.
 
-In a flipped mutation object, the direction of this transformer is also
-flipped.
+In a flipped mutation object, the direction of this transformer is also flipped.
 
 This transformer is the exact opposite of [`objectToArr`](#objectToArr).
 
@@ -181,14 +181,15 @@ The names come from the CLDR data built into the JavaScript runtime (through
 names. As an example, `'US'` gives `'United States'` and not
 `'United States of America'`.
 
-In reverse, it does the opposite and returns the country code for a country
-name in the given locale, e.g. `'Norway'` becomes `'NO'` and `'Sverige'`
-becomes `'SE'` with `locale: 'nb'`. Case, accents, punctuation, and extra
-whitespace are ignored, and `&` matches `and`, so `"cote d'ivoire"` gives
-`'CI'` and `'Bosnia and Herzegovina'` gives `'BA'`. Deprecated codes are never
-returned, e.g. `'United Kingdom'` gives `'GB'`, not `'UK'`. The name must still
-be the one CLDR uses, so alternative names like `'USA'` or
-`'United States of America'` (in English) give `undefined`.
+In reverse, it does the opposite and returns the country code for a country name
+in the given locale, e.g. `'Norway'` becomes `'NO'` and `'Sverige'` becomes
+`'SE'` with `locale: 'nb'`. Case, accents, punctuation, and extra whitespace are
+ignored, periods are dropped, and `&` matches `and`, so `"cote d'ivoire"` gives
+`'CI'`, `'US Virgin Islands'` gives `'VI'`, and `'Bosnia and Herzegovina'` gives
+`'BA'`. Deprecated codes are never returned, e.g. `'United Kingdom'` gives
+`'GB'`, not `'UK'`. The name must still be the one CLDR uses, so alternative
+names like `'USA'` or `'United States of America'` (in English) give
+`undefined`.
 
 The lookup table for reverse is built the first time it's needed for a locale,
 and is then shared by all `countryName` transformers with that locale.
@@ -206,17 +207,16 @@ the `columnPrefix` prop the preferred string.
 
 When generating CSV going _to_ the service, the order of the columns will match
 the order of the keys on the object, unless some or all keys match the
-`columnPrefix` or the default `'col'`. In this case, the prefixed keys will
-be sorted in ascending order by their number, before any other keys.
+`columnPrefix` or the default `'col'`. In this case, the prefixed keys will be
+sorted in ascending order by their number, before any other keys.
 
-In a flipped mutation object, the direction of this transformer is also
-flipped.
+In a flipped mutation object, the direction of this transformer is also flipped.
 
-The transformer handles objects with different keys by leaving columns empty
-in the places that other rows has values. The order of the keys will be
-determined with priority to its first occurence, so if a field is missing on the
-first object in the array, it will be placed after the keys from the first row,
-even if it is placed before or in-between them on the object it first appears.
+The transformer handles objects with different keys by leaving columns empty in
+the places that other rows has values. The order of the keys will be determined
+with priority to its first occurence, so if a field is missing on the first
+object in the array, it will be placed after the keys from the first row, even
+if it is placed before or in-between them on the object it first appears.
 
 The following options are available:
 
@@ -245,8 +245,7 @@ Going forward – from a service, `date` will try its best at transforming the
 given value to a date, or it returns `undefined`. In reverse – to a service, it
 will format the date according to a given `format`.
 
-In a flipped mutation object, the direction of this transformer is also
-flipped.
+In a flipped mutation object, the direction of this transformer is also flipped.
 
 - Dates are untouched, unless its an invalid date, which will return
   `undefined`.
@@ -263,7 +262,8 @@ parsing a date (when coming from a service), and to modify the date itself
 
 - `path`: A path to a point in the data from where to pick the date value. When
   no path is given, the data in the pipeline is used as is. Default is no path.
-- `format`: [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
+- `format`:
+  [A Luxon format](https://moment.github.io/luxon/#/parsing?id=table-of-tokens)
   to use for parsing (from service) and formatting (to service), or the string
   `'iso'` as a shortcut to a full ISO8601 date and time format.
 - `tz`: A timezone to use when the given date is not specified with timezone.
@@ -281,8 +281,8 @@ parsing a date (when coming from a service), and to modify the date itself
 
 A period object has one or more keys refering to a time interval (see valid
 keywords below), with the value specifying the number of time intervals (for
-`add` and `subtract`) or an absolut value (for `set`). The value may either be
-a static number or a path to where in the data the number can be found.
+`add` and `subtract`) or an absolut value (for `set`). The value may either be a
+static number or a path to where in the data the number can be found.
 
 For example:
 
@@ -302,7 +302,8 @@ The available keywords for the keys of a period object are: `year`, `quarter`,
 ### `dedupe`
 
 Removes duplicates from an array. Only the first item that is a match will be
-kept. Any value that is `undefined` will not count as unique and will be removed.
+kept. Any value that is `undefined` will not count as unique and will be
+removed.
 
 For example:
 
@@ -343,15 +344,15 @@ const result = [
 ]
 ```
 
-**Note:** The objects are considered instances. When comparing 2 objects
-with the same structure both will be kept. When comparing a primitive type
-within objects, using a path, all duplicates will be remove. This may be changed
-in the future.
+**Note:** The objects are considered instances. When comparing 2 objects with
+the same structure both will be kept. When comparing a primitive type within
+objects, using a path, all duplicates will be remove. This may be changed in the
+future.
 
 ### `extractNumber`
 
-Extracts all digits from a string and returns them as `number`. If a `number`
-is provided it will remain unchanged. All other types are returned as `undefined`.
+Extracts all digits from a string and returns them as `number`. If a `number` is
+provided it will remain unchanged. All other types are returned as `undefined`.
 
 ### `exclude`
 
@@ -366,8 +367,8 @@ paths, an empty array is used.
 ### `formatDate`
 
 Formats a date the same way as `date` does, but does it regardless of direction,
-i.e. both from and to a service. (`date` parses from a service and formats to
-a service.)
+i.e. both from and to a service. (`date` parses from a service and formats to a
+service.)
 
 See [`date`](#date) for available options.
 
@@ -388,15 +389,15 @@ being inside a flipped mutation object, and will decode from and encode to a
 service regardless.
 
 Example: When we get `'foo &copy; bar &#8800; baz &#x1D306; qux'` from a
-service, this transformer will turn it into `'foo © bar ≠ baz 𝌆 qux'`,
-and vica versa.
+service, this transformer will turn it into `'foo © bar ≠ baz 𝌆 qux'`, and vica
+versa.
 
-We are using [the `he` package]{https://github.com/mathiasbynens/he} under
-the hood, with named references enabled and hexadecimal escapes. This means
-that `'©'` will be encoded as `'&copy;'`, as there exists a named reference,
-while any special char without a named reference, like `'𝌆'` will be encode
-with its character reference as a hexadecimal number (e.g. `'&#x1D306;'`).
-When decoding, all variants are allowed.
+We are using [the `he` package]{https://github.com/mathiasbynens/he} under the
+hood, with named references enabled and hexadecimal escapes. This means that
+`'©'` will be encoded as `'&copy;'`, as there exists a named reference, while
+any special char without a named reference, like `'𝌆'` will be encode with its
+character reference as a hexadecimal number (e.g. `'&#x1D306;'`). When decoding,
+all variants are allowed.
 
 Values are forced to a string or `undefined` by the rules mentioned under
 [`string`](#string).
@@ -423,8 +424,7 @@ the `number` transformer with `precision: 0`, so refer to
 This transformer works exactly as the [`split`](#split) transformer, expect that
 the direction is reversed, so refer to [its documentation](#split) below.
 
-In a flipped mutation object, the direction of this transformer is also
-flipped.
+In a flipped mutation object, the direction of this transformer is also flipped.
 
 ### `lowercase`
 
@@ -485,8 +485,8 @@ not. Non-numbers are treated like the following:
 - `null` and `undefined` are untouched
 - All other types will return `undefined`
 
-To round numbers, set the `precision` property to the number of decimals to round
-to. When `precision` is not set, the number will not be rounded.
+To round numbers, set the `precision` property to the number of decimals to
+round to. When `precision` is not set, the number will not be rounded.
 
 Note that JavaScript rounds towards +∞ for negative numbers where the decimal 5
 is rounded away. Other systems may round away from 0 in such cases.
@@ -502,8 +502,7 @@ are given as an array in the `keys` property, and are matched in the same order
 as the values in the pipeline value. Values in the array without corresponding
 `keys` will be skipped.
 
-In a flipped mutation object, the direction of this transformer is also
-flipped.
+In a flipped mutation object, the direction of this transformer is also flipped.
 
 This transformer is the exact opposite of [`arrToObject`](#arrToObject).
 
@@ -563,16 +562,16 @@ in order to always round up or down to the next integer.
 - Strings are parsed to a float if possible
 - If the value is equally distant from the closest value in both directions, the
   value furthest away from zero will be selected by default, e.g. -3.5 will be
-  rounded to -4, and not -3. This behavior can be changed to rounding towards
-  +∞ by setting the `roundTowardsInfinity` property to `true`.
+  rounded to -4, and not -3. This behavior can be changed to rounding towards +∞
+  by setting the `roundTowardsInfinity` property to `true`.
 - `floor` and `ceil` is not affected by the `roundTowardsInfinity` property, and
   `floor` will always be away from +∞ and `ceil` towards +∞.
 
 ### `sign`
 
-Returns the sign of a `number`: `1` for positive, `-1` for negative, and `0`
-for zero. Strings are parsed to a number first. If the input is not a number
-(or cannot be parsed), `undefined` is returned instead.
+Returns the sign of a `number`: `1` for positive, `-1` for negative, and `0` for
+zero. Strings are parsed to a number first. If the input is not a number (or
+cannot be parsed), `undefined` is returned instead.
 
 This is applied in both directions.
 
@@ -614,13 +613,33 @@ Provide a `path` property to get a value at a path from the data, instead of
 using the data directly.
 
 **Reverse:** An array will be joined, either by concatinating strings or joining
-arrays. When concatinating string, the `sep` or `sepPath` character will be
-used as a separator. If not an array, the value will be returned untouched.
+arrays. When concatinating string, the `sep` or `sepPath` character will be used
+as a separator. If not an array, the value will be returned untouched.
 
 If `sep` is an array, the first value will be used for joining.
 
-In a flipped mutation object, the direction of this transformer is also
-flipped.
+In a flipped mutation object, the direction of this transformer is also flipped.
+
+### `stateName`
+
+Returns the English name of the state for an ISO 3166-2 code, e.g. `'US-NY'`
+becomes `'New York'` and `'CA-QC'` becomes `'Quebec'`. The code is
+case-insensitive and surrounding whitespace is ignored.
+
+US states, the District of Columbia and the US territories are supported, as
+well as Canadian provinces and territories. Other countries may be added on
+request.
+
+The code must include the country, so a bare `'NY'` gives `undefined`. As do
+unknown codes and non-string values.
+
+In reverse, it does the opposite and returns the full ISO 3166-2 code for a
+state name, e.g. `'New York'` becomes `'US-NY'`. Case, accents, punctuation, and
+extra whitespace are ignored, periods are dropped, and `&` matches `and`, so
+`'québec'` gives `'CA-QC'`, `'US Virgin Islands'` gives `'US-VI'`, and
+`'newfoundland & labrador'` gives `'CA-NL'`. Unknown names give `undefined`.
+
+In a flipped mutation object, the direction of this transformer is also flipped.
 
 ### `string`
 
@@ -712,9 +731,9 @@ Set the `type` property to indicate what type of id you want, or omit it to get
 
 - `nanoid` (default): A small 21 character string generated with
   [`nanoid`](https://github.com/ai/nanoid). Uses the letters `A-Za-z0-9_-`.
-- `alpha`: Also a [`nanoid`](https://github.com/ai/nanoid) string, but with
-  the letters `A-Za-z0-9` -- no hyphen or underscore. This reduces the
-  probability for collisions a bit, but only slightly.
+- `alpha`: Also a [`nanoid`](https://github.com/ai/nanoid) string, but with the
+  letters `A-Za-z0-9` -- no hyphen or underscore. This reduces the probability
+  for collisions a bit, but only slightly.
 - `uuid` or `uuidLower`: A RFC4122 version 4 id in lowercase, e.g.
   `'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'`, generated with
   [`uuid`](https://github.com/uuidjs/uuid).
@@ -732,11 +751,10 @@ Will uri decode going forward (from a service) and uri encode in reverse (going
 to a service). This transformer is not affected by being in flipped mutation
 object, and will decode from and encode to a service either way.
 
-The uri encoding is done by replacing each instance of certain
-characters by one, two, three, or four escape sequences representing the UTF-8
-encoding of the character. It is intended for encoding e.g. query param values,
-so characters allowed other places in urls will also be encoded, like `:`, `\`,
-and `&`.
+The uri encoding is done by replacing each instance of certain characters by
+one, two, three, or four escape sequences representing the UTF-8 encoding of the
+character. It is intended for encoding e.g. query param values, so characters
+allowed other places in urls will also be encoded, like `:`, `\`, and `&`.
 
 Values are forced to a string or `undefined` by the rules mentioned under
 [`string`](#string).

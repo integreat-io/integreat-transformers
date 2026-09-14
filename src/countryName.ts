@@ -1,5 +1,6 @@
 import mapAny from 'map-any'
 import xor from './utils/xor.js'
+import normalizeName from './utils/normalizeName.js'
 import type { Transformer } from 'map-transform/types.js'
 
 export interface Props extends Record<string, unknown> {
@@ -27,16 +28,6 @@ function createDisplayNames(locale?: string) {
     return new Intl.DisplayNames(['en'], { type: 'region', fallback: 'none' })
   }
 }
-
-// Make matching of names insensitive to case, accents, and punctuation
-const normalizeName = (name: string) =>
-  name
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '') // Remove accents
-    .replace(/&/g, ' and ')
-    .replace(/[^\p{L}\p{N}]+/gu, ' ')
-    .trim()
-    .toLowerCase()
 
 // Deprecated codes (like `UK` and `DD`) are canonicalized to their current
 // code (`GB` and `DE`), and have the same name as it
