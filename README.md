@@ -22,6 +22,7 @@ setup:
 - [`boolean`](#boolean)
 - [`checksum`](#checksum)
 - [`count`](#count)
+- [`countryName`](#countryname)
 - [`csv`](#csv)
 - [`date`](#date)
 - [`dedupe`](#dedupe)
@@ -156,6 +157,41 @@ and `undefined`, set `skip: []`.
 
 When defining this as JSON, you may use `**undefined**` in the `skip` list
 instead of `undefined`, as `undefined` does not have a literal in JSON.
+
+### `countryName`
+
+Returns the name of the country for an ISO 3166-1 alpha-2 country code, e.g.
+`'NO'` becomes `'Norway'` and `'US'` becomes `'United States'`. The code is
+case-insensitive and surrounding whitespace is ignored.
+
+The name is given in English by default. Set the `locale` prop to a BCP 47
+language tag to get the name in another language, e.g. `locale: 'nb'` will give
+`'Sverige'` for `'SE'`. An invalid locale falls back to English.
+
+Unknown codes, malformed codes and non-string values give `undefined`. So do
+`'ZZ'` (which CLDR uses for "Unknown Region") and the pseudo-locale test codes
+`'XA'` and `'XB'`. Other codes that are not countries, but still have a name in
+CLDR, give their name, e.g. `'EU'` gives `'European Union'`, `'EZ'` gives
+`'Eurozone'`, `'UN'` gives `'United Nations'`, and `'QO'` gives
+`'Outlying Oceania'`. Deprecated codes give the name of the current country,
+e.g. `'UK'` gives `'United Kingdom'`.
+
+The names come from the CLDR data built into the JavaScript runtime (through
+`Intl.DisplayNames`), so they may differ slightly from the official ISO short
+names. As an example, `'US'` gives `'United States'` and not
+`'United States of America'`.
+
+In reverse, it does the opposite and returns the country code for a country
+name in the given locale, e.g. `'Norway'` becomes `'NO'` and `'Sverige'`
+becomes `'SE'` with `locale: 'nb'`. Case, accents, punctuation, and extra
+whitespace are ignored, and `&` matches `and`, so `"cote d'ivoire"` gives
+`'CI'` and `'Bosnia and Herzegovina'` gives `'BA'`. Deprecated codes are never
+returned, e.g. `'United Kingdom'` gives `'GB'`, not `'UK'`. The name must still
+be the one CLDR uses, so alternative names like `'USA'` or
+`'United States of America'` (in English) give `undefined`.
+
+The lookup table for reverse is built the first time it's needed for a locale,
+and is then shared by all `countryName` transformers with that locale.
 
 ### `csv`
 

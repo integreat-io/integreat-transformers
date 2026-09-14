@@ -4,6 +4,7 @@ import base64, { base64Decode, base64Encode } from './base64.js'
 import boolean from './boolean.js'
 import checksum from './checksum.js'
 import count from './count.js'
+import countryName from './countryName.js'
 import csv from './csv.js'
 import date, { formatDate } from './date.js'
 import dedupe from './dedupe.js'
@@ -48,6 +49,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   checksum,
   csv,
   count,
+  countryName,
   date,
   dedupe,
   exclude,
