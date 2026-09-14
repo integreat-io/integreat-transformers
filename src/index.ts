@@ -16,6 +16,7 @@ import integer from './integer.js'
 import join from './join.js'
 import lowercase from './lowercase.js'
 import math from './math.js'
+import monthName from './monthName.js'
 import ms from './ms.js'
 import now from './now.js'
 import number from './number.js'
@@ -38,6 +39,7 @@ import unique from './unique.js'
 import uppercase from './uppercase.js'
 import uriPart from './uriPart.js'
 import validate from './validate.js'
+import weekDay from './weekDay.js'
 import type { Transformer, AsyncTransformer } from 'map-transform/types.js'
 
 const transformers: Record<string, Transformer | AsyncTransformer> = {
@@ -64,6 +66,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   join,
   lowercase,
   math,
+  monthName,
   ms,
   now,
   number,
@@ -88,6 +91,7 @@ const transformers: Record<string, Transformer | AsyncTransformer> = {
   uppercase,
   uriPart,
   validate,
+  weekDay,
 }
 
 export default transformers

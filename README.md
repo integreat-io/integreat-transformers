@@ -36,6 +36,7 @@ setup:
 - [`join`](#join)
 - [`lowercase`](#lowercase)
 - [`math`](#math)
+- [`monthName`](#monthname)
 - [`ms`](#ms)
 - [`now`](#now)
 - [`number`](#number)
@@ -59,6 +60,7 @@ setup:
 - [`uppercase`](#uppercase)
 - [`uriPart`](#uripart)
 - [`validate`](#validate)
+- [`weekDay`](#weekday)
 
 **Note on direction:** Some transformers behave differently depending on whether
 we are transforming data _from_ a service or _to_ a service. This behavior will
@@ -461,6 +463,43 @@ a `path` to get data from an object. Also, as an alternative to specifying the
   in `undefined`
 - If the property `value` is not a number, the pipeline value will be untouched
 
+### `monthName`
+
+Returns the name of the month for a month number from `1` to `12`, e.g. `1`
+becomes `'January'` and `12` becomes `'December'`. Strings holding a whole
+number are accepted too, so `'9'` and `' 9 '` both give `'September'`.
+
+Numbers outside `1` to `12`, numbers with decimals, and anything that is not a
+number or a numeric string (like `'9x'` or `'January'`) give `undefined`.
+
+The name is given in English by default. Set the `locale` prop to a BCP 47
+language tag to get the name in another language, e.g. `locale: 'nb'` gives
+`'januar'` for `1`. An invalid locale falls back to English. The `style` prop
+sets the length of the name:
+
+- `'long'` (default): `'September'`
+- `'short'`: `'Sep'`
+- `'narrow'`: `'S'`
+
+Any other `style` gives the long name.
+
+The names come from the CLDR data built into the JavaScript runtime (through
+`Intl.DateTimeFormat`), so they follow the casing and abbreviations of the
+locale, e.g. `'januar'` is lowercase in `nb`, and the short name for `9` is
+`'sept.'` in `fr`. The month is given in the form used on its own, e.g.
+`'январь'` in `ru`.
+
+In reverse, it does the opposite and returns the month number for a month name
+in the given locale, e.g. `'January'` becomes `1`. Both long and short names are
+matched, whatever `style` is set to, so `'September'` and `'Sep'` both give `9`.
+Narrow names are not matched, as most of them are ambiguous (`'J'` could be
+January, June or July), and give `undefined`. Case, accents, punctuation, and
+extra whitespace are ignored, and periods are dropped, so `'sept'` and
+`'fevrier'` give `9` and `2` with `locale: 'fr'`. Unknown names give
+`undefined`.
+
+In a flipped mutation object, the direction of this transformer is also flipped.
+
 ### `ms`
 
 Will return the milliseconds of a Date since epoc (1970-01-01). Strings and
@@ -768,3 +807,38 @@ validates it according to the provided schema.
 
 Note that if you provide a schema that is always valid, it will be valid even
 when the data has no value at the given path.
+
+### `weekDay`
+
+Returns the name of the weekday for a weekday number from `0` to `7`, where both
+`0` and `7` are Sunday, `1` is Monday, and `6` is Saturday. Strings holding a
+whole number are accepted too, so `'3'` and `' 3 '` both give `'Wednesday'`.
+
+Numbers outside `0` to `7`, numbers with decimals, and anything that is not a
+number or a numeric string (like `'3x'` or `'Monday'`) give `undefined`.
+
+The name is given in English by default. Set the `locale` prop to a BCP 47
+language tag to get the name in another language, e.g. `locale: 'nb'` gives
+`'mandag'` for `1`. An invalid locale falls back to English. The `style` prop
+sets the length of the name:
+
+- `'long'` (default): `'Sunday'`
+- `'short'`: `'Sun'`
+- `'narrow'`: `'S'`
+
+Any other `style` gives the long name.
+
+The names come from the CLDR data built into the JavaScript runtime (through
+`Intl.DateTimeFormat`), so they follow the casing and abbreviations of the
+locale, e.g. `'mandag'` is lowercase in `nb`, and the short name for `0` is
+`'søn.'`.
+
+In reverse, it does the opposite and returns the weekday number for a weekday
+name in the given locale, e.g. `'Monday'` becomes `1`. Sunday always gives `0`.
+Both long and short names are matched, whatever `style` is set to, so `'Monday'`
+and `'Mon'` both give `1`. Narrow names are not matched, as most of them are
+ambiguous (`'S'` could be Saturday or Sunday), and give `undefined`. Case,
+accents, punctuation, and extra whitespace are ignored, and periods are dropped,
+so `'søn'` gives `0` with `locale: 'nb'`. Unknown names give `undefined`.
+
+In a flipped mutation object, the direction of this transformer is also flipped.
