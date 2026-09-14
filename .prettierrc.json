@@ -2,5 +2,17 @@
   "semi": false,
   "singleQuote": true,
   "jsxSingleQuote": true,
-  "editorconfig": true
+  "overrides": [
+    {
+      "files": ["tsconfig.json", "tsconfig.*.json", "jsconfig.json"],
+      "options": { "parser": "jsonc" }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "always",
+        "printWidth": 80
+      }
+    }
+  ]
 }
