@@ -44,7 +44,7 @@
     "he": "^1.2.0",
     "luxon": "^3.7.2",
     "map-any": "^1.0.0",
-    "map-transform": "^1.6.0-rc.7",
+    "map-transform": "1.6.0-rc.9",
     "nanoid": "^5.1.16",
     "sort-keys": "^6.0.1",
     "uuid": "^13.0.2"
@@ -54,7 +54,7 @@
     "@types/he": "^1.2.3",
     "@types/luxon": "^3.7.5",
     "@types/mustache": "^4.2.6",
-    "@types/node": "^26.5.1",
+    "@types/node": "^26.6.1",
     "@types/uuid": "^10.0.0"
   }
 }
