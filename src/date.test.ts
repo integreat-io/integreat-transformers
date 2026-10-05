@@ -98,6 +98,16 @@ test('should treat number as seconds since poc when isSeconds is true', async ()
   assert.deepEqual(ret, expected)
 })
 
+test('should keep milliseconds when number in seconds has decimals', async () => {
+  const isSeconds = true
+  const value = 1558532591.777
+  const expected = new Date('2019-05-22T13:43:11.777Z')
+
+  const ret = await date({ isSeconds })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
+})
+
 test('should not touch null and undefined', async () => {
   assert.deepEqual(await date(props)(options)(null, state), null)
   assert.deepEqual(await date(props)(options)(undefined, state), undefined)
@@ -333,6 +343,26 @@ test('should return number in seconds when isSeconds is true', async () => {
   assert.deepEqual(ret, expected)
 })
 
+test('should drop milliseconds when returning date as number with isSeconds', async () => {
+  const isSeconds = true
+  const value = new Date('2019-05-22T13:43:11.777Z')
+  const expected = 1558532591
+
+  const ret = await date({ isSeconds })(options)(value, stateRev)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should floor to the second before when returning date before epoc as number with isSeconds', async () => {
+  const isSeconds = true
+  const value = new Date('1969-12-31T23:59:59.500Z')
+  const expected = -1
+
+  const ret = await date({ isSeconds })(options)(value, stateRev)
+
+  assert.deepEqual(ret, expected)
+})
+
 test('should cast date string to Date in reverse', async () => {
   const value = '2019-05-22T13:43:11.345Z'
   const expected = new Date('2019-05-22T15:43:11.345+02:00')
@@ -539,6 +569,16 @@ test('should set a part of the date/time when formatting date', async () => {
 test('should format date to number in seconds when isSeconds is true', async () => {
   const isSeconds = true
   const value = new Date('2019-05-22T13:43:11Z')
+  const expected = 1558532591
+
+  const ret = await formatDate({ isSeconds })(options)(value, state)
+
+  assert.deepEqual(ret, expected)
+})
+
+test('should drop milliseconds when formatting date to number in seconds', async () => {
+  const isSeconds = true
+  const value = new Date('2019-05-22T13:43:11.777Z')
   const expected = 1558532591
 
   const ret = await formatDate({ isSeconds })(options)(value, state)

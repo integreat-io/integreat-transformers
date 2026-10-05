@@ -167,7 +167,7 @@ function format(props: Props) {
       return await pathSetter(dateTime.toFormat(formatStr))
     } else {
       // isSeconds === true
-      return await pathSetter(dateTime.toSeconds())
+      return await pathSetter(Math.floor(dateTime.toSeconds()))
     }
   }
 }

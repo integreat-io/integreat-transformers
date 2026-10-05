@@ -272,7 +272,9 @@ parsing a date (when coming from a service), and to modify the date itself
   Supports the same timezones as Luxon, like IANA (`'America/New_York'`), fixed
   offset (`'UTC+7'`) and some others (like `system`).
 - `isSeconds`: When `true`, a number will be treated as seconds since epoc,
-  instead of milliseconds. Default is `false`.
+  instead of milliseconds. Note that milliseconds will be stripped when we're
+  converting to seconds. If we're given a number of seconds with decimals, we'll
+  keep the milliseconds. Default is `false`.
 - `add`: Adds the number of time intervals given by a period object (see below)
   from a service, and subtracts when going to a service.
 - `subtract`: Subtracts the number of time intervals given by a period object
