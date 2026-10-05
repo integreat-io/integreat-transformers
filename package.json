@@ -45,7 +45,7 @@
     "luxon": "^3.7.2",
     "map-any": "^1.0.0",
     "map-transform": "1.6.0-rc.9",
-    "nanoid": "^5.1.16",
+    "nanoid": "^6.0.1",
     "sort-keys": "^6.0.1",
     "uuid": "^13.0.2"
   },
